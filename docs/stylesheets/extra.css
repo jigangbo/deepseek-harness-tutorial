@@ -1,0 +1,17 @@
+/* 全宽布局：左侧导航贴最左，右侧大纲贴最右，中间内容自适应撑满。
+   Material 默认用 .md-grid { max-width: 61rem } 把整个版面限制在 976px 居中；
+   内容区本身 flex-grow:1，解开网格限制后即自动扩展。 */
+
+.md-grid {
+  max-width: 100%;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+/* 侧栏与内容边缘留出呼吸空间，同时保持贴近视口两侧 */
+.md-sidebar--primary {
+  margin-right: 1rem;
+}
+.md-sidebar--secondary {
+  margin-left: 1rem;
+}

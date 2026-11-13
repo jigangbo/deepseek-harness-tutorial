@@ -1,0 +1,9 @@
+nav:
+  - 首页: index.md
+  - 入门篇: 00-getting-started/
+  - 总览篇: 01-overview/
+  - 核心引擎篇: 02-core-engine/
+  - 能力缝篇: 03-capability-seams/
+  - 持久化篇: 04-persistence/
+  - 交互与产品形态篇: 05-product-surfaces/
+  - 精通篇: 06-mastery/

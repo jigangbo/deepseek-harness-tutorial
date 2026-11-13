@@ -1,0 +1,12 @@
+title: 核心引擎篇 — 逐文件精读
+nav:
+  - session/
+  - agent-loop/
+  - tools/
+  - agent/
+  - scope/
+  - system-prompt/
+  - executors/
+  - agent-default-model/
+  - agent-tool-presentation/
+  - llm/

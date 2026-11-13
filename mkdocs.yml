@@ -1,0 +1,49 @@
+site_name: DeepSeek Harness 架构教程 — 从入门到精通
+site_description: 系统性深入学习 DeepSeek Harness (dsh) 的插件化 Agent 架构
+docs_dir: docs
+site_dir: site
+theme:
+  name: material
+  language: zh
+  palette:
+    - scheme: default
+      primary: indigo
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式
+    - scheme: slate
+      primary: indigo
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式
+  features:
+    - navigation.instant
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - toc.follow
+plugins:
+  - search:
+      lang:
+        - zh
+        - en
+        - ja
+  - awesome-pages
+extra_css:
+  - stylesheets/extra.css
+markdown_extensions:
+  - tables
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.snippets
+  - toc:
+      permalink: true
+  - def_list
+  - attr_list

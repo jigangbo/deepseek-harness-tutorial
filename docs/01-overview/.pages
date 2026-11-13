@@ -1,0 +1,5 @@
+title: 总览篇 — 全局架构
+nav:
+  - 01-global-architecture.md
+  - 02-turn-lifecycle.md
+  - 03-boot-and-profiles.md
