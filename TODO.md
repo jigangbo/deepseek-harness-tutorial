@@ -17,12 +17,12 @@
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
 | 01 总览篇 | 3 | 2 | ⏳ 启动与 Profile 进行中 |
-| 02 核心引擎篇（逐文件） | 55 | 15 | ⏳ agent-loop+tools 完成，session 进行中 |
+| 02 核心引擎篇（逐文件） | 55 | 23 | ⏳ agent 完成，session/system-prompt/scope 进行中 |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **43** | ⏳ |
+| **合计** | **91** | **51** | ⏳ |
 
 ## 文档清单
 
@@ -44,7 +44,7 @@
 - [ ] session/：`index.md` + `types.md` `known-event-types.md` `preparation.md` `fork.md` `repair.md` `request-header.md` `seq-ranges.md` `surface.md` `tool-history.md` 〔B1〕
 - [x] agent-loop/：`index.md` + `agent.md` `assistant-stream.md` `constants.md` `inbox.md` `runtime-context.md` 〔B2〕
 - [x] tools/：`index.md` + `batch.md` `contracts.md` `events.md` `executor.md` `json-schema.md` `pipeline.md` `presentation.md` `schema.md` 〔B3〕
-- [ ] agent/：`index.md` + `types.md` `runtime-types.md` `dispatch.md` `consumed-work.md` `archive-admission.md` `model-selection.md` `projection.md` 〔B4〕
+- [x] agent/：`index.md` + `types.md` `runtime-types.md` `dispatch.md` `consumed-work.md` `archive-admission.md` `model-selection.md` `projection.md` 〔B4〕
 - [ ] system-prompt/：`index.md` 〔B5〕
 - [ ] scope/：`index.md` + `store.md` 〔B5〕
 - [ ] executors/：`index.md` + `native.md` + `ptc.md`（tool-executor-native / tool-executor-ptc）〔B6〕
