@@ -44,7 +44,7 @@ ctx.browserUse（只管：占名 + 生命周期）
 
 ## 实验状态说明
 
-browser-use 与 computer-use 的全部 provider 都在 `packages/experimental/` 下：[实验状态](../../packages/experimental/README.md#status)独立于交付与否——包可以已发布但仍标记实验性，表示"评估中的能力，无产品支持承诺"。
+browser-use 与 computer-use 的全部 provider 都在 `packages/experimental/` 下：实验状态（`packages/experimental/README.md` 的 Status 节）独立于交付与否——包可以已发布但仍标记实验性，表示"评估中的能力，无产品支持承诺"。
 
 ## 与其他缝的对照
 

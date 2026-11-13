@@ -10,7 +10,7 @@
 
 ### 1.1 step 与 turn
 
-[docs/architecture.md](docs/architecture.md) 的定义只有两句话,但每个词都有精确含义:
+`docs/architecture.md` 的定义只有两句话,但每个词都有精确含义:
 
 > A **step** is one model request plus the tools it calls. A **turn** is zero or more steps: it opens before its first input is claimed and closes once nothing is owed.
 
