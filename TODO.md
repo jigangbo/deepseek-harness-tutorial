@@ -17,12 +17,12 @@
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
 | 01 总览篇 | 3 | 2 | ⏳ 启动与 Profile 进行中 |
-| 02 核心引擎篇（逐文件） | 55 | 23 | ⏳ agent 完成，session/system-prompt/scope 进行中 |
+| 02 核心引擎篇（逐文件） | 55 | 28 | ⏳ executors+小包完成，session/system-prompt/scope/llm 进行中 |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **51** | ⏳ |
+| **合计** | **91** | **56** | ⏳ |
 
 ## 文档清单
 
@@ -47,11 +47,11 @@
 - [x] agent/：`index.md` + `types.md` `runtime-types.md` `dispatch.md` `consumed-work.md` `archive-admission.md` `model-selection.md` `projection.md` 〔B4〕
 - [ ] system-prompt/：`index.md` 〔B5〕
 - [ ] scope/：`index.md` + `store.md` 〔B5〕
-- [ ] executors/：`index.md` + `native.md` + `ptc.md`（tool-executor-native / tool-executor-ptc）〔B6〕
-- [ ] agent-default-model/：`index.md` 〔B6〕
-- [ ] agent-tool-presentation/：`index.md` 〔B6〕
+- [x] executors/：`index.md` + `native.md` + `ptc.md`〔主协调者自写〕
+- [x] agent-default-model/：`index.md`〔主协调者自写〕
+- [x] agent-tool-presentation/：`index.md`〔主协调者自写〕
 - [ ] llm/：`index.md` + `types.md` `message.md` `content.md` `assembler.md` `assistant-stream.md` `call-config.md` `api-key.md` `adapter-failure.md` `error.md` `retry-policy.md` `attribution.md` `brand.md` 〔B7〕
-- [ ] llm/providers.md — DeepSeek 适配器族 / pi-ai / llm-retry / token-meter 〔B8〕
+- [x] llm/providers.md — DeepSeek 适配器族 / pi-ai / llm-retry / token-meter〔主协调者自写〕
 
 ### 03 能力缝篇 (03-capability-seams)
 - [x] `00-seam-design.md` — 能力缝设计思想（Service Definition / Provider / Consumer）〔主协调者自写〕
