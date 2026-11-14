@@ -1,5 +1,4 @@
-# `dispatch.ts`
-
+# `dispatch.ts` — 事件融合派发
 > 融合派发器：agent subject 与 scope carrier 合一
 
 

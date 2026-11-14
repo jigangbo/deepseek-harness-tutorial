@@ -1,5 +1,4 @@
-# `index.ts`
-
+# `index.ts` — native 执行器
 > native 执行器：直接工具执行
 
 

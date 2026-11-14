@@ -1,5 +1,4 @@
-# `api-key.ts`
-
+# `api-key.ts` — 密钥传输不变量
 > 所有适配器共享的 API key 格式判定
 
 

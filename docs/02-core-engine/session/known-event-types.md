@@ -1,5 +1,4 @@
-# `known-event-types.ts`
-
+# `known-event-types.ts` — 已知事件类型清单
 > 构建级已知事件类型清单（生成文件）
 
 

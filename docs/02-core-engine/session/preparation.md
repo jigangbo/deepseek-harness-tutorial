@@ -1,5 +1,4 @@
-# `preparation.ts`
-
+# `preparation.ts` — 未发布会话封装
 > 未发布会话的所有权封装（Disposable 生命周期件）
 
 

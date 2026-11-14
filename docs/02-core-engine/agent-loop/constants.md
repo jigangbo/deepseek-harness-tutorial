@@ -1,5 +1,4 @@
-# `constants.ts`
-
+# `constants.ts` — 默认并发常量
 > 共享调度默认值
 
 

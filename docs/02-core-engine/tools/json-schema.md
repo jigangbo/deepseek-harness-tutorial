@@ -1,5 +1,4 @@
-# `json-schema.ts`
-
+# `json-schema.ts` — JSON Schema 子集
 > 受支持 JSON Schema 子集的断言与值校验
 
 

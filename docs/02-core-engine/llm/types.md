@@ -1,5 +1,4 @@
-# `types.ts`
-
+# `types.ts` — 流词汇与契约
 > provider 中立的消息/流/请求词汇表
 
 

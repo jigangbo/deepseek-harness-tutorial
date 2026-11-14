@@ -1,5 +1,4 @@
-# `call-config.ts`
-
+# `call-config.ts` — 调用配置
 > 会话级调用配置与 loop 请求标记
 
 

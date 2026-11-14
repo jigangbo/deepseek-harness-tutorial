@@ -1,5 +1,4 @@
-# `presentation.ts`
-
+# `presentation.ts` — 渲染意图联合
 > 工具卡片的渲染意图词汇
 
 

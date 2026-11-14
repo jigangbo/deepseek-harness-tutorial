@@ -1,4 +1,4 @@
-# Agent Loop 模块 — 默认驱动实现
+# 2.2 Agent Loop — 默认驱动实现
 
 `packages/core/agent-loop` 是公开 `Agent` 契约（声明于 `packages/core/agent`）的唯一具体实现，也是 harness 的默认产品循环。它把"调用模型、执行工具、再调用模型"这一标准生命周期落到持久化 session 日志上：每个请求都从日志派生，每个模型可见的事实都先写回日志再做下一步派生。
 

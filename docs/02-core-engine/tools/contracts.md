@@ -1,5 +1,4 @@
-# `contracts.ts`
-
+# `contracts.ts` — 工具契约类型
 > 工具体系的全部核心类型契约
 
 

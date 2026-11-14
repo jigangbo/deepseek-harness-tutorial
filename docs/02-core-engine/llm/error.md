@@ -1,5 +1,4 @@
-# `error.ts`
-
+# `error.ts` — 规范错误码
 > 错误基类、规范错误码与 provider 文本分类器
 
 

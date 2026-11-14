@@ -1,5 +1,4 @@
-# `pipeline.ts`
-
+# `pipeline.ts` — 执行管线
 > 单次工具调用的共享执行管线
 
 

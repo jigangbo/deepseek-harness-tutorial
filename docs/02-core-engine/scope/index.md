@@ -1,4 +1,4 @@
-# Scope — 按 agent 作用域注册
+# 2.5 Scope — 按 agent 作用域注册
 
 `packages/core/scope`（npm 包名 `@deepseek-ai/dsh-scope`）是一个零依赖库，不是 Cordis 服务。它回答 harness 里一个反复出现的问题：**同一个插件，如何在不同 agent 手里表现为不同的实例与配置？**
 

@@ -1,5 +1,4 @@
-# `assembler.ts`
-
+# `assembler.ts` — 压缩流装配
 > BlockAssembler:增量把流折回消息
 
 

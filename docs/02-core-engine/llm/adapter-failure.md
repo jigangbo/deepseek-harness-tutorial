@@ -1,5 +1,4 @@
-# `adapter-failure.ts`
-
+# `adapter-failure.ts` — 适配器失败快照
 > 适配器抛出值的失败归一化
 
 

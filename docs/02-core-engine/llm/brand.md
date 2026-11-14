@@ -1,5 +1,4 @@
-# `brand.ts`
-
+# `brand.ts` — 品牌 id
 > 本包拥有的 branded id
 
 

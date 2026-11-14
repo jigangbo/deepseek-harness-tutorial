@@ -1,5 +1,4 @@
-# `projection.ts`
-
+# `projection.ts` — turn 边界投影
 > turnBoundary 投影：Session 的 turn/step 位置
 
 

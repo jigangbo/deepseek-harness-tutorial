@@ -1,5 +1,4 @@
-# `archive-admission.ts`
-
+# `archive-admission.ts` — 归档准入
 > Workspace 归档准入的 `turn` 家族
 
 

@@ -1,5 +1,4 @@
-# `request-header.ts`
-
+# `request-header.ts` — 请求头折叠
 > 请求信封快照的规范化、判等与折叠重建
 
 

@@ -1,4 +1,4 @@
-# 02 · Cordis 框架精讲
+# 0.2 Cordis 框架精讲
 
 
 上一章我们建立了"Agent Harness = 模型之外的所有工程"的概念。本章讲解 DeepSeek Harness(下文简称 `dsh`)的地基——**Cordis 插件框架**。`dsh` 的每一个部分:模型适配器、工具注册表、会话日志、agent 循环本身,都是挂在 Cordis Context 上的插件。**读懂 Cordis,就读懂了整个项目的组织方式**;后面所有章节的源码阅读,都建立在本章的词汇之上。

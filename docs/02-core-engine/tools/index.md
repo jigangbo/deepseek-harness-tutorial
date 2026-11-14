@@ -1,4 +1,4 @@
-# Tools — 工具注册表与执行管线
+# 2.3 Tools — 工具注册表与执行管线
 
 `packages/core/tools`（npm 包名 `@deepseek-ai/dsh-tools`）是 harness 的工具中枢：它提供 `ctx.tools` 这个服务，所有工具插件把 `ToolDefinition` 注册进来，所有 agent 循环通过它把模型发出的 tool-call 批次交给执行器执行。它是"注册表 + 执行管线"两层：
 

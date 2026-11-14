@@ -1,5 +1,4 @@
-# `attribution.ts`
-
+# `attribution.ts` — 请求归属
 > 每个 provider 请求都带的静态应用归属
 
 

@@ -1,4 +1,4 @@
-# Agent Tool Presentation — 已弃用的形态选择兼容层
+# 2.9 Agent Tool Presentation — 已弃用的形态选择兼容层
 
 > 源文件：`packages/core/agent-tool-presentation/src/index.ts`（54 行）。**这是一个已弃用（@deprecated）的兼容插件**：历史上它用 `mode: 'native' | 'ptc'` 选择工具形态；现在应直接挂载对应执行器包。留它是因为已有组合里还写着 `mode:` 配置——迁移需要一个过渡。
 

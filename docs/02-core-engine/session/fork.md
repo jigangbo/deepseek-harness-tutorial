@@ -1,5 +1,4 @@
-# `fork.ts`
-
+# `fork.ts` — fork 种子构造
 > fork seed 构造：复制前缀、标记继承切点、闭合开口尾部
 
 

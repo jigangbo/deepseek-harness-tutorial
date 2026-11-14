@@ -1,5 +1,4 @@
-# `inbox.ts`
-
+# `inbox.ts` — 输入收件箱
 > 持久化的 agent inbox 投影与驱动命令面
 
 

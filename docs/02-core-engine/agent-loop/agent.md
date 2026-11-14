@@ -1,5 +1,4 @@
-# `agent.ts`
-
+# `agent.ts` — turn/step 主循环
 > 具体 Agent 驱动：turn/step 状态机与请求构建
 
 

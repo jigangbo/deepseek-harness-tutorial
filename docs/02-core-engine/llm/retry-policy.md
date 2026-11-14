@@ -1,5 +1,4 @@
-# `retry-policy.ts`
-
+# `retry-policy.ts` — 重试策略
 > provider 拥有的重试策略解析
 
 

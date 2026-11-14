@@ -1,5 +1,4 @@
-# `executor.ts`
-
+# `executor.ts` — 执行器接口
 > 执行器契约与原始批次输入/输出
 
 

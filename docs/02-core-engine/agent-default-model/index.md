@@ -1,4 +1,4 @@
-# Agent Default Model — 部署默认模型选择
+# 2.8 Agent Default Model — 部署默认模型选择
 
 > 源文件：`packages/core/agent-default-model/src/index.ts`（97 行）。回答一个问题：**新建的 agent 没有显式模型选择时，默认用哪个？** 核心源码：`packages/core/agent-default-model/src/index.ts`。
 

@@ -1,5 +1,4 @@
-# `runtime-types.ts`
-
+# `runtime-types.ts` — 运行时类型与事件
 > Agent 运行时面与全部 `agent/*` 事件声明
 
 

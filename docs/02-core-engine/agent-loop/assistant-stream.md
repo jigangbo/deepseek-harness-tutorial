@@ -1,5 +1,4 @@
-# `assistant-stream.ts`
-
+# `assistant-stream.ts` — 流式帧协议
 > 单次模型尝试的帧发布与持久流累积
 
 

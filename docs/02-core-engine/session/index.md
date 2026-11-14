@@ -1,4 +1,4 @@
-# Session — 会话事件日志
+# 2.1 Session — 会话事件日志
 
 > 源码：`packages/core/session/`（`@deepseek-ai/dsh-session`）。本文同时覆盖该包的入口文件 `src/index.ts`。
 

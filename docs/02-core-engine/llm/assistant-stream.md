@@ -1,5 +1,4 @@
-# `assistant-stream.ts`
-
+# `assistant-stream.ts` — 流式记录嵌入
 > 紧凑流记录:无损压缩、严格校验、免展开读取
 
 

@@ -1,5 +1,4 @@
-# `seq-ranges.ts`
-
+# `seq-ranges.ts` — 序号区间压缩
 > `sourceEventSeqs` 的无损范围编码（JSONL 存储格式）
 
 

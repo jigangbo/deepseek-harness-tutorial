@@ -1,5 +1,4 @@
-# `tool-history.ts`
-
+# `tool-history.ts` — 工具历史声明
 > 历史工具声明的有状态重建（动态工具更新的 fold）
 
 

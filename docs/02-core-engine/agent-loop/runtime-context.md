@@ -1,5 +1,4 @@
-# `runtime-context.ts`
-
+# `runtime-context.ts` — 运行时上下文投影
 > system prompt 与运行时上下文两个 surface 投影
 
 

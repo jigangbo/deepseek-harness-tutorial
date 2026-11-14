@@ -1,4 +1,4 @@
-# 工具执行器 — native 与 PTC 双执行器
+# 2.7 工具执行器 — native 与 PTC 双执行器
 
 > 同一套工具注册表、同一套守卫管线，两种**模型可见形态**：native（模型逐个发工具调用）与 PTC（模型写一段程序批量编排）。选择哪一个，是一个作用域级的组合决定。核心源码：`packages/core/tool-executor-native/`、`packages/core/tool-executor-ptc/`。
 

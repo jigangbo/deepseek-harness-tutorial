@@ -1,5 +1,4 @@
-# `types.ts`
-
+# `types.ts` — Agent 静态类型
 > 类型-only 面：Agent 身份、durable 事件词汇与投影类型
 
 

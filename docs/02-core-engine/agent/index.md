@@ -1,4 +1,4 @@
-# Agent — Agent 接口与活体注册表
+# 2.4 Agent — Agent 接口与活体注册表
 
 `packages/core/agent`（包名 `@deepseek-ai/dsh-agent`）定义了 harness 中"活体 Agent"的**契约面**：`ctx.agents` 注册表服务、`Agent` 接口、`AgentHandle` 所有权句柄、`agent/*` 事件词汇，以及把发起 Agent 携带过异步驱动链的进程内 initiator scope。它本身**不创建也不驱动**模型请求——具体的创建与驱动由注册进来的工厂（默认是 `packages/core/agent-loop`）完成。
 

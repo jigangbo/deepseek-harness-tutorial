@@ -1,5 +1,4 @@
-# `schema.ts`
-
+# `schema.ts` — 参数 schema DSL
 > 统一 schema DSL、类型推导与 `defineTool`
 
 
