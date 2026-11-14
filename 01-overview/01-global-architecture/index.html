@@ -1,0 +1,5649 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="系统性深入学习 DeepSeek Harness (dsh) 的插件化 Agent 架构">
+      
+      
+      
+        <link rel="canonical" href="https://jigangbo.github.io/deepseek-harness-tutorial/01-overview/01-global-architecture/">
+      
+      
+        <link rel="prev" href="../../00-getting-started/03-reading-guide/">
+      
+      
+        <link rel="next" href="../02-turn-lifecycle/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>第 4 章 全局架构与包地图 - DeepSeek Harness 架构教程 — 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#4" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="DeepSeek Harness 架构教程 — 从入门到精通" class="md-header__button md-logo" aria-label="DeepSeek Harness 架构教程 — 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DeepSeek Harness 架构教程 — 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 4 章 全局架构与包地图
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DeepSeek Harness 架构教程 — 从入门到精通" class="md-nav__button md-logo" aria-label="DeepSeek Harness 架构教程 — 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DeepSeek Harness 架构教程 — 从入门到精通
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Harness 架构教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一篇 入门篇：背景知识与 Cordis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一篇 入门篇：背景知识与 Cordis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/01-what-is-an-agent-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 1 章 什么是 AI Agent 与 Harness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/02-cordis-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 2 章 Cordis 框架精讲
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/03-reading-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 3 章 阅读指南：三条学习路径
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二篇 总览篇：全局架构与运行时
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二篇 总览篇：全局架构与运行时
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 4 章 全局架构与包地图
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 4 章 全局架构与包地图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 总体分层架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 总体分层架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-l1-dsh-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 L1 启动器：只有 dsh profile 能启动应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-l2-profile-bundle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 L2 组合层：Profile 与 Bundle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-l3-cordis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 L3 Cordis 运行时：一切皆插件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-l4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 L4 核心引擎
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-l5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 L5 能力缝家族
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-l6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 L6 产品面
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 包组地图：53 个组
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 包组地图：53 个组">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心脊柱与远程 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 模型接入与上下文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 执行世界：文件、进程、沙箱、终端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 模型可见能力（工具面）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 会话数据面（持久化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 会话行为与策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 人机交互与凭据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 产品面组装
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 基础设施
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 三类事件域
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 三类事件域">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-session-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Session events：持久事实
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-agent-eventsagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Agent events：agent/*，观察与拦截在途工作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-capability-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Capability events：给缝挂策略与适配器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 能力缝：三角色模型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 能力缝：三角色模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 例一：shell（命令执行）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-fs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 例二：fs（文件系统）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么"换一个 provider 就换掉整个产品行为"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 依赖纪律
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 「新行为放哪里」速查表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 源码阅读入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-turn-lifecycle/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 5 章 一次对话的完整生命周期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-boot-and-profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 6 章 启动流程与 Profile/Bundle 组合
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三篇 核心引擎篇：逐文件精读
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三篇 核心引擎篇：逐文件精读
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/session/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 7 章 Session：会话事件日志
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 7 章 Session：会话事件日志
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/fork/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fork.ts — fork 种子构造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/known-event-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    known-event-types.ts — 已知事件类型清单
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/preparation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preparation.ts — 未发布会话封装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    repair.ts — 中断尾部补记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/request-header/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    request-header.ts — 请求头折叠
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/seq-ranges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    seq-ranges.ts — 序号区间压缩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/surface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    surface.ts — 表面投影与校验
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/tool-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tool-history.ts — 工具历史声明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — 事件信封与序号类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-loop/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 8 章 Agent Loop：默认驱动实现
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 8 章 Agent Loop：默认驱动实现
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agent.ts — turn/step 主循环
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/assistant-stream/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assistant-stream.ts — 流式帧协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/constants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    constants.ts — 默认并发常量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/inbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    inbox.ts — 输入收件箱
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/runtime-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    runtime-context.ts — 运行时上下文投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 9 章 Tools：工具注册表与执行管线
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 9 章 Tools：工具注册表与执行管线
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    batch.ts — 批次调度
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contracts.ts — 工具契约类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    events.ts — 管线事件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/executor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    executor.ts — 执行器接口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    json-schema.ts — JSON Schema 子集
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pipeline.ts — 执行管线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    presentation.ts — 渲染意图联合
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    schema.ts — 参数 schema DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 10 章 Agent：接口与活体注册表
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 10 章 Agent：接口与活体注册表
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/archive-admission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    archive-admission.ts — 归档准入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/consumed-work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    consumed-work.ts — 消费记账
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dispatch.ts — 事件融合派发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model-selection.ts — 模型选择投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projection.ts — turn 边界投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/runtime-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    runtime-types.ts — 运行时类型与事件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — Agent 静态类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/scope/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 11 章 Scope：作用域注册
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 11 章 Scope：作用域注册
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/scope/store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    store.ts — 作用域存储
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/system-prompt/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 12 章 System Prompt：提示词组装
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 12 章 System Prompt：提示词组装
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/executors/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 13 章 Executors：native 与 PTC 双执行器
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 13 章 Executors：native 与 PTC 双执行器
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/executors/native/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    index.ts — native 执行器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/executors/ptc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    index.ts — PTC 执行器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-default-model/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 14 章 Agent Default Model：默认模型选择
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 14 章 Agent Default Model：默认模型选择
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-tool-presentation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 15 章 Tool Presentation：形态选择（已弃用）
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 15 章 Tool Presentation：形态选择（已弃用）
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/llm/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 16 章 LLM：消息、流与适配器接缝
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 16 章 LLM：消息、流与适配器接缝
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/adapter-failure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    adapter-failure.ts — 适配器失败快照
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/api-key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api-key.ts — 密钥传输不变量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assembler.ts — 压缩流装配
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/assistant-stream/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assistant-stream.ts — 流式记录嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/attribution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attribution.ts — 请求归属
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/brand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    brand.ts — 品牌 id
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/call-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    call-config.ts — 调用配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/content/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    content.ts — 内容块投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error.ts — 规范错误码
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/message/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    message.ts — 消息工厂
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Provider 适配器族 — 从接缝到实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/retry-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    retry-policy.ts — 重试策略
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — 流词汇与契约
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第四篇 能力缝篇：可替换的能力
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第四篇 能力缝篇：可替换的能力
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/00-seam-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 17 章 能力缝设计思想
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/01-filesystem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 18 章 文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/02-shell-subprocess-sandbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 19 章 命令执行与沙箱
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/03-terminal-and-ptc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 20 章 终端与 PTC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/04-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 21 章 网络访问
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/05-browser-computer-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 22 章 浏览器与计算机操作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/06-lsp-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 23 章 LSP 与技能系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/07-subagent-team/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 24 章 子代理与团队协作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/08-jobs-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 25 章 后台任务与工作流
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/09-mcp-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 26 章 MCP 与运行时自扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第五篇 持久化篇：数据平面
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第五篇 持久化篇：数据平面
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/00-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 27 章 持久化总览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/01-session-log-and-backends/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 28 章 会话日志与存储后端
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/02-format-versions-and-migrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 29 章 会话格式版本与迁移
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/03-session-projections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 30 章 会话投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/04-compaction-and-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 31 章 压缩与请求上下文
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/05-session-query/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 32 章 会话检索
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/06-attachment-spill-storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 33 章 附件、溢出与通用存储
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第六篇 产品形态篇：交互与界面
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第六篇 产品形态篇：交互与界面
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/00-interaction-and-approval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 34 章 人机交互、审批与提问
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/01-web-frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 35 章 Web 前端架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/02-host-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 36 章 Host 服务层
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/03-desktop-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 37 章 桌面应用架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/04-sdk-acp-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 38 章 SDK、ACP 与远程 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第七篇 精通篇：工程实践与扩展
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第七篇 精通篇：工程实践与扩展
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/00-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 39 章 测试体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/01-config-and-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 40 章 配置体系与用户设置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/02-recipe-new-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 41 章 扩展实战：添加一个工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/03-recipe-new-llm-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 42 章 扩展实战：添加 LLM 适配器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/04-recipe-new-package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 43 章 扩展实战：添加一个包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/05-architecture-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 44 章 架构设计模式总结
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 总体分层架构
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 总体分层架构">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-l1-dsh-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 L1 启动器：只有 dsh profile 能启动应用
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-l2-profile-bundle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 L2 组合层：Profile 与 Bundle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-l3-cordis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 L3 Cordis 运行时：一切皆插件
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-l4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 L4 核心引擎
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#15-l5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.5 L5 能力缝家族
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#16-l6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.6 L6 产品面
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 包组地图：53 个组
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. 包组地图：53 个组">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 核心脊柱与远程 API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 模型接入与上下文
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 执行世界：文件、进程、沙箱、终端
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 模型可见能力（工具面）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.5 会话数据面（持久化）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#26" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.6 会话行为与策略
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#27" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.7 人机交互与凭据
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#28" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.8 产品面组装
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#29" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.9 基础设施
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. 三类事件域
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. 三类事件域">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-session-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.1 Session events：持久事实
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-agent-eventsagent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.2 Agent events：agent/*，观察与拦截在途工作
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-capability-events" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3.3 Capability events：给缝挂策略与适配器
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 能力缝：三角色模型
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 能力缝：三角色模型">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 定义
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 例一：shell（命令执行）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-fs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 例二：fs（文件系统）
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 为什么"换一个 provider 就换掉整个产品行为"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 依赖纪律
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 「新行为放哪里」速查表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 源码阅读入口
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="4">第 4 章 全局架构与包地图<a class="headerlink" href="#4" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>本章是全教程的地图页。读完你应当建立四个心智模型：</p>
+<ol>
+<li><strong>一个 dsh 进程如何被组装出来</strong> —— 启动器 → Profile/Bundle 叠层 → Cordis 插件树；</li>
+<li><strong>组装进来的东西怎么分工</strong> —— <code>packages/</code> 下 53 个包组的职责地图；</li>
+<li><strong>它们靠什么通信</strong> —— 三类事件域（Session events / Agent events / Capability events）；</li>
+<li><strong>它们靠什么解耦</strong> —— 能力缝（capability seam）的三角色模型。</li>
+</ol>
+<p>本章蓝本是主仓库的 <code>docs/architecture.md</code> 与 <code>packages/README.md</code>。所有源码路径相对主仓库根目录。前置知识：TypeScript / Node.js；Cordis 框架本身见入门篇《Cordis 框架》一章或主仓库 <code>docs/cordis-primer.md</code>。</p>
+</blockquote>
+<hr />
+<h2 id="1">1. 总体分层架构<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>DeepSeek Harness（下称 dsh）是一个<strong>全插件</strong>的 agent harness：模型负责思考，harness 负责其余一切工程。它构建在 Cordis 插件框架之上——<strong>没有特权核心</strong>。模型适配器、工具注册表、会话日志、甚至 agent 循环本身，都是插件，都从同一个 <code>ctx</code>（Cordis context）上取，都可以从配置替换。</p>
+<p>一个运行中的 dsh，是<strong>启动时按有序叠层组合出来的插件树</strong>。从双击桌面图标到模型吐出第一个 token，中间经过六层：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>      dsh --profile web ／ dsh web ／ SDK／Python 客户端 ／ dsh plugin
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>                          ▼  选定一个命名 profile
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>┌────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│ L1 启动器 Launcher
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│    apps/cli 的 dsh bin —— 唯一支持的应用启动入口
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│    apps/desktop + apps/desktop-host —— Electron 桌面，同样走 profile
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│    python/ 运行时 —— 把 dsh CLI 打包成平台 wheel，启动 dsh --profile sdk
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├─────────────────── ▼  app-boot 解析配置、逐层叠加 patch ───────────
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│ L2 组合层 Composition
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│    packages/boot/app-boot —— 读 cordis.yml、叠 patch 层、启动 Loader
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│    packages/bundle/* —— dsh-base → web-app / headless / sdk-app / acp-app
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│                          （sdk-minimal 单 bundle 自成一体，不套 base）
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│    叠层顺序：profile bundles → cordis.patch.yml → home patch → --patch
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>├─────────────────── ▼  Loader 按最终配置装载插件树 ─────────────────
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>│ L3 Cordis 运行时
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>│    vendor/（vendored Cordis，固定源码副本）
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>│    插件贡献 Service ＋ 类型化事件 ＋ 可回退 effects —— 一切皆插件
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>├────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>│ L4 核心引擎（packages/core/* ＋ packages/llm/llm）
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>│    ctx.sessions      append-only 会话事件日志（事实唯一来源）
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>│    ctx.systemPrompt  提示词段与工具 schema 组装
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>│    ctx.tools         作用域工具注册表 ＋ 受守卫执行管线
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>│    ctx.agents        Agent 接口与活体注册表（agent/* 事件）
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>│    ctx.agentLoop     默认循环驱动（可替换；扩展者只依赖 dsh-agent）
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>│    ctx.llm           模型适配器缝（消息与流词汇）
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>│    scope             每-agent 作用域注册原语（库，无 ctx 键）
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>├────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>│ L5 能力缝家族（每个缝 = Service Definition + Provider + Consumer）
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>│    fs  shell  subprocess  sandbox  terminal  ptc-runtime  workflow
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>│    web  lsp  skill  subagent  team  jobs  interaction  mcp  …
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>│    （目录：packages/fs/ packages/shell/ packages/subprocess/ …）
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>├────────────────────────────────────────────────────────────────────
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│ L6 产品面 Product Surfaces
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│    Web GUI：packages/host ＋ packages/client ＋ packages/api
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│    SDK：packages/sdk（JSON-RPC）     ACP：packages/acp（仅自动化）
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│    桌面：apps/desktop-host 载入同一套 Web 资产 ＋ Node IPC 宿主
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>└────────────────────────────────────────────────────────────────────
+</code></pre></div>
+<h3 id="11-l1-dsh-profile">1.1 L1 启动器：只有 dsh profile 能启动应用<a class="headerlink" href="#11-l1-dsh-profile" title="Permanent link">&para;</a></h3>
+<p>主仓库有一条铁律（见 <code>AGENTS.md</code> 的 Application launch 一节）：<strong>只有命名的 dsh profile 能启动受支持的 Node 应用</strong>。包自带的 bin、demo、公开 SDK 的 argv 逃生口一律禁止；<code>scripts/verify-application-entrypoints.ts</code> 这个门禁把每个包 bin、可执行源码、根 demo、<code>start:web</code> / <code>dev:web</code> 脚本归入显式类别，并拒绝任何绕过 <code>dsh</code> 的 Node 应用路径。</p>
+<p>出厂 profile 有五个：<code>web</code>、<code>headless</code>、<code>sdk</code>、<code>sdk-minimal</code>、<code>acp</code>，用 <code>dsh --profile &lt;name&gt;</code> 或短写 <code>dsh &lt;name&gt;</code> 选择。<code>plugin</code> 是插件管理命令；若你自己的 profile 恰好也叫 <code>plugin</code>，就得显式写 <code>--profile plugin</code>。</p>
+<p>三个启动器共享同一条组装路径：</p>
+<ul>
+<li><strong>CLI</strong>（<code>apps/cli</code>）：<code>dsh</code> bin。比如 <code>pnpm dsh --profile headless "task"</code> 就是从源码跑一个一次性任务。</li>
+<li><strong>桌面</strong>（<code>apps/desktop</code> + <code>apps/desktop-host</code>）：Electron 以 Electron Node 模式启动私有的 Desktop Host；Host 调用<strong>共享的 CLI profile runner</strong> 与完整 Web 应用，窗口立即加载打包好的 Web 资产，等 boot 注入完成后在同一文档里激活 client 插件。RPC 与流由 Web 拥有，桌面载体只负责把本地页面连到已认证的 Host；Node IPC 传递 boot 注入、就绪信号、致命错误与关机。桌面拥有保留的 <code>$DSH_HOME/profiles/desktop</code>，与 npm CLI 共享产品数据但分开包、激活与锁文件。</li>
+<li><strong>Python SDK</strong>（<code>python/</code>）：同一套应用架构。运行时 wheel 把正常的 <code>dsh</code> CLI 打包为 <code>deepseek-harness-sdk-runtime-&lt;platform&gt;-&lt;arch&gt;</code>，客户端默认以显式 Harness home 启动 <code>dsh --profile sdk</code>。Python 只暴露 profile 选择与有序 patch 文件，而不是完整的 Cordis 树。</li>
+</ul>
+<h3 id="12-l2-profile-bundle">1.2 L2 组合层：Profile 与 Bundle<a class="headerlink" href="#12-l2-profile-bundle" title="Permanent link">&para;</a></h3>
+<p>两个核心概念（定义出自 <code>docs/architecture.md</code>）：</p>
+<ul>
+<li><strong>Profile（配置档）</strong>：存放在 Harness home 的<strong>命名组合</strong>。它列出自己堆叠哪些 bundle、安装哪些树外插件，并保存用户自己的 <code>cordis.patch.yml</code>。</li>
+<li><strong>Bundle（捆绑包）</strong>：Cordis 配置行及其所挂代码的<strong>分发格式</strong>——关键性质是，它插入的任何行，对它之上的层来说<strong>始终可以被 patch</strong>。</li>
+</ul>
+<p>两者都在各自 <code>package.json</code> 的 <code>dsh</code> 字段里声明：<code>dsh.profile</code> 列出 profile 堆叠的 bundles；<code>dsh.bundle</code> 指向 bundle 的 patch 文件。</p>
+<p>出厂 bundle 的堆叠关系（详见 <code>packages/bundle/README.md</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>Bundle</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dsh-base</code></td>
+<td><code>web</code> / <code>headless</code> / <code>sdk</code> / <code>acp</code> 的公共首层：模型适配器、工具、持久化、沙箱与审批策略、设置、凭据、遥测；还包含供 Web 与 agent 使用的 Plugin Manager</td>
+</tr>
+<tr>
+<td><code>dsh-web-app</code></td>
+<td>在 base 之上加浏览器应用</td>
+</tr>
+<tr>
+<td><code>dsh-headless</code></td>
+<td>在 base 之上加无服务器的单次任务 runner</td>
+</tr>
+<tr>
+<td><code>dsh-sdk-app</code></td>
+<td>在 base 之上加 SDK JSON-RPC 服务器</td>
+</tr>
+<tr>
+<td><code>dsh-acp-app</code></td>
+<td>在 base 之上加仅自动化的 ACP 服务器</td>
+</tr>
+<tr>
+<td><code>dsh-sdk-minimal</code></td>
+<td><strong>刻意例外</strong>：一个 bundle 拥有完整显式 SDK 树，不应用 <code>dsh-base</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>叠层顺序</strong>（作用于空的入口列表）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>profile 声明的有序 bundles → 该 profile 的 cordis.patch.yml → home patch → --patch 命令行覆盖
+</code></pre></div>
+<p>一条 patch 按 id 定位某一行，<strong>整行替换</strong>它的全部配置，或插入新行。<code>preset</code> patch 则在该声明自己的 <code>config.plugins</code> 内部套用同样的层优先级。</p>
+<p>YAML 同时控制 HMR：base 层启用仅配置的 <code>dsh-hmr</code>；headless、SDK、ACP 关闭它；<code>sdk-minimal</code> 干脆不含。想看你机器上真实启动的插件树：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>dsh<span class="w"> </span>--profile<span class="w"> </span>web<span class="w"> </span>--dump-config
+</code></pre></div>
+<p>它打印的任何一行，都可以被你自己的一条 patch 替换——这是理解本架构最直接的一把钥匙。组合机制的细节在 <code>packages/boot/app-boot/README.md</code>（profiles 一节）；配置字段清单在 <code>docs/config-catalog.md</code>。</p>
+<h3 id="13-l3-cordis">1.3 L3 Cordis 运行时：一切皆插件<a class="headerlink" href="#13-l3-cordis" title="Permanent link">&para;</a></h3>
+<p><code>vendor/</code> 是 Cordis 框架的固定源码副本（见 <code>vendor/README.md</code>）。Cordis 做三件事：插件向共享 context 贡献 <strong>Service</strong>（服务）、<strong>类型化事件</strong>与<strong>可回退的 effects</strong>（注册即 effect，插件卸载时自动回收）。</p>
+<p>对架构理解最重要的推论是：<strong>没有需要打补丁的特权核心</strong>。扩展 dsh = 在其他插件旁边挂一个自己的插件。整个产品的每个部件——模型适配器、工具注册表、会话日志、agent 循环——都是插件，因此每一个都能从配置替换。</p>
+<p>Cordis 的瀑布事件语义、Service 生命周期等机制，入门篇《Cordis 框架》一章有专讲；本章只约定一句话：<strong>瀑布监听者必须调用 <code>next()</code> 向下委托，直接 return 会短路整条链</strong>（这是 <code>AGENTS.md</code> 明文规则）。</p>
+<h3 id="14-l4">1.4 L4 核心引擎<a class="headerlink" href="#14-l4" title="Permanent link">&para;</a></h3>
+<p>核心包一览（出自 <code>docs/architecture.md</code> 与 <code>packages/core/README.md</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>包</th>
+<th>职责</th>
+<th>ctx 键</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>packages/core/session</code></td>
+<td>append-only 的 <code>SessionEvent</code> 日志与内存存储</td>
+<td><code>ctx.sessions</code></td>
+</tr>
+<tr>
+<td><code>packages/core/system-prompt</code></td>
+<td>提示词段与工具 schema 的组装</td>
+<td><code>ctx.systemPrompt</code></td>
+</tr>
+<tr>
+<td><code>packages/core/tools</code></td>
+<td>作用域工具注册表与受守卫执行管线</td>
+<td><code>ctx.tools</code></td>
+</tr>
+<tr>
+<td><code>packages/core/agent</code></td>
+<td><code>Agent</code> 接口、活体注册表与 <code>agent/*</code> 事件</td>
+<td><code>ctx.agents</code></td>
+</tr>
+<tr>
+<td><code>packages/core/agent-loop</code></td>
+<td>实现该接口的默认驱动</td>
+<td><code>ctx.agentLoop</code></td>
+</tr>
+<tr>
+<td><code>packages/core/scope</code></td>
+<td>每-agent 作用域注册原语</td>
+<td>库，无 ctx 键</td>
+</tr>
+<tr>
+<td><code>packages/llm/llm</code></td>
+<td>消息与流词汇 + 适配器缝</td>
+<td><code>ctx.llm</code></td>
+</tr>
+</tbody>
+</table>
+<p>注意 <code>agent</code> 与 <code>agent-loop</code> 的拆分：<code>agent</code> 拥有公开的 <code>Agent</code> 契约，<code>agent-loop</code> 只是它的默认实现。<strong>扩展插件依赖 <code>dsh-agent</code>，驱动本身保持可替换</strong>——这是第 5 节依赖纪律的头号案例。</p>
+<p>两个贯穿全库的术语（完整定义见主仓库 <code>docs/glossary.md</code>）：</p>
+<ul>
+<li><strong>step（步）</strong>：一次模型请求 + 它引发的工具执行。</li>
+<li><strong>turn（回合）</strong>：零或多个 step——在第一条输入被认领前开启，在"没有欠着的东西"时关闭。</li>
+</ul>
+<p>turn 内部的完整事件流（<code>agent/pre-step</code> → <code>step/start</code> → <code>agent/request</code> → 流式 → 工具三段瀑布 → <code>step/end</code> → <code>agent/turn-stopping</code> → <code>turn/end</code>）是下一章《一次对话的完整生命周期》的主题；核心引擎篇随后对 <code>session</code> / <code>agent-loop</code> / <code>tools</code> / <code>agent</code> / <code>scope</code> / <code>system-prompt</code> / <code>llm</code> 逐文件精讲。</p>
+<h3 id="15-l5">1.5 L5 能力缝家族<a class="headerlink" href="#15-l5" title="Permanent link">&para;</a></h3>
+<p>L4 之下、L6 之上，是数量最多的一层：<strong>能力缝家族</strong>。文件系统（<code>packages/fs/</code>）、命令执行（<code>packages/shell/</code> <code>packages/subprocess/</code>）、沙箱（<code>packages/sandbox/</code>）、网络访问（<code>packages/web/</code>）、子代理（<code>packages/subagent/</code>）……每个家族都按同一个三角色模板拆包：一个包声明接口（Service Definition），若干包提供实现（Service Provider），若干包消费接口（Consumer，通常是面向模型的工具）。</p>
+<p>"换一个 provider 就换掉整个产品行为"是这套架构的招牌戏法——第 4 节用 shell 与 fs 两个真实家族拆解它。</p>
+<h3 id="16-l6">1.6 L6 产品面<a class="headerlink" href="#16-l6" title="Permanent link">&para;</a></h3>
+<p>最上层是四类产品形态，它们<strong>共享同一个插件树</strong>，只是挂载的顶层插件不同：</p>
+<ul>
+<li><strong>Web GUI</strong>：<code>packages/host/</code>（宿主服务：webserver、目录选择、插件清单、产品遥测）+ <code>packages/client/</code>（浏览器半边：shell、wire、对象服务、slots、<code>ui-*</code> 插件）+ <code>packages/api/</code>（远程 BFF 与 Typert RPC 网关）。由 <code>dsh-web-app</code> bundle 挂载。</li>
+<li><strong>SDK</strong>：<code>packages/sdk/</code> 的 JSON-RPC 协议与 TypeScript client/server，由 <code>dsh-sdk-app</code> 挂载为 stdio 服务器。</li>
+<li><strong>ACP</strong>：<code>packages/acp/</code>，仅自动化的 Agent Client Protocol 服务器。</li>
+<li><strong>桌面</strong>：<code>apps/desktop-host</code> 载入同一套 Web 资产——桌面不是另一套 UI，而是 Web 的载体。</li>
+</ul>
+<p>一个提醒：这六层是<strong>逻辑分层</strong>而非目录强制。bundle 包属于 L2，但运行时它们就是插件树里的普通插件；产品面包与能力缝包同处一个 context。分层描述的是"谁组合谁"，不是 import 方向的硬边界——真正的依赖纪律在第 5 节。</p>
+<hr />
+<h2 id="2-53">2. 包组地图：53 个组<a class="headerlink" href="#2-53" title="Permanent link">&para;</a></h2>
+<p><code>packages/</code> 下每个包（scope 统一为 <code>@deepseek-ai/dsh-*</code>）<strong>恰好属于一个组</strong>，新包加入既有组，新组须同时更新自己的 README 与 <code>packages/README.md</code> 的分组表。以该表为准，目前共 <strong>53 个组</strong>。下面按主题域重排为 10 张中文表；"教程章节"列给出本教程计划讲解它的篇章名（无链接，对应教程首页的篇章划分）。</p>
+<h3 id="21-api">2.1 核心脊柱与远程 API<a class="headerlink" href="#21-api" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core/</code></td>
+<td>产品 API 脊柱：会话、提示词、工具、agent 服务与具体循环</td>
+<td><code>session</code> <code>agent-loop</code> <code>tools</code> <code>agent</code> <code>scope</code> <code>system-prompt</code></td>
+<td>核心引擎篇各模块逐文件篇</td>
+</tr>
+<tr>
+<td><code>api/</code></td>
+<td>远程 BFF 组装与 Typert RPC 网关</td>
+<td><code>session-controller</code> <code>gateway</code> <code>settings-controller</code></td>
+<td>交互与产品形态篇 · SDK/ACP/API</td>
+</tr>
+<tr>
+<td><code>typert/</code></td>
+<td>类型图生成、artifact 加载与运行时注册表</td>
+<td><code>typert-registry</code> <code>typert-loader</code> <code>typert-protocol</code></td>
+<td>交互与产品形态篇 · SDK/ACP/API</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22">2.2 模型接入与上下文<a class="headerlink" href="#22" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>llm/</code></td>
+<td>LLM 能力家族：抽象服务 + provider 适配器</td>
+<td><code>llm</code> <code>llm-deepseek</code> <code>llm-pi-ai</code> <code>llm-retry</code></td>
+<td>核心引擎篇 · LLM</td>
+</tr>
+<tr>
+<td><code>context/</code></td>
+<td>模型可见请求上下文：工作区指令、时间上下文、引用</td>
+<td><code>working-directory</code> <code>time-context</code> <code>session-reference</code></td>
+<td>核心引擎篇 · system-prompt（上下文家族）</td>
+</tr>
+<tr>
+<td><code>compaction/</code></td>
+<td>压缩能力家族：Service Definition + 基础 provider + 命令 Consumer</td>
+<td><code>compaction</code> <code>compaction-basic</code></td>
+<td>持久化篇 · 压缩</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23">2.3 执行世界：文件、进程、沙箱、终端<a class="headerlink" href="#23" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fs/</code></td>
+<td>文件系统能力家族：缝、本地实现、面向模型的文件工具与发现工具</td>
+<td><code>fs</code> <code>fs-local</code> <code>fs-sandbox</code> <code>tool-fs</code> <code>tool-fs-search</code></td>
+<td>能力缝篇 · fs</td>
+</tr>
+<tr>
+<td><code>shell/</code></td>
+<td>Bash 能力家族：执行器缝、本地实现、面向模型的工具</td>
+<td><code>shell</code> <code>bash-local</code> <code>bash-sandbox</code> <code>tool-bash</code></td>
+<td>能力缝篇 · shell+沙箱</td>
+</tr>
+<tr>
+<td><code>subprocess/</code></td>
+<td>子进程能力家族：Service Definition + 本地进程树 provider</td>
+<td><code>subprocess</code> <code>subprocess-local</code></td>
+<td>能力缝篇 · shell+沙箱</td>
+</tr>
+<tr>
+<td><code>sandbox/</code></td>
+<td>进程约束缝；bwrap / Landlock / Seatbelt 后端</td>
+<td><code>sandbox</code> <code>sandbox-local</code> <code>sandbox-policy</code></td>
+<td>能力缝篇 · shell+沙箱</td>
+</tr>
+<tr>
+<td><code>ssh/</code></td>
+<td>POSIX 远程连接，配套成对的 fs / subprocess / sandbox provider</td>
+<td><code>ssh</code> <code>fs-ssh</code> <code>subprocess-ssh</code> <code>sandbox-ssh</code></td>
+<td>能力缝篇 · shell+沙箱</td>
+</tr>
+<tr>
+<td><code>terminal/</code></td>
+<td>持久 PTY 服务（owner 作用域会话）与本地 shell 后端</td>
+<td><code>terminal</code> <code>terminal-bash</code></td>
+<td>能力缝篇 · 终端</td>
+</tr>
+<tr>
+<td><code>ptc-runtime/</code></td>
+<td>PTC 执行能力家族：Service Definition + 沙箱化 Node provider + PTC 模式 Consumer</td>
+<td><code>ptc-runtime</code> <code>ptc-runtime-node</code></td>
+<td>能力缝篇 · PTC</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24">2.4 模型可见能力（工具面）<a class="headerlink" href="#24" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>web/</code></td>
+<td>Web 能力家族：缝、搜索/抓取 provider、面向模型的 web 工具</td>
+<td><code>web</code> <code>web-fetch-http</code> <code>tool-web</code></td>
+<td>能力缝篇 · web</td>
+</tr>
+<tr>
+<td><code>lsp/</code></td>
+<td>LSP 能力家族：缝、通用 stdio provider、<code>lsp</code> 工具</td>
+<td><code>lsp</code> <code>lsp-stdio</code> <code>tool-lsp</code></td>
+<td>能力缝篇 · LSP+技能</td>
+</tr>
+<tr>
+<td><code>skill/</code></td>
+<td>技能能力家族：provider 注册表、本地 provider、面向模型的目录/加载器</td>
+<td><code>skill</code> <code>skill-filesystem</code> <code>tool-skill</code></td>
+<td>能力缝篇 · LSP+技能</td>
+</tr>
+<tr>
+<td><code>subagent/</code></td>
+<td>子代理能力家族：provider 注册契约与面向模型的委派工具</td>
+<td><code>subagent</code> <code>tool-subagent</code> <code>subagent-spawn-in-process</code></td>
+<td>能力缝篇 · 子代理+团队</td>
+</tr>
+<tr>
+<td><code>team/</code></td>
+<td>团队协作：共享任务板与面向模型的任务工具</td>
+<td><code>agent-team</code> <code>tool-agent-team</code></td>
+<td>能力缝篇 · 子代理+团队</td>
+</tr>
+<tr>
+<td><code>jobs/</code></td>
+<td>通用后台任务运行时与面向模型的 job 控制工具</td>
+<td><code>jobs</code> <code>jobs-local</code> <code>tool-jobs</code></td>
+<td>能力缝篇 · 任务+工作流</td>
+</tr>
+<tr>
+<td><code>workflow/</code></td>
+<td>workflow 缝、PTC 流程引擎与面向模型的 <code>workflow</code> 工具</td>
+<td><code>workflow</code> <code>workflow-ptc</code> <code>tool-workflow</code></td>
+<td>能力缝篇 · 任务+工作流</td>
+</tr>
+<tr>
+<td><code>mcp/</code></td>
+<td>外部 Model Context Protocol 服务器暴露为原生工具</td>
+<td><code>mcp-client</code> <code>mcp-manager</code> <code>mcp-resources</code></td>
+<td>能力缝篇 · MCP+自扩展</td>
+</tr>
+<tr>
+<td><code>todo/</code></td>
+<td>面向模型的 <code>todo_write</code> 工具</td>
+<td><code>tool-todo</code></td>
+<td>能力缝篇 · 任务+工作流</td>
+</tr>
+<tr>
+<td><code>computer-use/</code></td>
+<td>独占的命名桌面 provider 注册</td>
+<td><code>computer-use</code></td>
+<td>能力缝篇 · 浏览器与计算机</td>
+</tr>
+<tr>
+<td><code>browser-use/</code></td>
+<td>独占的命名浏览器 provider 注册</td>
+<td><code>browser-use</code></td>
+<td>能力缝篇 · 浏览器与计算机</td>
+</tr>
+</tbody>
+</table>
+<h3 id="25">2.5 会话数据面（持久化）<a class="headerlink" href="#25" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>session/</code></td>
+<td>持久会话数据平面：持久化缝 + 后端、投影缝、日志标题、会话报告</td>
+<td><code>session-persistence</code> <code>session-persistence-jsonl</code> <code>session-projection</code></td>
+<td>持久化篇 · 会话日志与存储后端</td>
+</tr>
+<tr>
+<td><code>session-query/</code></td>
+<td>会话检索家族：逻辑语料、有界读取、谱系、语义过滤、SQLite 全文搜索</td>
+<td><code>session-query</code> <code>session-query-sqlite</code></td>
+<td>持久化篇 · 检索</td>
+</tr>
+<tr>
+<td><code>attachment/</code></td>
+<td>持久附件身份、校验、本地内容寻址存储</td>
+<td><code>attachment</code> <code>attachment-local</code></td>
+<td>持久化篇 · 附件</td>
+</tr>
+<tr>
+<td><code>spill/</code></td>
+<td>spill 能力家族：存储缝、本地实现、工具结果溢出策略</td>
+<td><code>spill</code> <code>spill-local</code> <code>spill-policy</code></td>
+<td>持久化篇 · 压缩与溢出</td>
+</tr>
+<tr>
+<td><code>storage/</code></td>
+<td>非会话存储 hub + 后端 + 域形态</td>
+<td><code>storage</code> <code>storage-json</code> <code>storage-sqlite</code> <code>storage-domain</code></td>
+<td>持久化篇 · 存储后端</td>
+</tr>
+<tr>
+<td><code>deliverables/</code></td>
+<td>turn 交付物：显式文件交付与记录的工作区变更</td>
+<td><code>workspace-changes</code></td>
+<td>持久化篇 · 投影</td>
+</tr>
+</tbody>
+</table>
+<h3 id="26">2.6 会话行为与策略<a class="headerlink" href="#26" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>goal/</code></td>
+<td>同会话目标的持久化与生命周期</td>
+<td><code>goal</code> <code>goal-round-driver</code> <code>command-goal</code></td>
+<td>能力缝篇 · 任务+工作流</td>
+</tr>
+<tr>
+<td><code>plan/</code></td>
+<td>计划协作状态，带直接入口命令与受审退出</td>
+<td><code>plan-mode</code></td>
+<td>能力缝篇 · 任务+工作流</td>
+</tr>
+<tr>
+<td><code>preset/</code></td>
+<td>基于 preset <code>cordis.yml</code> 的每会话 agent 组合</td>
+<td><code>agent-preset-registry</code></td>
+<td>总览篇 · 启动与 Profile</td>
+</tr>
+<tr>
+<td><code>guard/</code></td>
+<td>循环卫生守卫：建议性重复调用提醒 + <code>tools/execute</code> 期限强制</td>
+<td><code>repeat-tool-reminder</code> <code>timeout-policy</code></td>
+<td>核心引擎篇 · tools（执行管线守卫）</td>
+</tr>
+<tr>
+<td><code>extensions/</code></td>
+<td>agent 运行时自修改：活体插件/服务检查与模型写入的挂载/卸载</td>
+<td><code>cordis-host-runner</code> <code>tool-cordis</code></td>
+<td>能力缝篇 · MCP+自扩展</td>
+</tr>
+</tbody>
+</table>
+<h3 id="27">2.7 人机交互与凭据<a class="headerlink" href="#27" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>interaction/</code></td>
+<td>人机协作平面：审批/交互缝、权限 preset、命令、ask-user 工具</td>
+<td><code>user-approval</code> <code>permission-presets</code> <code>commands</code> <code>user-questions</code></td>
+<td>交互与产品形态篇 · 审批与提问</td>
+</tr>
+<tr>
+<td><code>credentials/</code></td>
+<td>凭据引用与凭据记录缝 + env-over-<code>.env</code> provider + 向人提问的授权流程</td>
+<td><code>credentials</code> <code>credentials-local</code> <code>authorization</code></td>
+<td>交互与产品形态篇 · 审批与提问</td>
+</tr>
+<tr>
+<td><code>feedback/</code></td>
+<td>人工反馈采集与命令</td>
+<td><code>message-feedback</code> <code>command-feedback</code></td>
+<td>交互与产品形态篇</td>
+</tr>
+<tr>
+<td><code>identity/</code></td>
+<td>共享匿名身份</td>
+<td><code>identity</code></td>
+<td>交互与产品形态篇</td>
+</tr>
+<tr>
+<td><code>telemetry/</code></td>
+<td>共享 Cordis OTel 上报通道</td>
+<td><code>otel</code></td>
+<td>交互与产品形态篇 · Host 服务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="28">2.8 产品面组装<a class="headerlink" href="#28" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bundle/</code></td>
+<td>可安装的 <code>dsh --profile</code> patch 层</td>
+<td><code>base</code> <code>web-app</code> <code>headless</code> <code>sdk-app</code> <code>acp-app</code> <code>sdk-minimal</code></td>
+<td>总览篇 · 启动与 Profile</td>
+</tr>
+<tr>
+<td><code>boot/</code></td>
+<td>共享 app bin 启动胶水</td>
+<td><code>app-boot</code> <code>cmdline</code> <code>hmr</code> <code>config-editor</code> <code>plugin-manager</code></td>
+<td>总览篇 · 启动与 Profile</td>
+</tr>
+<tr>
+<td><code>host/</code></td>
+<td>Web GUI 宿主服务、目录选择、应用启动、插件清单、产品遥测</td>
+<td><code>webserver</code> <code>directory-picker</code> <code>frontend-static</code></td>
+<td>交互与产品形态篇 · Host 服务</td>
+</tr>
+<tr>
+<td><code>client/</code></td>
+<td>Web GUI 浏览器半边：shell、wire、对象服务、slots、<code>ui-*</code> 插件</td>
+<td><code>connection</code> <code>modules</code> <code>store</code> <code>ui-chat</code></td>
+<td>交互与产品形态篇 · Web 前端</td>
+</tr>
+<tr>
+<td><code>sdk/</code></td>
+<td>进程外 SDK：JSON-RPC 协议与 TypeScript 客户端/服务器</td>
+<td><code>sdk-protocol</code> <code>sdk-client</code> <code>sdk-jsonrpc-server</code></td>
+<td>交互与产品形态篇 · SDK/ACP/API</td>
+</tr>
+<tr>
+<td><code>acp/</code></td>
+<td>仅自动化的 Agent Client Protocol 服务器</td>
+<td><code>acp</code></td>
+<td>交互与产品形态篇 · SDK/ACP/API</td>
+</tr>
+<tr>
+<td><code>workspace/</code></td>
+<td>工作区实体</td>
+<td><code>workspace</code></td>
+<td>交互与产品形态篇 · Host 服务</td>
+</tr>
+<tr>
+<td><code>schedule/</code></td>
+<td>Host 拥有的定时跟进</td>
+<td><code>schedule</code> <code>tool-schedule</code></td>
+<td>交互与产品形态篇 · Host 服务</td>
+</tr>
+<tr>
+<td><code>document/</code></td>
+<td>共享 Host Office→PDF 转换</td>
+<td><code>office-to-pdf</code></td>
+<td>交互与产品形态篇 · Host 服务</td>
+</tr>
+</tbody>
+</table>
+<h3 id="29">2.9 基础设施<a class="headerlink" href="#29" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>组</th>
+<th>角色</th>
+<th>代表包</th>
+<th>教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>experimental/</code></td>
+<td>评估中的能力；状态与支持政策见其 README</td>
+<td>各 <code>experimental-*</code> 包</td>
+<td>各篇章穿插提及</td>
+</tr>
+<tr>
+<td><code>test-support/</code></td>
+<td>测试基础设施（testkit、回放、Loader 冒烟）</td>
+<td><code>agent-loop-testkit</code> <code>llm-replay</code> <code>remote-mock</code></td>
+<td>精通篇 · 测试体系</td>
+</tr>
+<tr>
+<td><code>util/</code></td>
+<td>跨组共享的低层工具与纯数据清单（<code>Branded&lt;B&gt;</code>、home/path 帮手、超时、保留策略、官方 bundle 清单）</td>
+<td><code>brand</code> <code>home-paths</code> <code>timeout</code></td>
+<td>精通篇 · 架构模式总结</td>
+</tr>
+</tbody>
+</table>
+<p>两个阅读提示：</p>
+<ul>
+<li>每个组的 README 是该家族<strong>权威的包清单</strong>；每个包 README 固定覆盖用途、配置、扩展点与 Model Experience（面向模型使用者的体验说明），并带有 <code>## Known Limitations and Deferred Work</code> 一节（或使用允许清单豁免）。</li>
+<li><code>experimental/</code> 组的实验状态与"是否发布/安装/可选交付"互相独立；非实验运行时包必须有产品用途或明确的分类声明（见 <code>scripts/product-package-policy.ts</code>）。</li>
+</ul>
+<hr />
+<h2 id="3">3. 三类事件域<a class="headerlink" href="#3" title="Permanent link">&para;</a></h2>
+<p>dsh 的扩展点主要由<strong>类型化事件</strong>构成，用 TypeScript declaration merging 挂在 Cordis <code>Events</code> 接口上（每个事件声明带 <code>@mode</code> 与 payload <code>@param</code> 的 JSDoc——<code>packages/fs/fs/src/index.ts</code> 的 <code>fs/write-intent</code> 是标准范例）。<code>docs/architecture.md</code> 把事件划成三个域，<strong>选错域是新手最常见的架构错误</strong>，所以判据要背下来：</p>
+<h3 id="31-session-events">3.1 Session events：持久事实<a class="headerlink" href="#31-session-events" title="Permanent link">&para;</a></h3>
+<p><strong>判据：这条事实必须活过一次重载。</strong> Session events 被 append 到会话日志，并通过 <code>session/event</code> 广播给所有监听者（持久化后端据此落盘、Web 的 session-controller 据此推流、投影单元据此折叠状态）。</p>
+<p>持久的会话事件词汇包括：<code>turn/*</code>、<code>step/*</code>、<code>system/message</code>、<code>user/message</code>、<code>assistant/message</code>、<code>assistant/attempt</code>、<code>tool/*</code>。三条关键性质：</p>
+<ul>
+<li><strong>模型可见 ⟺ 已记录</strong>：任何进入模型请求的内容都必须能从日志重建；新的模型可见输入必须引入新的 session 事件。这是全库最重要的不变量。</li>
+<li>每条 <code>assistant/message</code> 内嵌产生它的完整紧凑计时流；<code>assistant/attempt</code> 保留失败/重试/取消/流错误的尝试但<strong>不进入模型历史</strong>。fork、resume、transcript、遥测、持久化全部从这些持久结算派生；活 UI 的增量来自 <code>agent/assistant-stream</code>（见下）。</li>
+<li>消费者只认"当前逻辑格式"；版本迁移是相邻单步链（<code>vN → vN+1</code>），已提交的世代路径永不重命名、替换或删除——详见持久化篇《格式版本与迁移》。</li>
+</ul>
+<h3 id="32-agent-eventsagent">3.2 Agent events：<code>agent/*</code>，观察与拦截在途工作<a class="headerlink" href="#32-agent-eventsagent" title="Permanent link">&para;</a></h3>
+<p><strong>判据：我要在"正在进行"的工作上挂一嘴。</strong> <code>agent/*</code> 事件携带活的 <code>Agent</code> 对象，覆盖 inbox、step、status、request、validation、continuation 全程：</p>
+<table>
+<thead>
+<tr>
+<th>事件</th>
+<th>模式</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>agent/created</code></td>
+<td>serial</td>
+<td>agent 创建完成（循环回滚失败的初始化、串行等待它之后才处理排队工作）</td>
+</tr>
+<tr>
+<td><code>agent/pre-step</code></td>
+<td>waterfall</td>
+<td><strong>每步准入闸</strong>：接受、改写或拒绝已认领消息；拒绝或首条声明为空 → 无 step 关闭 turn</td>
+</tr>
+<tr>
+<td><code>agent/request</code></td>
+<td>waterfall</td>
+<td>已弃用的请求前钩子：只调控制参数，不改 provider/model/effort 选择</td>
+</tr>
+<tr>
+<td><code>agent/request-error</code></td>
+<td>waterfall</td>
+<td>请求失败（压缩、重试等消费者挂在这里）</td>
+</tr>
+<tr>
+<td><code>agent/assistant-stream</code></td>
+<td>emit</td>
+<td>进程内的 start / transient chunk / end 三帧；循环在提交 end 帧前把完整紧凑流结算为一条消息或仅日志尝试。Web 的 Session-follow 适配器是它的唯一远程消费者</td>
+</tr>
+<tr>
+<td><code>agent/turn-stopping</code></td>
+<td>serial（无 <code>next()</code>）</td>
+<td>回合即将终止的串行通知</td>
+</tr>
+<tr>
+<td><code>agent/status</code> <code>agent/error</code> <code>agent/disposed</code> <code>agent/inbox/*</code></td>
+<td>emit</td>
+<td>状态、错误、销毁与收件箱变化</td>
+</tr>
+</tbody>
+</table>
+<p>注意两种模式差异：<code>agent/pre-step</code> 这类 <strong>waterfall</strong> 监听者必须调 <code>next()</code> 委托；<code>agent/turn-stopping</code> 是 <strong>serial</strong>、没有 <code>next()</code>。</p>
+<h3 id="33-capability-events">3.3 Capability events：给缝挂策略与适配器<a class="headerlink" href="#33-capability-events" title="Permanent link">&para;</a></h3>
+<p><strong>判据：我要给某个能力缝附加策略或适配器，而且不想 import 循环。</strong> 这类事件以缝的域名为前缀，代表是 <code>fs/*</code>、<code>tools/*</code>、<code>telemetry/*</code>：</p>
+<ul>
+<li><strong><code>tools/*</code></strong>：<code>tools/pre-execute</code> → <code>tools/execute</code> → <code>tools/post-execute</code> 三段 waterfall 是工具执行管线（审批、守卫、超时、hook 桥都挂在这条链上）；<code>tools/change</code>（注册表变化）与 <code>tools/result</code>（结果广播）是 emit。</li>
+<li><strong><code>fs/*</code></strong>：<code>fs/write-intent</code> / <code>fs/edit-intent</code> / <code>fs/delete-intent</code> 是<strong>单槽决策</strong> waterfall（详见第 4.3 节），<code>fs/observed</code> 是 emit（记录正/负观察事实）。</li>
+<li><strong>遥测侧</strong>：<code>session-telemetry/record</code> waterfall 把脱敏后的会话记录交给唯一后端，输出直接离开进程。</li>
+</ul>
+<p>其他缝也沿用同一模式：<code>approval/request</code>（审批瀑布）、<code>subagent/*</code>（子代理生命周期）、<code>workflow/*</code>、<code>skills/change</code>、<code>system-prompt/assemble</code> 等。哪些包派发/监听哪个事件，主仓库有一份生成的矩阵 <code>docs/event-producer-consumer.md</code>——查"这个事件谁发谁听"时先翻它。</p>
+<p><strong>一句话总结三域</strong>：要活过重载 → session 事件；要碰在途工作 → <code>agent/*</code>；要给某个能力挂策略 → 该缝的 capability 事件。</p>
+<hr />
+<h2 id="4_1">4. 能力缝：三角色模型<a class="headerlink" href="#4_1" title="Permanent link">&para;</a></h2>
+<h3 id="41">4.1 定义<a class="headerlink" href="#41" title="Permanent link">&para;</a></h3>
+<p>主仓库 <code>docs/glossary.md</code> 对 <strong>seam</strong> 的定义值得全文引用（意译）：</p>
+<blockquote>
+<p>seam 是一个<strong>可替换能力</strong>，由三个角色组成：<strong>Service Definition</strong>（拥有 <code>ctx.&lt;key&gt;</code> 与词汇类型的 Cordis <code>Service</code>——通常是抽象类如 <code>ShellExecutor</code>，或具体注册表如 <code>WebRuntime</code>，<strong>绝不是 TypeScript <code>interface</code></strong>）、一个或多个 <strong>Service Provider</strong>、以及一个或多个注入该服务的 <strong>Consumer</strong>。</p>
+</blockquote>
+<p>三条补充规则：</p>
+<ul>
+<li>一个包可以身兼多角，但<strong>单一个角色不构成缝</strong>；加一个能力意味着把三个角色一起设计出来（<code>docs/architecture.md</code>）。</li>
+<li>角色是否拆包看演化节奏：<strong>独立演化就分包</strong>（<code>packages/shell</code> 是正典）；同一关切就同包（<code>dsh-user-approval</code> 一个包同时拥有审批缝的 Definition 与实现）。</li>
+<li>术语纪律：<strong>"缝"指完整的三角色能力</strong>，谈论成员时叫它的角色名（Service Definition / provider / consumer）或类名、服务名、扩展点名。</li>
+</ul>
+<h3 id="42-shell">4.2 例一：shell（命令执行）<a class="headerlink" href="#42-shell" title="Permanent link">&para;</a></h3>
+<p><code>docs/capability-seams.md</code> 生成的服务图给出的完整角色表：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>包</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service Definition</td>
+<td><code>dsh-shell</code>（<code>ctx.shell</code>）</td>
+<td><code>packages/shell/shell/</code></td>
+</tr>
+<tr>
+<td>Service Provider</td>
+<td><code>dsh-bash-local</code> / <code>dsh-bash-sandbox</code> / <code>dsh-pwsh-local</code> / <code>dsh-pwsh-sandbox</code></td>
+<td><code>packages/shell/</code></td>
+</tr>
+<tr>
+<td>Consumer</td>
+<td><code>dsh-tool-bash</code> / <code>dsh-tool-pwsh</code>（注册到 <code>ctx.tools</code>）、hook 桥 <code>dsh-hooks-claude-code</code> / <code>dsh-hooks-codex</code></td>
+<td><code>packages/shell/</code>、<code>packages/experimental/</code></td>
+</tr>
+</tbody>
+</table>
+<p>配角：本地执行器通过 <code>ctx.subprocess</code> 缝派生进程；沙箱执行器通过 <code>ctx.sandbox</code> + <code>ctx.sandboxPolicy</code> 约束；<code>ctx.shellEnv</code> 供给受管的 <code>DSH_*</code> 环境；后台句柄的 id/所有权/轮询归 <code>ctx.jobs</code>——执行器因此保持与会话无关。</p>
+<p>Service Definition 是一个真正的抽象类（摘自 <code>packages/shell/shell/src/index.ts</code>）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">declare</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="s1">'@deepseek-ai/cordis'</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Context</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nx">shell</span><span class="o">:</span><span class="w"> </span><span class="kt">ShellExecutor</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="cm">/**</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="cm"> * Abstract bash execution service. Subclass, implement the abstract methods,</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="cm"> * and load the subclass as a plugin — it registers as `ctx.shell` (one</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="cm"> * implementation per context; loading a second throws, which is cordis'</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="cm"> * standard duplicate-service behavior).</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="cm"> */</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="k">export</span><span class="w"> </span><span class="k">abstract</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">ShellExecutor</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">Service</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="kr">constructor</span><span class="p">(</span><span class="nx">ctx</span><span class="o">:</span><span class="w"> </span><span class="kt">Context</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="k">super</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s1">'shell'</span><span class="p">)</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">  </span><span class="c1">// ...</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="p">}</span>
+</code></pre></div>
+<p>两个值得注意的设计事实（出自 <code>packages/shell/README.md</code>）：</p>
+<ul>
+<li><strong>每个组合恰好挂一个执行器实现</strong>：win32 层把 POSIX 行换成 pwsh 行；同时挂两个会在加载时因 Cordis 的重复 Service 注册<strong>响亮地失败</strong>——错配置立即暴露，绝不静默择一。</li>
+<li>模型工具（<code>tool-bash</code> 等）只认 <code>ctx.shell</code> 缝，"沙箱化、远程或 PowerShell 执行器替换 bash-local 时，它们一行都不用改"。</li>
+</ul>
+<h3 id="43-fs">4.3 例二：fs（文件系统）<a class="headerlink" href="#43-fs" title="Permanent link">&para;</a></h3>
+<p>角色表（出自 <code>packages/fs/README.md</code>）：</p>
+<table>
+<thead>
+<tr>
+<th>角色</th>
+<th>包</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service Definition</td>
+<td><code>dsh-fs</code>（<code>ctx.fs</code> + <code>fs/*</code> 事件）</td>
+<td>一个执行世界的文件契约</td>
+</tr>
+<tr>
+<td>Service Provider</td>
+<td><code>dsh-fs-local</code> / <code>dsh-fs-sandbox</code> / <code>dsh-fs-ssh</code></td>
+<td>本地 / 按沙箱模式设栏 / SSH 远程</td>
+</tr>
+<tr>
+<td>Consumer</td>
+<td><code>dsh-tool-fs</code>（<code>read</code> <code>read_image</code> <code>write</code> <code>edit</code> <code>apply_patch</code>）、<code>dsh-tool-str-replace-editor</code></td>
+<td>注册到 <code>ctx.tools</code>，注入 <code>ctx.fs</code></td>
+</tr>
+<tr>
+<td>伴随策略插件</td>
+<td><code>dsh-fs-observation-policy</code></td>
+<td>"先读后写"门，挂在 <code>fs/*</code> 事件上</td>
+</tr>
+</tbody>
+</table>
+<p>fs 的 Service Definition 同时声明了能力事件（摘自 <code>packages/fs/fs/src/index.ts</code>）：</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">declare</span><span class="w"> </span><span class="nx">module</span><span class="w"> </span><span class="s1">'@deepseek-ai/cordis'</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Context</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nx">fs</span><span class="o">:</span><span class="w"> </span><span class="kt">FileSystem</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Events</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="cm">/**</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="cm">     * Single-slot decision for the next FileSystem.writeText. Calling</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="cm">     * `next()` yields the bare provider's unconditional write; the first listener</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="cm">     * that returns an intent owns the decision rather than composing with peers.</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="cm">     * @mode waterfall</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="cm">     */</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="s1">'fs/write-intent'</span><span class="p">(</span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="kt">FsTarget</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="o">:</span><span class="w"> </span><span class="kt">object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="p">,</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">      </span><span class="nx">next</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">FsWriteIntent</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">FsWriteIntent</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="o">&gt;</span><span class="p">)</span><span class="o">:</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">FsWriteIntent</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="o">&gt;</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">    </span><span class="c1">// 'fs/edit-intent' / 'fs/delete-intent' 同为单槽决策 waterfall …</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">    </span><span class="cm">/** @mode emit */</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="s1">'fs/observed'</span><span class="p">(</span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="kt">FsTarget</span><span class="p">,</span><span class="w"> </span><span class="nx">observation</span><span class="o">:</span><span class="w"> </span><span class="kt">FsObservation</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="o">:</span><span class="w"> </span><span class="kt">object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="p">}</span>
+</code></pre></div>
+<p>这里有一个<strong>瀑布语义的刻意变体</strong>：<code>fs/write-intent</code> 是"单槽决策"——调 <code>next()</code> 得到的是裸 provider 的无条件写入；<strong>第一个返回 intent 的监听者独占决策权</strong>，而不是与同侪组合。这和 <code>agent/pre-step</code> 那种层层改写的瀑布不同，读代码时别混。</p>
+<p>策略插件的角色也值得记住：<code>fs-observation-policy</code> <strong>是插件，不是工具注入的服务</strong>——把它摘掉，工具得到的是裸 provider 的无条件写入行为，而不是功能损坏。它和 <code>fs-sandbox</code> 的模式栏可以叠加。</p>
+<h3 id="44-provider">4.4 为什么"换一个 provider 就换掉整个产品行为"<a class="headerlink" href="#44-provider" title="Permanent link">&para;</a></h3>
+<p><code>docs/architecture.md</code> 的原话是：<strong>"Seams are why one provider swap changes the whole product."（缝就是为什么换一个 provider 就换掉整个产品。）</strong> 机制上有两条：</p>
+<p><strong>第一，消费者只认 Service Definition。</strong> <code>tool-bash</code> 注入的是 <code>ctx.shell</code>，<code>tool-fs</code> 注入的是 <code>ctx.fs</code>；它们对 provider 是谁零感知。于是 profile 层换一行配置（换成 <code>bash-sandbox</code>、<code>pwsh-local</code> 或远程执行器），模型看到的工具名、参数、行为面完全不变，变的只是背后那个执行世界。</p>
+<p><strong>第二，配对的 provider 共享一个执行世界。</strong> 文件系统 provider 与子进程 provider 刻意共享同一个"执行世界"概念——把本地三件套（<code>fs-local</code> + <code>subprocess-local</code> + <code>sandbox-local</code>）换成 SSH 三件套（<code>fs-ssh</code> + <code>subprocess-ssh</code> + <code>sandbox-ssh</code>，全部配对挂在 <code>ctx.ssh</code> 拥有的同一条已认证 OpenSSH 连接上），<strong>Bash、PTY、LSP、文件工具就整体搬到了远程机器上</strong>，不需要为任何 provider 写分支代码。反过来说，如果一个工具绕过缝直接 import 了某个 provider 包，这个戏法就失效——这正是第 5 节依赖纪律要禁止的事。</p>
+<p>子代理（<code>ctx.subagents</code>）是同一思想的极端案例：同一个接口后面，provider 可以是本进程新起的子 agent，也可以是另一个产品里的一次委派 turn（<code>subagent-acp</code> / <code>subagent-codex</code> / <code>subagent-claude-code</code> / <code>subagent-dsh-sdk</code>）。</p>
+<hr />
+<h2 id="5">5. 依赖纪律<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>包图的权威版本是生成的 <code>docs/module-graph.md</code>（<code>pnpm run gen-module-graph</code> 重新生成，CI 有新鲜度门禁）。它只画 <strong>peer 依赖</strong>——一条边 <code>a --&gt; b</code> 意味着 a 把 b 声明为 peer，即 <strong>a 要求与 b 共享同一个运行实例</strong>（这正是 Cordis 服务的语义；普通运行时依赖与仅开发依赖不画）。</p>
+<p><code>packages/README.md</code> 的 Dependencies 一节给出三条硬规则：</p>
+<ol>
+<li><strong>扩展插件只依赖 Service Definition，永不依赖具体 provider。</strong> 例证（可到 <code>docs/module-graph.md</code> 的表里验证）：<code>tool-subagent</code> 的 peer 列表里有缝定义 <code>subagent</code> 和核心脊柱（<code>agent</code> <code>session</code> <code>system-prompt</code> <code>tools</code>），但没有任何 <code>subagent-*</code> provider；<code>tool-bash</code> 消费 <code>ctx.shell</code> 缝，peer 里没有 <code>bash-local</code>。</li>
+<li><strong><code>dsh-agent-loop</code> 可替换；UI、hook、工具插件一律用 <code>dsh-agent</code>。</strong> <code>docs/capability-seams.md</code> 对 <code>ctx.agentLoop</code> 的注记原话："extension packages depend on dsh-agent events and services, not on this package." 连默认驱动都按"实现可换"对待。</li>
+<li><strong>组合 bundle 可以依赖脊柱插件。</strong> 组合层（<code>packages/bundle/*</code>）的职责就是"把正确的插件树拼出来"，所以 <code>dsh-headless</code> 的 peer 列表里合法地出现 <code>agent</code> <code>session</code> <code>fs</code> <code>llm</code> <code>subagent</code> <code>session-query</code> <code>user-approval</code> <code>permission-presets</code> <code>sandbox-policy</code> 一整排脊柱与缝定义。</li>
+</ol>
+<p>配套的两条工程约束：</p>
+<ul>
+<li><strong>角色拆分跟随演化节奏</strong>：能力家族在角色独立演化时拆成 Definition / Provider / Consumer 三包；同一关切时允许一个包身兼多角（如 <code>dsh-user-approval</code>）。</li>
+<li><strong>workspace 依赖写法</strong>：DSH 包之间用 <code>workspace:*</code>，vendor/native 用 <code>workspace:~</code>（<code>AGENTS.md</code> 约定；发布序列规则见 <code>.agents/notes/implemented/process/2026-08-10-npm-release-sequences.md</code>）。</li>
+</ul>
+<p>一个自检问题："我要新写的这个插件，卸掉它之后产品是否仍按缝的语义工作？"如果它依赖了某个具体 provider 的存在，答案就是否——把依赖改到 Definition 上。</p>
+<hr />
+<h2 id="6">6. 「新行为放哪里」速查表<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p><code>docs/architecture.md</code> 的 "Where new behavior goes" 一表是全库扩展点的索引。原表有一句总纲：<strong>新行为挂到文档化的扩展点上；改循环本身（agent-loop）就必须同步更新这张表</strong>——即"改 loop"永远是最后选项，且要付文档税。以下为中文整理：</p>
+<table>
+<thead>
+<tr>
+<th>目标</th>
+<th>机制</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新增模型 provider</td>
+<td>在 <code>ctx.llm</code> 上注册其适配器</td>
+</tr>
+<tr>
+<td>新增面向模型的能力</td>
+<td>在 <code>ctx.tools</code> 上注册；其 schema 自动加入提示词组装</td>
+</tr>
+<tr>
+<td>给单个会话不同的能力集</td>
+<td>组合 agent preset；其中的 service 行需要 <code>isolate</code> realm</td>
+</tr>
+<tr>
+<td>新增 shell 执行</td>
+<td>注册一个 <code>ctx.shell</code> 后端；本地实现通过 <code>ctx.subprocess</code> 派生进程</td>
+</tr>
+<tr>
+<td>新增持久终端执行</td>
+<td>注册 <code>ctx.terminals</code> 后端，并加装 <code>dsh-tool-terminal</code></td>
+</tr>
+<tr>
+<td>新增人工命令（slash 命令）</td>
+<td>在 <code>ctx.commands</code> 上注册；不经模型回合直接派发</td>
+</tr>
+<tr>
+<td>管理后台任务</td>
+<td>在 <code>ctx.jobs</code> 上注册；<code>job_*</code> 工具读取或停止任务</td>
+</tr>
+<tr>
+<td>从外部 webhook 启动会话</td>
+<td>在 <code>ctx.webhookRuntime</code> 注册受信任规则，并挂载 provider 适配器</td>
+</tr>
+<tr>
+<td>新增文件系统访问或策略</td>
+<td>注册一个 <code>ctx.fs</code> provider，或监听 <code>fs/*</code> 事件</td>
+</tr>
+<tr>
+<td>约束派生进程</td>
+<td>使用 <code>ctx.sandbox</code> 后端；消费者在派生前包装 argv</td>
+</tr>
+<tr>
+<td>拦截请求、工具或回合</td>
+<td>用对应的 <code>agent/*</code> 或 <code>tools/*</code> 事件；<code>agent/turn-stopping</code> 可终止回合</td>
+</tr>
+<tr>
+<td>新增模型可见上下文</td>
+<td>调 <code>agent.inject()</code>；它落入下一个被准入的请求</td>
+</tr>
+<tr>
+<td>新增 UI 或编辑器集成</td>
+<td>驱动 <code>ctx.agents</code>，并从 <code>session/event</code> 渲染</td>
+</tr>
+<tr>
+<td>新增 Web Client Chat 节点</td>
+<td>注册 <code>ConversationNodeDefinition</code> + 键控渲染器</td>
+</tr>
+<tr>
+<td>新增持久会话状态</td>
+<td>扩展 <code>SessionEventMap</code>；从日志渲染与回放</td>
+</tr>
+<tr>
+<td>生成会话标题</td>
+<td>注册唯一的 <code>ctx.sessionTitle</code> provider</td>
+</tr>
+<tr>
+<td>管理同会话目标</td>
+<td>使用 <code>ctx.goals</code>；通过 <code>agent/*</code> 持续推进</td>
+</tr>
+<tr>
+<td>在回合边界 fork</td>
+<td><code>ctx.agents.create({ sessionId, seed, inheritedEventCount, meta: { isSeeded: true } })</code>——只有 agent-loop 发布的会话会持久化</td>
+</tr>
+<tr>
+<td>用新后端存会话</td>
+<td>实现 <code>SessionPersistence</code>（<code>create</code>/<code>open</code>/<code>stat</code>/<code>list</code>/<code>export</code>），基于共享 handle 脚手架</td>
+</tr>
+<tr>
+<td>把注册限定到单个 agent</td>
+<td>使用该 agent 的 <code>agent.ctx</code></td>
+</tr>
+</tbody>
+</table>
+<p>配套阅读：扩展手册 <code>docs/cookbook/extension-cookbook.md</code> 把特性映射到能力，并索引了添加包、添加工具、添加 LLM 适配器、添加设置页四篇分步指南——精通篇的扩展实战三章将带你走完其中三条。</p>
+<hr />
+<h2 id="7">7. 源码阅读入口<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>主仓库文档分四类：<strong>手写总纲</strong>、<strong>手写子系统参考</strong>、<strong>生成图</strong>（脚本产物，勿手改）与<strong>包 README</strong>。建议按下面的顺序建立第一遍心智模型：</p>
+<p><strong>第一步：总纲与词汇（半天）</strong></p>
+<ol>
+<li><code>docs/architecture.md</code> —— 本章蓝本，全文精读；先只读 Profiles/bundles、Events、Turn flow、Capability seams 四节，"Where new behavior goes" 当字典。</li>
+<li><code>docs/glossary.md</code> —— 很短；seam / scope / turn / step / round / exchange 的正典定义都在，避免被社区同义词带偏。</li>
+<li><code>docs/cordis-primer.md</code>（或 <code>docs/cordis-tutorial/</code>）—— 不懂 Cordis 先补这一课，重点看瀑布语义与 Service 生命周期。</li>
+</ol>
+<p><strong>第二步：从组 README 到包 README（一天）</strong></p>
+<ol>
+<li><code>packages/README.md</code> —— 本章第 2 节的原文；用它定位组。</li>
+<li><code>packages/bundle/base/README.md</code> —— 默认产品组合（<code>dsh-base</code>）挂了什么，是"最小完整样本"。</li>
+<li>逐组读 <code>packages/&lt;group&gt;/README.md</code>，再跳感兴趣的 <code>packages/&lt;group&gt;/&lt;pkg&gt;/README.md</code>。每个包 README 固定含配置、扩展点与 Model Experience，可直接当 API 文档用。</li>
+</ol>
+<p><strong>第三步：子系统参考与生成图（两天）</strong></p>
+<ol>
+<li><code>docs/subsystems/</code> 下的手写参考：<code>core.md</code>（逐包循环地图与 Agent 句柄）、<code>session.md</code>（事件词汇与派生历史）、<code>tools.md</code>、<code>system-prompt.md</code>、<code>scope.md</code>、<code>llm-streaming.md</code>、<code>shell.md</code>、<code>filesystem.md</code>、<code>sandbox.md</code>、<code>subagent.md</code>、<code>agent-team.md</code>、<code>working-directory.md</code>、<code>boot.md</code>、<code>conversation.md</code>。</li>
+<li>三张生成图（改内容要跑脚本再生成，别手编）：</li>
+<li><code>docs/capability-seams.md</code> —— 全部 ctx 服务的 Definition/Provider/Consumer 角色表；</li>
+<li><code>docs/module-graph.md</code> —— peer 依赖图（共享实例语义）；</li>
+<li><code>docs/event-producer-consumer.md</code> —— 每个事件谁派发、谁监听。</li>
+</ol>
+<p><strong>第四步：动手验证</strong></p>
+<ol>
+<li><code>pnpm dsh --profile web --dump-config</code> —— 打印你机器上真实的插件树；对照 <code>apps/cli/composition.md</code>（每个出厂 profile 的精确组合）。</li>
+<li><code>docs/cookbook/</code> —— <code>extension-cookbook.md</code> + 添加包/工具/LLM 适配器/设置卡四篇；边读边在测试分支上做一个最小插件。</li>
+<li>工程约束两篇：<code>docs/development.md</code>（TypeScript 项目布局、源码面与产物面分离）、<code>docs/testing.md</code>（测试政策与快照要求）。</li>
+<li>历史决策：<code>.agents/notes/implemented/</code>（已归档笔记是冻结的历史依据，不是现行权威——查"当初为什么"用它，查"现在是什么"永远回到 README 与 docs）。</li>
+</ol>
+<hr />
+<h2 id="_1">小结<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>把本章压缩成五句话：</p>
+<ol>
+<li><strong>一个 dsh 进程 = 启动器选定 profile，app-boot 按四层顺序叠 patch，Loader 装出 Cordis 插件树</strong>；启动后没有特权核心，一切皆插件、皆可从配置替换。</li>
+<li><strong><code>packages/</code> 的 53 个组</strong>按"脊柱 → 模型 → 执行世界 → 工具 → 数据面 → 交互 → 产品面 → 基础设施"分工；每组 README 是权威包清单。</li>
+<li><strong>事件分三域</strong>：要活过重载进 session 日志；要观察/拦截在途工作挂 <code>agent/*</code>；要给能力挂策略挂该缝的 capability 事件。</li>
+<li><strong>能力缝 = Service Definition + Service Provider + Consumer 三角色</strong>；消费者只认 Definition，配对 provider 共享执行世界——所以换一个 provider 就换掉整个产品行为。</li>
+<li><strong>依赖纪律只有一条主线</strong>：扩展插件依赖 Service Definition（含 <code>dsh-agent</code>），组合 bundle 才可以依赖脊柱。</li>
+</ol>
+<p>下一章《一次对话的完整生命周期》把第 1.4 节的 turn/step 流程图逐帧展开；之后核心引擎篇进入逐文件精读。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../../javascripts/pager.js?v=3"></script>
+      
+    
+  </body>
+</html>

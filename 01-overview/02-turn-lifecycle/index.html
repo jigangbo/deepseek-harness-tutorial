@@ -1,0 +1,5470 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="系统性深入学习 DeepSeek Harness (dsh) 的插件化 Agent 架构">
+      
+      
+      
+        <link rel="canonical" href="https://jigangbo.github.io/deepseek-harness-tutorial/01-overview/02-turn-lifecycle/">
+      
+      
+        <link rel="prev" href="../01-global-architecture/">
+      
+      
+        <link rel="next" href="../03-boot-and-profiles/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>第 5 章 一次对话的完整生命周期 - DeepSeek Harness 架构教程 — 从入门到精通</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#5" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="DeepSeek Harness 架构教程 — 从入门到精通" class="md-header__button md-logo" aria-label="DeepSeek Harness 架构教程 — 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            DeepSeek Harness 架构教程 — 从入门到精通
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              第 5 章 一次对话的完整生命周期
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到深色模式"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="切换到深色模式" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="切换到浅色模式"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="切换到浅色模式" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="DeepSeek Harness 架构教程 — 从入门到精通" class="md-nav__button md-logo" aria-label="DeepSeek Harness 架构教程 — 从入门到精通" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    DeepSeek Harness 架构教程 — 从入门到精通
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepSeek Harness 架构教程
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第一篇 入门篇：背景知识与 Cordis
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第一篇 入门篇：背景知识与 Cordis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/01-what-is-an-agent-harness/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 1 章 什么是 AI Agent 与 Harness
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/02-cordis-framework/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 2 章 Cordis 框架精讲
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../00-getting-started/03-reading-guide/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 3 章 阅读指南：三条学习路径
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第二篇 总览篇：全局架构与运行时
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第二篇 总览篇：全局架构与运行时
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-global-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 4 章 全局架构与包地图
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 5 章 一次对话的完整生命周期
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 5 章 一次对话的完整生命周期
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-stepturninbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 三个基本单位:step、turn、inbox
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 三个基本单位:step、turn、inbox">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-step-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 step 与 turn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-inbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 inbox:喂数据给驱动器的唯一入口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-inbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 inbox 是持久的
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 claim:驱动器怎么取走一批输入
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 全景时序图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 分阶段细讲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 分阶段细讲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-turnstart-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 turn/start 与输入声明(claim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-agentpre-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 agent/pre-step:接受、改写、拒绝
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-system-step-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 提示词组装:system 段 + step 准入的工具 schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-agentrequest-preparecall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 agent/request 与 prepareCall:配置、取消承诺与冻结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 agent/request 与 prepareCall:配置、取消承诺与冻结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#freeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从日志冻结(freeze)模型历史
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-llmstream-agentassistant-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 流式:llm/stream → agent/assistant-stream → 持久结算
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 流式:llm/stream → agent/assistant-stream → 持久结算">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assistantmessage-assistantattempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        assistant/message 与 assistant/attempt 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-toolcall-toolresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 工具管线:从 tool/call 到 tool/result
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 工具管线:从 tool/call 到 tool/result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#barrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        批调度:barrier 与有界滚动池
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toolcall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        持久事件的时机:tool/call 先于执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单个调用的四段瀑布
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-stepend-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 step/end、"工具还欠一次请求"与 turn 收尾
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 step/end、&#34;工具还欠一次请求&#34;与 turn 收尾">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agentturn-stopping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        agent/turn-stopping:关闭前的最后检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turnend-reason" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        turn/end 与 reason
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 关键不变量:模型可见 ⟺ 已记录
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 关键不变量:模型可见 ⟺ 已记录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么成立
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        它约束了什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 失败与恢复
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 失败与恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 失败的 step:补记缺失的工具结果
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 请求失败与重试:不重复组装
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 取消语义
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 流程步骤 → 源码 → 教程章节映射表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-boot-and-profiles/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 6 章 启动流程与 Profile/Bundle 组合
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第三篇 核心引擎篇：逐文件精读
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第三篇 核心引擎篇：逐文件精读
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/session/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 7 章 Session：会话事件日志
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 7 章 Session：会话事件日志
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/fork/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    fork.ts — fork 种子构造
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/known-event-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    known-event-types.ts — 已知事件类型清单
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/preparation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    preparation.ts — 未发布会话封装
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/repair/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    repair.ts — 中断尾部补记
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/request-header/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    request-header.ts — 请求头折叠
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/seq-ranges/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    seq-ranges.ts — 序号区间压缩
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/surface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    surface.ts — 表面投影与校验
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/tool-history/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    tool-history.ts — 工具历史声明
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/session/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — 事件信封与序号类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-loop/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 8 章 Agent Loop：默认驱动实现
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 8 章 Agent Loop：默认驱动实现
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/agent/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    agent.ts — turn/step 主循环
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/assistant-stream/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assistant-stream.ts — 流式帧协议
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/constants/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    constants.ts — 默认并发常量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/inbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    inbox.ts — 输入收件箱
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent-loop/runtime-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    runtime-context.ts — 运行时上下文投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 9 章 Tools：工具注册表与执行管线
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 9 章 Tools：工具注册表与执行管线
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/batch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    batch.ts — 批次调度
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/contracts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    contracts.ts — 工具契约类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/events/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    events.ts — 管线事件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/executor/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    executor.ts — 执行器接口
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/json-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    json-schema.ts — JSON Schema 子集
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/pipeline/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    pipeline.ts — 执行管线
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/presentation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    presentation.ts — 渲染意图联合
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/tools/schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    schema.ts — 参数 schema DSL
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 10 章 Agent：接口与活体注册表
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 10 章 Agent：接口与活体注册表
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/archive-admission/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    archive-admission.ts — 归档准入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/consumed-work/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    consumed-work.ts — 消费记账
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/dispatch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    dispatch.ts — 事件融合派发
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/model-selection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    model-selection.ts — 模型选择投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/projection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    projection.ts — turn 边界投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/runtime-types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    runtime-types.ts — 运行时类型与事件
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/agent/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — Agent 静态类型
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/scope/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 11 章 Scope：作用域注册
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 11 章 Scope：作用域注册
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/scope/store/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    store.ts — 作用域存储
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/system-prompt/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 12 章 System Prompt：提示词组装
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 12 章 System Prompt：提示词组装
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/executors/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 13 章 Executors：native 与 PTC 双执行器
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_7" id="__nav_4_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 13 章 Executors：native 与 PTC 双执行器
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/executors/native/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    index.ts — native 执行器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/executors/ptc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    index.ts — PTC 执行器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-default-model/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 14 章 Agent Default Model：默认模型选择
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 14 章 Agent Default Model：默认模型选择
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_9" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/agent-tool-presentation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 15 章 Tool Presentation：形态选择（已弃用）
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 15 章 Tool Presentation：形态选择（已弃用）
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_10" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../02-core-engine/llm/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 16 章 LLM：消息、流与适配器接缝
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_10" id="__nav_4_10_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第 16 章 LLM：消息、流与适配器接缝
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/adapter-failure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    adapter-failure.ts — 适配器失败快照
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/api-key/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    api-key.ts — 密钥传输不变量
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/assembler/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assembler.ts — 压缩流装配
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/assistant-stream/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    assistant-stream.ts — 流式记录嵌入
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/attribution/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    attribution.ts — 请求归属
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/brand/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    brand.ts — 品牌 id
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/call-config/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    call-config.ts — 调用配置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/content/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    content.ts — 内容块投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/error/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    error.ts — 规范错误码
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/message/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    message.ts — 消息工厂
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/providers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Provider 适配器族 — 从接缝到实现
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/retry-policy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    retry-policy.ts — 重试策略
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../02-core-engine/llm/types/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    types.ts — 流词汇与契约
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第四篇 能力缝篇：可替换的能力
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第四篇 能力缝篇：可替换的能力
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/00-seam-design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 17 章 能力缝设计思想
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/01-filesystem/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 18 章 文件系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/02-shell-subprocess-sandbox/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 19 章 命令执行与沙箱
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/03-terminal-and-ptc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 20 章 终端与 PTC
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/04-web/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 21 章 网络访问
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/05-browser-computer-use/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 22 章 浏览器与计算机操作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/06-lsp-skills/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 23 章 LSP 与技能系统
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/07-subagent-team/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 24 章 子代理与团队协作
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/08-jobs-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 25 章 后台任务与工作流
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../03-capability-seams/09-mcp-extensions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 26 章 MCP 与运行时自扩展
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第五篇 持久化篇：数据平面
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第五篇 持久化篇：数据平面
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/00-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 27 章 持久化总览
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/01-session-log-and-backends/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 28 章 会话日志与存储后端
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/02-format-versions-and-migrations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 29 章 会话格式版本与迁移
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/03-session-projections/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 30 章 会话投影
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/04-compaction-and-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 31 章 压缩与请求上下文
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/05-session-query/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 32 章 会话检索
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../04-persistence/06-attachment-spill-storage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 33 章 附件、溢出与通用存储
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第六篇 产品形态篇：交互与界面
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第六篇 产品形态篇：交互与界面
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/00-interaction-and-approval/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 34 章 人机交互、审批与提问
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/01-web-frontend/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 35 章 Web 前端架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/02-host-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 36 章 Host 服务层
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/03-desktop-app/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 37 章 桌面应用架构
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../05-product-surfaces/04-sdk-acp-api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 38 章 SDK、ACP 与远程 API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第七篇 精通篇：工程实践与扩展
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    第七篇 精通篇：工程实践与扩展
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/00-testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 39 章 测试体系
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/01-config-and-settings/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 40 章 配置体系与用户设置
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/02-recipe-new-tool/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 41 章 扩展实战：添加一个工具
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/03-recipe-new-llm-adapter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 42 章 扩展实战：添加 LLM 适配器
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/04-recipe-new-package/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 43 章 扩展实战：添加一个包
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../06-mastery/05-architecture-patterns/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    第 44 章 架构设计模式总结
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-stepturninbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. 三个基本单位:step、turn、inbox
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. 三个基本单位:step、turn、inbox">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-step-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 step 与 turn
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-inbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.2 inbox:喂数据给驱动器的唯一入口
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-inbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.3 inbox 是持久的
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#14-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.4 claim:驱动器怎么取走一批输入
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. 全景时序图
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. 分阶段细讲
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. 分阶段细讲">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-turnstart-claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 turn/start 与输入声明(claim)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-agentpre-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 agent/pre-step:接受、改写、拒绝
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-system-step-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 提示词组装:system 段 + step 准入的工具 schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#44-agentrequest-preparecall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.4 agent/request 与 prepareCall:配置、取消承诺与冻结
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.4 agent/request 与 prepareCall:配置、取消承诺与冻结">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#freeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        从日志冻结(freeze)模型历史
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#45-llmstream-agentassistant-stream" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.5 流式:llm/stream → agent/assistant-stream → 持久结算
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.5 流式:llm/stream → agent/assistant-stream → 持久结算">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#assistantmessage-assistantattempt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        assistant/message 与 assistant/attempt 的区别
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#46-toolcall-toolresult" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.6 工具管线:从 tool/call 到 tool/result
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.6 工具管线:从 tool/call 到 tool/result">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#barrier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        批调度:barrier 与有界滚动池
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#toolcall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        持久事件的时机:tool/call 先于执行
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        单个调用的四段瀑布
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#47-stepend-turn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.7 step/end、"工具还欠一次请求"与 turn 收尾
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4.7 step/end、&#34;工具还欠一次请求&#34;与 turn 收尾">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agentturn-stopping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        agent/turn-stopping:关闭前的最后检查点
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#turnend-reason" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        turn/end 与 reason
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. 关键不变量:模型可见 ⟺ 已记录
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. 关键不变量:模型可见 ⟺ 已记录">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        为什么成立
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        它约束了什么
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. 失败与恢复
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. 失败与恢复">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.1 失败的 step:补记缺失的工具结果
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.2 请求失败与重试:不重复组装
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6.3 取消语义
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. 流程步骤 → 源码 → 教程章节映射表
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        小结
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="5">第 5 章 一次对话的完整生命周期<a class="headerlink" href="#5" title="Permanent link">&para;</a></h1>
+<p>上一篇我们建立了 DeepSeek Harness 的全局架构图景:一切皆插件、三种事件域、能力接缝。这一篇我们把镜头拉近,跟踪<strong>一次对话从用户敲下回车,到模型回复完毕、会话日志落盘</strong>的每一个事件。读完后,你应当能对着 <code>packages/core/agent-loop/src/agent.ts</code> 逐行读懂默认驱动 <code>ReactLoopAgent</code>,并知道每个环节该挂在哪个扩展点上。</p>
+<p>本章内容全部来自 <code>docs/architecture.md</code> 的 Turn flow 一节、<code>docs/agent-lifecycle.md</code> 的时序图,以及 <code>packages/core/agent-loop</code>、<code>packages/core/tools</code> 的真实源码。所有源码路径均相对主仓库根目录。</p>
+<hr />
+<h2 id="1-stepturninbox">1. 三个基本单位:step、turn、inbox<a class="headerlink" href="#1-stepturninbox" title="Permanent link">&para;</a></h2>
+<h3 id="11-step-turn">1.1 step 与 turn<a class="headerlink" href="#11-step-turn" title="Permanent link">&para;</a></h3>
+<p><code>docs/architecture.md</code> 的定义只有两句话,但每个词都有精确含义:</p>
+<blockquote>
+<p>A <strong>step</strong> is one model request plus the tools it calls. A <strong>turn</strong> is zero or more steps: it opens before its first input is claimed and closes once nothing is owed.</p>
+</blockquote>
+<ul>
+<li><strong>step(步)</strong> = 一次模型请求 + 这次请求触发的全部工具调用。一次请求如果调了 5 个工具,它们同属一个 step。</li>
+<li><strong>turn(轮)</strong> = 0 个或多个 step。它<strong>先于第一条输入被声明(claim)之前开启</strong>,在"没有任何东西欠着"时关闭。模型回复了纯文本、没有工具调用,turn 就闭合;模型调了工具,工具结果"欠"一次新的模型请求,turn 就继续下一个 step。</li>
+</ul>
+<p>"0 个 step 的 turn"不是退化情况,而是有意设计:输入被声明后可能被 <code>agent/pre-step</code> 拒绝,或改写为空——此时 turn 仍然完整开启又闭合,日志里留下 <code>turn/start</code> + <code>turn/end</code> 一对边界事件,但<strong>不花一次模型调用</strong>。这让"这次输入确实到达并被处理了(即使结果是拒绝)"成为可回放的事实。</p>
+<h3 id="12-inbox">1.2 inbox:喂数据给驱动器的唯一入口<a class="headerlink" href="#12-inbox" title="Permanent link">&para;</a></h3>
+<p>驱动器 <code>ReactLoopAgent</code>(实现 <code>Agent</code> 接口)只有一个数据来源:<strong>inbox(收件箱)</strong>。它内部是两条持久化队列:</p>
+<table>
+<thead>
+<tr>
+<th>队列</th>
+<th>语义</th>
+<th>谁写入</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>next-turn</code></td>
+<td>排队等待各自新 turn 的普通消息,每条独占一个 turn</td>
+<td><code>followup()</code></td>
+</tr>
+<tr>
+<td><code>next-step</code></td>
+<td>等待最近 step 边界的注入内容(转向、上下文)</td>
+<td><code>steer()</code>、<code>inject()</code></td>
+</tr>
+</tbody>
+</table>
+<p>四个公开入口(agent 契约定义于 <code>packages/core/agent/src/runtime-types.ts</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">followup</span><span class="p">(</span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">UserMessage</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="w"> </span><span class="s1">'next-turn'</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nx">steer</span><span class="p">(</span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">UserMessage</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="w"> </span><span class="s1">'next-step'</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">}</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nx">inject</span><span class="p">(</span><span class="nx">input</span><span class="o">:</span><span class="w"> </span><span class="kt">UserMessage</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span><span class="w"> </span><span class="s1">'next-step'</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span>
+</code></pre></div>
+<p>摘自 <code>packages/core/agent-loop/src/agent.ts</code>。第三个参数 <code>wakeup</code> 是关键差异:<code>followup</code> 和 <code>steer</code> 会唤醒驱动器,<code>inject</code> 只入队不唤醒——<strong>注入的上下文要等下一条"叫醒消息"才能被消费</strong>("One inbox feeds the driver; injected context waits for a waking message")。空闲的 agent 收到 <code>inject()</code> 后会一直挂着,直到下一次 <code>followup()</code> 或 <code>steer()</code> 才真正开 turn。</p>
+<p><code>send()</code> 本身还有一段防御细节:唤醒分类在插入收件箱<strong>之前</strong>捕获,防止 splice 观察者重入调用 <code>cancel()</code> 把"唤醒"错误降级:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nx">send</span><span class="p">(</span><span class="nx">message</span><span class="o">:</span><span class="w"> </span><span class="kt">UserMessage</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="kt">InboxTarget</span><span class="p">,</span><span class="w"> </span><span class="nx">wakeup</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="c1">// Waking input cannot join an aborted activity, so it starts the next turn.</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="c1">// Captured before the insertion so a reentrant cancel from a splice observer cannot reclassify it.</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">wakingAfterAbort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">wakeup</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'idle'</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">abort</span><span class="p">.</span><span class="nx">signal</span><span class="p">.</span><span class="nx">aborted</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">resolvedTarget</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">wakingAfterAbort</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s1">'next-turn'</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">target</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">resolvedTarget</span><span class="p">,</span><span class="w"> </span><span class="kc">Infinity</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">message</span><span class="p">])</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">wakeup</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">wakeDriver</span><span class="p">(</span><span class="nx">wakingAfterAbort</span><span class="p">)</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="13-inbox">1.3 inbox 是持久的<a class="headerlink" href="#13-inbox" title="Permanent link">&para;</a></h3>
+<p>收件箱的每一次变异(插入、替换、删除、声明、清空)都提交一条 <code>agent/inbox/spliced</code> 会话事件——它是持久事件,注册表按标准 splice 坐标折叠重建,所以<strong>重启或恢复会话后,待处理输入原样还原</strong>,不需要任何活着的 Agent 存在(<code>AgentLoop</code> 为其服务生命周期注册 <code>inbox</code> projection)。插入消息同时发出活事件 <code>agent/inbox/inserted</code>;普通删除发 <code>agent/inbox/discarded</code>;而<strong>声明(claim)是纯删除,发 <code>agent/inbox/claimed</code></strong>。</p>
+<h3 id="14-claim">1.4 claim:驱动器怎么取走一批输入<a class="headerlink" href="#14-claim" title="Permanent link">&para;</a></h3>
+<p>声明逻辑在 <code>packages/core/agent-loop/src/inbox.ts</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nx">claim</span><span class="p">(</span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="kt">InboxTarget</span><span class="p">,</span><span class="w"> </span><span class="nx">turn</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">UserMessage</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">claimed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">mutate</span><span class="p">(</span><span class="s1">'next-step'</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">nextStep</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">target</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'next-turn'</span><span class="p">)</span><span class="w"> </span><span class="nx">claimed</span><span class="p">.</span><span class="nx">push</span><span class="p">(...</span><span class="k">this</span><span class="p">.</span><span class="nx">mutate</span><span class="p">(</span><span class="s1">'next-turn'</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="p">[],</span><span class="w"> </span><span class="kc">false</span><span class="p">))</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">claimed</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">'agent/inbox/claimed'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">message</span><span class="p">,</span><span class="w"> </span><span class="nx">turn</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">claimed</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>读法:</p>
+<ul>
+<li><strong>turn 的第一个 step</strong>(target 为 <code>'next-turn'</code>):一次性取走<em>整个</em> <code>next-step</code> 队列,再从 <code>next-turn</code> 取<strong>一条</strong>排队消息。这批消息合并为同一个 step 的输入——所以"一条 followup + 赶到的 steering"会一起进入首次请求。</li>
+<li><strong>后续 step</strong>(target 为 <code>'next-step'</code>):只取 <code>next-step</code> 队列(此时它由 steering / 注入 / 工具附加上下文填充)。</li>
+</ul>
+<p><code>claim</code> 是原子操作:清空与取走在同一次持久 splice 中完成,不存在"取了一半被取消"的中间态。</p>
+<hr />
+<h2 id="2">2. 全景时序图<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>下面是一次典型 turn(含工具调用)的完整时序,编号 ①–⑮。<strong>所有事件名都是真实的事件标识符</strong>;方括号标注分类:</p>
+<ul>
+<li><code>[durable]</code> = 持久会话事件,经 <code>session.append()</code> 写入日志,重载后可回放;</li>
+<li><code>[live]</code> = 活扩展点(emit),仅存在于当前进程;</li>
+<li><code>[waterfall]</code> = 瀑布事件,监听器<strong>必须调用 <code>next()</code></strong> 委托链;</li>
+<li><code>[serial]</code> = 串行事件,逐个 await,无 <code>next()</code>。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a> caller              Driver (ReactLoopAgent)       hooks (live extension points)      services (prompt/llm/tools)     session log (durable)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    |                       |                              |                               |                          |
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    | (1) followup(msg)     |                              |                               |                          |
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    |----------------------&gt;| splice('next-turn') ------------------------------------------------------------- ------------&gt;| agent/inbox/spliced     [durable]
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    |                       | emit agent/inbox/inserted                                                    | agent/inbox/inserted   [live]
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    |                       | wakeDriver(): emit agent/status running                                      | agent/status           [live]
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    |                       | (2) open the turn            |                               |                          |
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    |                       |--------------------------------------------------------------------------------------------&gt;| turn/start { turn }     [durable]
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    |                       |                              |                               |                          |
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    |                       | (3) claim first-step input   |                               |                          |
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    |                       |  drain next-step + take one queued message                                   |
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    |                       |--------------------------------------------------------------------------------------------&gt;| agent/inbox/spliced     [durable]
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    |                       |  (pure deletion, no outcome)                                                 | agent/inbox/claimed    [live, per message]
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    |                       | (4) snapshot selection + assemble                          |                          |
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    |                       | selection = agent.model.current()                                            |
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    |                       |------------------------------------------- tools.resolve() -&gt;| tools.resolve()          |
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    |                       |--------------------------------------------- ctx.systemPrompt.assemble -&gt;|  (waterfall system-prompt/assemble)
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    |                       | (5) waterfall agent/pre-step -------------------------------&gt;|                          |
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    |                       |&lt;------ decision: reject | enter(messages, startsRequestSeries?) ---          |
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>    |                       |   fallback projects runtime context            |             |                          |
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    |                       |  reject, or first claim rewritten empty -------------------&gt; ----------------&gt;| turn/end (blocked/completed)
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    |                       |  ==&gt; turn closes with NO step; jump to (15)  |               |                          |
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    |                       | (6) ------------------------ ------------------------------------------------&gt;| step/start { turn, step }[durable]
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>    |                       | (7) waterfall agent/request -------------------------------&gt;|                          |
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>    |                       |&lt;------ proposed config (controls only) -----|                |                          |
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    |                       |--------------------------------------------- ctx.llm.prepareCall(config, signal) -&gt;  bind adapter
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    |                       |  cancellation during (7) commits neither system nor users    |                          |
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>    |                       | (8) synchronous admission using the prepared-call capability |                          |
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>    |                       |---------------------------------------------------------------------------------&gt;| system/message (per-node) [durable]
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>    |                       |  admit users (first attempt only)                                            | user/message             [durable]
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>    |                       |---------------------------------------------------------------------------------&gt;| request/header + request/context [durable, as needed]
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>    |                       | (9) derive + freeze request from the log     |               |                          |
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>    |                       |-------------------------------------------- stream via llm/stream waterfall -&gt;     |
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>    |                       | (10) streaming               |                               |                          |
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>    |                       |&lt;--------------- StreamChunk* --------------------------------|                          |
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    |                       | emit agent/assistant-stream: start, chunk*                    |                          | [live, transient]
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    |                       |--------------------------------------------------------------------------------&gt;| assistant/message (success)        [durable]
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>    |                       |   (or assistant/attempt for failed/retried/cancelled)       |                          | assistant/attempt         [durable, no model history]
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>    |                       | emit agent/assistant-stream: end (committed)                 |                          | [live]
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>    |                       |  on attempt failure: waterfall agent/request-error --------&gt;| retry | terminal          |
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>    |                       | (11) for each tool-call block -----------------------------------------------&gt;| tool/call { callId,.. }  [durable, logged BEFORE execution]
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>    |                       | (12) ctx.tools.execute(batch) ------------&gt; batch scheduler -&gt;|                          |
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>    |                       |                              |     waterfall tools/pre-execute -&gt; guards / approval     | [waterfall]
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>    |                       |                              |     waterfall tools/execute   -&gt; around dispatch (body)  | [waterfall]
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>    |                       |                              |     waterfall tools/post-execute -&gt; accept / block       | [waterfall]
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>    |                       |&lt;-------- results commit in model order --------------------------------------&gt;| tool/result              [durable]
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a>    |                       |                              |     emit tools/result (frozen outcome)                   | [live]
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a>    |                       | (13) ------------------------ ---------------------------------------------&gt;| step/end { turn, step }  [durable]
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>    |                       | dispose the step tool set   |                               |                          |
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a>    |                       | (14) does anything owe another request?          |           |                          |
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a>    |                       |  tool calls ran (step ended without a final text-only reply),|                          |
+<a id="__codelineno-3-52" name="__codelineno-3-52" href="#__codelineno-3-52"></a>    |                       |  or next-step inbox non-empty                                                |
+<a id="__codelineno-3-53" name="__codelineno-3-53" href="#__codelineno-3-53"></a>    |                       |    yes: target='next-step', goto (3) with the NEXT step      |                          |
+<a id="__codelineno-3-54" name="__codelineno-3-54" href="#__codelineno-3-54"></a>    |                       |    no : serial agent/turn-stopping -------------------------&gt;|                          | [serial]
+<a id="__codelineno-3-55" name="__codelineno-3-55" href="#__codelineno-3-55"></a>    |                       |            listener may agent.steer(): re-read inbox,       |                          |
+<a id="__codelineno-3-56" name="__codelineno-3-56" href="#__codelineno-3-56"></a>    |                       |            fresh steering -&gt; another step; none -&gt; close     |                          |
+<a id="__codelineno-3-57" name="__codelineno-3-57" href="#__codelineno-3-57"></a>    |                       |                              |                               |                          |
+<a id="__codelineno-3-58" name="__codelineno-3-58" href="#__codelineno-3-58"></a>    |                       | (15) ------------------------ ---------------------------------------------&gt;| turn/end { reason }      [durable]
+<a id="__codelineno-3-59" name="__codelineno-3-59" href="#__codelineno-3-59"></a>    |                       | emit agent/status idle       |                               |                          | [live]
+<a id="__codelineno-3-60" name="__codelineno-3-60" href="#__codelineno-3-60"></a>    |                       |  inbox still pending? new AbortController, next turn         |                          |```
+<a id="__codelineno-3-61" name="__codelineno-3-61" href="#__codelineno-3-61"></a>
+<a id="__codelineno-3-62" name="__codelineno-3-62" href="#__codelineno-3-62"></a>图注:
+<a id="__codelineno-3-63" name="__codelineno-3-63" href="#__codelineno-3-63"></a>
+<a id="__codelineno-3-64" name="__codelineno-3-64" href="#__codelineno-3-64"></a>1. **垂直双列对照**:右端一列是落进日志的持久事件;中间两列("hooks"、"services")上的交互全部是进程内的活事件或瀑布,不会出现在会话日志里(唯一例外:`agent/inbox/spliced` 虽以 `agent/` 开头,却是持久事件——见 §2.1)。
+<a id="__codelineno-3-65" name="__codelineno-3-65" href="#__codelineno-3-65"></a>2. `(5)` 的拒绝出口和 `(14)` 的续步判断是 turn 里最容易走错的两条岔路,§4.2 和 §4.7 分别展开。
+<a id="__codelineno-3-66" name="__codelineno-3-66" href="#__codelineno-3-66"></a>3. `(10)` 里"chunk 是活的、settlement 是持久的"这对关系,是 §5 不变量的最佳注脚。
+<a id="__codelineno-3-67" name="__codelineno-3-67" href="#__codelineno-3-67"></a>
+<a id="__codelineno-3-68" name="__codelineno-3-68" href="#__codelineno-3-68"></a>### 2.1 事件分类速查
+<a id="__codelineno-3-69" name="__codelineno-3-69" href="#__codelineno-3-69"></a>
+<a id="__codelineno-3-70" name="__codelineno-3-70" href="#__codelineno-3-70"></a>| 分类 | 事件 |
+<a id="__codelineno-3-71" name="__codelineno-3-71" href="#__codelineno-3-71"></a>|---|---|
+<a id="__codelineno-3-72" name="__codelineno-3-72" href="#__codelineno-3-72"></a>| 持久会话事件 | `agent/inbox/spliced`、`turn/start`、`step/start`、`system/message`、`user/message`、`developer/message`、`assistant/message`、`assistant/attempt`、`tool/call`、`tool/result`、`request/header`、`request/context`、`turn/end`、`step/end` |
+<a id="__codelineno-3-73" name="__codelineno-3-73" href="#__codelineno-3-73"></a>| 活事件(emit) | `agent/status`、`agent/inbox/inserted`、`agent/inbox/claimed`、`agent/inbox/discarded`、`agent/assistant-stream`、`agent/error`、`tools/result` |
+<a id="__codelineno-3-74" name="__codelineno-3-74" href="#__codelineno-3-74"></a>| 瀑布(waterfall,必须 `next()`) | `system-prompt/assemble`、`agent/pre-step`、`agent/request`(已弃用)、`agent/request-error`、`llm/stream`、`tools/pre-execute`、`tools/execute`、`tools/post-execute` |
+<a id="__codelineno-3-75" name="__codelineno-3-75" href="#__codelineno-3-75"></a>| 串行(serial,无 `next()`) | `agent/created`、`agent/turn-stopping` |
+<a id="__codelineno-3-76" name="__codelineno-3-76" href="#__codelineno-3-76"></a>
+<a id="__codelineno-3-77" name="__codelineno-3-77" href="#__codelineno-3-77"></a>`turn/*`、`step/*`、`system/message`、`user/message`、`assistant/message`、`assistant/attempt`、`tool/*` 是持久事件,其余 `agent/*` 是活的扩展点——这是 architecture.md 的原话。注意两个"例外分子":`agent/inbox/spliced` 是持久事件(收件箱必须跨重启还原),`developer/message`(工具增减的提示)也是持久事件。
+<a id="__codelineno-3-78" name="__codelineno-3-78" href="#__codelineno-3-78"></a>
+<a id="__codelineno-3-79" name="__codelineno-3-79" href="#__codelineno-3-79"></a>---
+<a id="__codelineno-3-80" name="__codelineno-3-80" href="#__codelineno-3-80"></a>
+<a id="__codelineno-3-81" name="__codelineno-3-81" href="#__codelineno-3-81"></a>## 3. 逐行展开 turn flow 伪代码
+<a id="__codelineno-3-82" name="__codelineno-3-82" href="#__codelineno-3-82"></a>
+<a id="__codelineno-3-83" name="__codelineno-3-83" href="#__codelineno-3-83"></a>architecture.md 的 Turn flow 一节给了一份权威伪代码。我们先原样引用,再逐行给出讲解(括号里的编号对应 §2 时序图):
+<a id="__codelineno-3-84" name="__codelineno-3-84" href="#__codelineno-3-84"></a>
+<a id="__codelineno-3-85" name="__codelineno-3-85" href="#__codelineno-3-85"></a>```text
+<a id="__codelineno-3-86" name="__codelineno-3-86" href="#__codelineno-3-86"></a>turn/start
+<a id="__codelineno-3-87" name="__codelineno-3-87" href="#__codelineno-3-87"></a>  claim next-step input plus one queued message
+<a id="__codelineno-3-88" name="__codelineno-3-88" href="#__codelineno-3-88"></a>  snapshot Session model selection; assemble prompt sections + step-admitted tool schemas
+<a id="__codelineno-3-89" name="__codelineno-3-89" href="#__codelineno-3-89"></a>  -&gt; agent/pre-step; project runtime context at fallback
+<a id="__codelineno-3-90" name="__codelineno-3-90" href="#__codelineno-3-90"></a>                                     reject | enter(messages, startsRequestSeries?)
+<a id="__codelineno-3-91" name="__codelineno-3-91" href="#__codelineno-3-91"></a>     reject, or a first enter rewritten empty -&gt; close the turn with no step
+<a id="__codelineno-3-92" name="__codelineno-3-92" href="#__codelineno-3-92"></a>     step/start
+<a id="__codelineno-3-93" name="__codelineno-3-93" href="#__codelineno-3-93"></a>     agent/request -&gt; prepareCall (cancellation commits neither system nor users)
+<a id="__codelineno-3-94" name="__codelineno-3-94" href="#__codelineno-3-94"></a>     reconcile system/message using the prepared call capability
+<a id="__codelineno-3-95" name="__codelineno-3-95" href="#__codelineno-3-95"></a>     append entered messages as user/message; reconcile retained runtime context
+<a id="__codelineno-3-96" name="__codelineno-3-96" href="#__codelineno-3-96"></a>     log request/header and request/context as needed
+<a id="__codelineno-3-97" name="__codelineno-3-97" href="#__codelineno-3-97"></a>     derive and freeze model history from the log
+<a id="__codelineno-3-98" name="__codelineno-3-98" href="#__codelineno-3-98"></a>     stream the bound prepared call -&gt; llm/stream -&gt; agent/assistant-stream start
+<a id="__codelineno-3-99" name="__codelineno-3-99" href="#__codelineno-3-99"></a>       agent/assistant-stream chunk*
+<a id="__codelineno-3-100" name="__codelineno-3-100" href="#__codelineno-3-100"></a>       assistant/message | assistant/attempt -&gt; agent/assistant-stream end
+<a id="__codelineno-3-101" name="__codelineno-3-101" href="#__codelineno-3-101"></a>     tool/call* -&gt; tools/pre-execute -&gt; tools/execute -&gt; tools/post-execute -&gt; tool/result*
+<a id="__codelineno-3-102" name="__codelineno-3-102" href="#__codelineno-3-102"></a>     step/end
+<a id="__codelineno-3-103" name="__codelineno-3-103" href="#__codelineno-3-103"></a>     tools owe another request, or next-step input arrived -&gt; claim -&gt; next step
+<a id="__codelineno-3-104" name="__codelineno-3-104" href="#__codelineno-3-104"></a>  -&gt; agent/turn-stopping
+<a id="__codelineno-3-105" name="__codelineno-3-105" href="#__codelineno-3-105"></a>turn/end
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>行</th>
+<th>讲解</th>
+<th>编号</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>turn/start</code></td>
+<td>持久事件,turn 边界先于任何输入声明落盘;失败(日志写不进)直接 <code>agent/error</code> + 抛出</td>
+<td>②</td>
+</tr>
+<tr>
+<td><code>claim next-step input plus one queued message</code></td>
+<td>§1.4 的 <code>inbox.claim('next-turn', turn)</code>:清空 next-step + 取一条 next-turn;纯删除 splice + <code>agent/inbox/claimed</code></td>
+<td>③</td>
+</tr>
+<tr>
+<td><code>snapshot Session model selection; assemble ...</code></td>
+<td><code>model.current()</code> 快照 provider/model/effort,作为 <code>AssembleContext.modelSelection</code> 与 <code>agent/pre-step.modelSelection</code> 携带;<code>ctx.tools.resolve()</code> 得到本 step 准入的工具集,<code>ctx.systemPrompt.assemble()</code> 组装提示词段与工具 schema</td>
+<td>④</td>
+</tr>
+<tr>
+<td><code>-&gt; agent/pre-step; project runtime context at fallback</code></td>
+<td>瀑布事件;<strong>默认实现(无监听器时)在监听器跑完后投影 runtime context</strong>,把注册的运行时事实(如工作目录)作为附加用户上下文拼进消息</td>
+<td>⑤</td>
+</tr>
+<tr>
+<td><code>reject | enter(messages, startsRequestSeries?)</code></td>
+<td>瀑布返回的决定是<strong>权威的</strong>;包装监听器要 <code>{ ...decision, messages }</code> 保留下游结果</td>
+<td>⑤</td>
+</tr>
+<tr>
+<td><code>reject, or a first enter rewritten empty -&gt; close the turn with no step</code></td>
+<td>首次声明被拒→ <code>turn/end { kind: 'blocked' }</code>;首次声明改写为空→ <code>turn/end { kind: 'completed' }</code>;两者都不产生 step</td>
+<td>⑤→⑮</td>
+</tr>
+<tr>
+<td><code>step/start</code></td>
+<td>持久事件;此后才进入请求准备</td>
+<td>⑥</td>
+</tr>
+<tr>
+<td><code>agent/request -&gt; prepareCall</code></td>
+<td>已弃用的瀑布(只能改采样等 controls,不能改路由)+ <code>ctx.llm.prepareCall()</code> 绑定适配器;<strong>这两个异步阶段中取消,system 与 users 都不提交</strong></td>
+<td>⑦</td>
+</tr>
+<tr>
+<td><code>reconcile system/message ...</code></td>
+<td>用 prepared call 的能力(<code>systemPromptUpdate</code>/<code>toolUpdate</code>)把渲染好的提示词调和进 <code>system/message</code> 历史</td>
+<td>⑧</td>
+</tr>
+<tr>
+<td><code>append entered messages as user/message; ...</code></td>
+<td>仅首次尝试:声明进来的消息逐条落 <code>user/message</code>;runtime context 候选原位替换对应消息</td>
+<td>⑧</td>
+</tr>
+<tr>
+<td><code>log request/header and request/context as needed</code></td>
+<td>信封(config+tools)变了记 <code>request/header</code>(reason <code>change</code>);provider/model/contextWindow/systemPromptUpdate 变了记 <code>request/context</code></td>
+<td>⑧</td>
+</tr>
+<tr>
+<td><code>derive and freeze model history from the log</code></td>
+<td><code>session.deriveMessages()</code> 从日志投影模型历史并逐条 <code>deepFreeze</code>——请求不携带任何日志之外的内容</td>
+<td>⑨</td>
+</tr>
+<tr>
+<td><code>stream the bound prepared call -&gt; llm/stream -&gt; ...</code></td>
+<td>走绑定的适配器经 <code>llm/stream</code> 瀑布发起流式请求;进程内发 <code>agent/assistant-stream</code> start/chunk 帧</td>
+<td>⑨⑩</td>
+</tr>
+<tr>
+<td><code>assistant/message | assistant/attempt -&gt; ... end</code></td>
+<td>成功结算为 <code>assistant/message</code>(嵌入完整紧凑带时标流);失败/重试/取消结算为 <code>assistant/attempt</code>(不进模型历史);之后才发 committed end 帧</td>
+<td>⑩</td>
+</tr>
+<tr>
+<td><code>tool/call* -&gt; tools/pre-execute -&gt; ... -&gt; tool/result*</code></td>
+<td>工具管线四段瀑布 + 两端持久事件;详见 §4.6</td>
+<td>⑪⑫</td>
+</tr>
+<tr>
+<td><code>step/end</code></td>
+<td>持久事件,<strong>在 finally 中落盘</strong>——无论 step 成功、失败还是取消</td>
+<td>⑬</td>
+</tr>
+<tr>
+<td><code>tools owe another request, or next-step input arrived -&gt; claim -&gt; next step</code></td>
+<td>step 以工具调用收尾(还欠一次请求)或 next-step 队列有货→ 回到 claim,同一个 turn 的下一个 step</td>
+<td>⑭</td>
+</tr>
+<tr>
+<td><code>-&gt; agent/turn-stopping</code></td>
+<td><strong>串行</strong>检查点(无 <code>next()</code>):turn 即将关闭,监听器可通过 <code>agent.steer()</code> 再喂一步;数据说了算</td>
+<td>⑭</td>
+</tr>
+<tr>
+<td><code>turn/end</code></td>
+<td>持久事件,reason ∈ <code>completed / aborted / blocked / error / max-tokens</code>(恢复路径另有 <code>interrupted</code>、<code>forked</code> 标记)</td>
+<td>⑮</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4">4. 分阶段细讲<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h3 id="41-turnstart-claim">4.1 turn/start 与输入声明(claim)<a class="headerlink" href="#41-turnstart-claim" title="Permanent link">&para;</a></h3>
+<p>驱动器的主循环在 <code>ReactLoopAgent.turn()</code>(<code>packages/core/agent-loop/src/agent.ts</code>)。开场三件事:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">turn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">phase</span><span class="p">.</span><span class="nx">turn</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mf">1</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'turn/start'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">throwError</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p">}</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nx">phase</span><span class="p">.</span><span class="nx">turn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">turn</span>
+</code></pre></div>
+<p>turn 号是<strong>日志顺序号之外的独立计数</strong>,随会话持久。之后进入 <code>while (true)</code> 循环,第一个动作就是 <code>preStep(target, { turn, step })</code>,其中第一个 step 的 target 是 <code>'next-turn'</code>。</p>
+<p>注意一个语义细节:<code>wakeDriver()</code> 注释写道——"A wake sent while idle always opens its turn boundary, even when its message was cleared."空闲时收到唤醒一定会开 turn 边界,哪怕消息随后被清掉。也就是说"边界"与"内容"解耦:边界是日志事实,内容可以被 pre-step 拒绝。被取消的活动无法吸纳唤醒输入,它会重定位为下一 turn(<code>wakingAfterAbort</code> 分类)。</p>
+<h3 id="42-agentpre-step">4.2 agent/pre-step:接受、改写、拒绝<a class="headerlink" href="#42-agentpre-step" title="Permanent link">&para;</a></h3>
+<p><code>preStep()</code> 是 step 的"海关"。完整顺序:</p>
+<ol>
+<li><code>this.inbox.claim(target, position.turn)</code> —— 取走一批输入(§1.4);</li>
+<li><code>const selection = this.model.current()</code> —— 没有 provider/model 直接抛错,step 无法准备;</li>
+<li><code>await this.loopCtx.tools.resolve({ agent, modelSelection: selection, signal })</code> —— 解析本 step 准入的工具集;</li>
+<li><code>await this.loopCtx.systemPrompt.assemble({ ...assembleContextFor(this, signal), modelSelection: selection, toolSet })</code> —— 组装提示词;</li>
+<li><code>signal.throwIfAborted()</code> —— 取消检查;</li>
+<li>发起 <code>agent/pre-step</code> 瀑布:</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">decision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">.</span><span class="nx">waterfall</span><span class="p">(</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="s1">'agent/pre-step'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="kt">claimed</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">position</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">,</span><span class="w"> </span><span class="nx">modelSelection</span><span class="o">:</span><span class="w"> </span><span class="kt">selection</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">PreStepDecision</span><span class="o">&gt;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">sections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">renderContextSections</span><span class="p">(</span><span class="nx">assembly</span><span class="p">)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">context</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">runtimeContext</span><span class="p">.</span><span class="nx">project</span><span class="p">(</span><span class="nx">joinContextSections</span><span class="p">(</span><span class="nx">sections</span><span class="p">),</span><span class="w"> </span><span class="nx">sections</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="o">&lt;</span><span class="nx">PreStepDecision</span><span class="o">&gt;</span><span class="p">({</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">      </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'enter'</span><span class="p">,</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="kt">context</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">claimed</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">[...</span><span class="nx">claimed</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">],</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="p">})</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="p">},</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">)</span>
+</code></pre></div>
+<p>瀑布的 <code>next()</code> 默认实现负责把 runtime context(工作目录等注册的运行时事实)追加为附加消息。监听器可以:</p>
+<ul>
+<li><strong>接受</strong>:调 <code>next()</code> 原样返回(包装型监听器必须 <code>{ ...decision, messages }</code> 保留下游消息和 <code>startsRequestSeries</code>,除非有意替换);</li>
+<li><strong>改写</strong>:返回 <code>{ kind: 'enter', messages: [...自己的消息] }</code>,替换进入 step 的内容——steering 和注入上下文正是借此机制与用户消息合流;</li>
+<li><strong>拒绝</strong>:返回 <code>{ kind: 'reject' }</code>。</li>
+</ul>
+<p>决定是<strong>权威的(authoritative)</strong>。拒绝的后果在 <code>turn()</code> 里:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">decision</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">preStep</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">decision</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'reject'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nx">turnEnds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'blocked'</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>被拒绝的消息<strong>留在了"已移除"状态</strong>:既不回炉收件箱,也不会变成 <code>user/message</code>,turn 以 <code>blocked</code> 关闭、不产生 step。<code>agent/inbox/claimed</code> 的 JSDoc 明确记录了这个终点。</p>
+<p>"改写为空"的分支同样在 <code>turn()</code> 里,有两层判断:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">turnEnds</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">decision</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1">// A removed waking message or an enter decision rewritten to empty</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1">// still owns the initial turn boundary, but it spends no model call.</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">phase</span><span class="p">.</span><span class="nx">step</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">decision</span><span class="p">.</span><span class="nx">messages</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">  </span><span class="nx">turnEnds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'completed'</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>第一层:turn 已经决定要结束(比如前一个 step 以纯文本完成),而这条边界声明又是空的 → 直接 break,不再花费 step;</li>
+<li>第二层:<strong>首条声明</strong>为空(消息被移除,或 enter 改写为空)→ turn 边界照开(<code>turn/start</code> 已落盘),但零 step 以 <code>completed</code> 关闭——这就是 §1.1 说的"0 个 step 的 turn"。</li>
+</ul>
+<h3 id="43-system-step-schema">4.3 提示词组装:system 段 + step 准入的工具 schema<a class="headerlink" href="#43-system-step-schema" title="Permanent link">&para;</a></h3>
+<p>组装发生在 pre-step 瀑布<strong>之前</strong>,由两个能力服务完成:</p>
+<ul>
+<li><code>ctx.tools.resolve({ agent, modelSelection, signal })</code> 返回 <code>ResolvedToolSet</code>。它是本 step 的<strong>准入名单</strong>:只有名单内的工具 schema 会进入提示词与请求头,名单也在 step 结束后统一 <code>dispose()</code>(许可关闭,"Admission closes once the step's tool batch settles or no step opens")。</li>
+<li><code>ctx.systemPrompt.assemble(...)</code> 是 <code>system-prompt/assemble</code> 瀑布:各插件贡献提示词段,最终产出 <code>PromptAssembly</code>(sections + tools)。</li>
+</ul>
+<p>关键细节:<strong>modelSelection 快照先于一切</strong>。<code>agent.model.current()</code> 在组装前捕获 provider、model、显式 reasoning effort,作为 <code>AssembleContext.modelSelection</code> 与 <code>agent/pre-step.modelSelection</code> 双通道携带;<strong>重试沿用同一快照</strong>——中途改模型选择只影响下一个 step。未指定 effort 时由适配器解析默认值。</p>
+<p>提示词本身不在请求时临时拼字符串,而是走"历史调和":渲染好的提示词在每次尝试时与日志中既存的 <code>system/message</code> 节点调和(空文本清空、支持 <code>in-history</code> 的路由追加更新、其余路由在首个 system 节点合并)。这保证了 §5 的不变量——系统提示词也是日志的一部分。</p>
+<h3 id="44-agentrequest-preparecall">4.4 agent/request 与 prepareCall:配置、取消承诺与冻结<a class="headerlink" href="#44-agentrequest-preparecall" title="Permanent link">&para;</a></h3>
+<p><code>step/start</code> 落盘后,进入请求准备。<code>prepareRequest()</code> 的骨架:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">seedConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">deepFreeze</span><span class="p">(</span><span class="nx">structuredClone</span><span class="p">({</span><span class="w"> </span><span class="p">...</span><span class="nx">controls</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">selection</span><span class="w"> </span><span class="p">}))</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">proposedConfig</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">.</span><span class="nx">waterfall</span><span class="p">(</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="s1">'agent/request'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">seedConfig</span><span class="p">),</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="p">)</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nx">signal</span><span class="p">.</span><span class="nx">throwIfAborted</span><span class="p">()</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">proposedConfig</span><span class="p">.</span><span class="nx">provider</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="nx">provider</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">proposedConfig</span><span class="p">.</span><span class="nx">model</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="nx">selection</span><span class="p">.</span><span class="nx">model</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="sb">`agent "</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="si">}</span><span class="sb">": agent/request proposed "</span><span class="si">${</span><span class="nx">proposedConfig</span><span class="p">.</span><span class="nx">provider</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">proposedConfig</span><span class="p">.</span><span class="nx">model</span><span class="si">}</span><span class="sb">" after step preparation fixed "</span><span class="si">${</span><span class="nx">selection</span><span class="p">.</span><span class="nx">provider</span><span class="si">}</span><span class="sb">/</span><span class="si">${</span><span class="nx">selection</span><span class="p">.</span><span class="nx">model</span><span class="si">}</span><span class="sb">"; use agent.model.select() before step preparation`</span><span class="p">)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">}</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">...</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nx">preparedCall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">loopCtx</span><span class="p">.</span><span class="nx">llm</span><span class="p">.</span><span class="nx">prepareCall</span><span class="p">(</span><span class="nx">proposedConfig</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">)</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="nx">config</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">preparedCall</span><span class="p">.</span><span class="nx">config</span>
+</code></pre></div>
+<p>要点:</p>
+<ol>
+<li><strong>种子配置</strong>:首次请求由 AgentOptions 的输出上限 + 本次 selection 组成;后续 step 从已记录的 <code>request/header</code> 折叠,并用 <code>requestProposal()</code> <strong>剔除适配器默认值字段</strong>(标记了 <code>adapterDefaults</code> 的 <code>reasoningEffort</code>/<code>maxTokens</code>),让当前路由重新解析默认值,显式设置则保留。</li>
+<li><strong><code>agent/request</code> 已弃用</strong>:只能替换 controls(采样参数等),试图改 provider/model/effort 会直接抛错——路由选择属于 <code>agent.model.select()</code>,必须在 step 准备前完成。它不能改消息:"Model-visible content must use logged channels; this waterfall cannot mutate messages."</li>
+<li><strong><code>ctx.llm.prepareCall()</code> 绑定适配器</strong>:验证适配器自有字段、解析 effort 与输出上限默认值,返回 <code>PreparedLlmCall</code>。此后整个 step(含 <code>request/header</code> 记录与派发)都沿用这个绑定的适配器。中间件可能服务未注册的路由,所以 <code>NO_ADAPTER</code> 在这里不致命;终端派发时才要求适配器存在。</li>
+<li><strong>取消承诺</strong>:<code>agent/request</code> 与 <code>prepareCall()</code> 都是异步阶段;注释与文档反复强调——"cancellation during either async phase commits neither system nor users"。取消发生在 step/start 之后、输入提交之前,日志里不会留下任何半提交的输入。</li>
+</ol>
+<h4 id="freeze">从日志冻结(freeze)模型历史<a class="headerlink" href="#freeze" title="Permanent link">&para;</a></h4>
+<p><code>buildRequest()</code> 最后做两件事:按需落盘 <code>request/header</code>(reason:<code>initial</code>/<code>resume</code>/<code>change</code>/<code>series</code>)与 <code>request/context</code>,然后冻结请求:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1">// canonicalHeader is shallow; append logs a detached snapshot, not these local values.</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nx">deepFreeze</span><span class="p">(</span><span class="nx">header</span><span class="p">)</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">boundaryMessages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">session</span><span class="p">.</span><span class="nx">deriveMessages</span><span class="p">()</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">message</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">boundaryMessages</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">frozenMessages</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">message</span><span class="p">))</span><span class="w"> </span><span class="k">continue</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">  </span><span class="nx">deepFreeze</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">frozenMessages</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">message</span><span class="p">)</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="p">}</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="nb">Object</span><span class="p">.</span><span class="nx">freeze</span><span class="p">(</span><span class="nx">boundaryMessages</span><span class="p">)</span>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="kd">const</span><span class="w"> </span><span class="nx">request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">markAgentLoopRequest</span><span class="p">(</span><span class="nb">Object</span><span class="p">.</span><span class="nx">freeze</span><span class="p">({</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">  </span><span class="p">...</span><span class="nx">header</span><span class="p">.</span><span class="nx">config</span><span class="p">,</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">  </span><span class="nx">messages</span><span class="o">:</span><span class="w"> </span><span class="kt">boundaryMessages</span><span class="p">,</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">  </span><span class="nx">toolHistory</span><span class="o">:</span><span class="w"> </span><span class="kt">session.toolHistory</span><span class="p">(),</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">  </span><span class="p">...</span><span class="nx">header</span><span class="p">.</span><span class="nx">tools</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">tools</span><span class="o">:</span><span class="w"> </span><span class="kt">header.tools</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{},</span>
+<a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">  </span><span class="nx">sessionId</span><span class="o">:</span><span class="w"> </span><span class="kt">this.session.id</span><span class="p">,</span>
+<a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a><span class="w">  </span><span class="nx">signal</span><span class="p">,</span>
+<a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="p">}))</span>
+</code></pre></div>
+<p>三个细节值得停一停:</p>
+<ul>
+<li>请求 = <code>header.config</code> + <code>deriveMessages()</code>(从日志投影)+ <code>header.tools</code> + <code>toolHistory()</code>。<strong>没有独立的 <code>system</code> 字段</strong>——系统提示词就是 <code>system/message</code> 历史。这就是"每次请求都可从日志重建"的构造性证明(§5)。</li>
+<li>冻结身份用 <code>WeakSet</code> 复用:同一消息对象在多次请求间只冻结一次,已冻结的直接跳过("reuses freeze evidence for frozen identities");恢复的消息保留原身份。</li>
+<li><code>Object.freeze</code> 的是消息数组与信封,<strong>取消信号保持 live</strong>——冻结不可变性服务于"请求不可被中途改写",而不是提前掐断取消。</li>
+</ul>
+<h3 id="45-llmstream-agentassistant-stream">4.5 流式:llm/stream → agent/assistant-stream → 持久结算<a class="headerlink" href="#45-llmstream-agentassistant-stream" title="Permanent link">&para;</a></h3>
+<p>流式请求的循环体(<code>step()</code> 内):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">preparedCall</span><span class="o">?</span><span class="p">.</span><span class="nx">stream</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span><span class="w"> </span><span class="o">??</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">loopCtx</span><span class="p">.</span><span class="nx">llm</span><span class="p">.</span><span class="nx">stream</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nx">signal</span><span class="p">.</span><span class="nx">throwIfAborted</span><span class="p">()</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nx">live</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nx">started</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="k">for</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">chunk</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">stream</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">  </span><span class="nx">signal</span><span class="p">.</span><span class="nx">throwIfAborted</span><span class="p">()</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">  </span><span class="nx">live</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">chunk</span><span class="p">)</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="p">}</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="nx">signal</span><span class="p">.</span><span class="nx">throwIfAborted</span><span class="p">()</span>
+</code></pre></div>
+<p><code>AssistantStreamAttempt</code> 维护本尝试的进程内状态,每帧经 <code>agent/assistant-stream</code> 发出。帧类型(<code>packages/core/agent/src/runtime-types.ts</code>)是三段封闭联合:</p>
+<ul>
+<li><code>{ type: 'start', attemptId, revision, turn, step }</code> —— 每次尝试一帧;</li>
+<li><code>{ type: 'chunk', ..., index, time, chunk }</code> —— <strong>瞬态帧</strong>,不持久;</li>
+<li><code>{ type: 'end', ..., outcome: { kind: 'committed', eventType, seq } | { kind: 'abandoned' } }</code> —— 终帧,且<strong>保证在对应持久结算提交之后</strong>才发。</li>
+</ul>
+<h4 id="assistantmessage-assistantattempt">assistant/message 与 assistant/attempt 的区别<a class="headerlink" href="#assistantmessage-assistantattempt" title="Permanent link">&para;</a></h4>
+<p>成功路径:完整内容组装成 <code>assistant/message</code> 持久化,<strong>内嵌产生它的确切紧凑带时标流(compact timed stream)</strong>,可回放:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">live</span><span class="p">.</span><span class="nx">settle</span><span class="p">(</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="s1">'assistant/message'</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'assistant/message'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nx">turn</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="nx">step</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="nx">message</span><span class="p">,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="p">...</span><span class="nx">live</span><span class="p">.</span><span class="nx">usage</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">usage</span><span class="o">:</span><span class="w"> </span><span class="kt">live.usage</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="nx">stream</span><span class="o">:</span><span class="w"> </span><span class="kt">live.stream</span><span class="p">,</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">surfaceOp</span><span class="o">:</span><span class="w"> </span><span class="s1">'append'</span><span class="w"> </span><span class="p">}).</span><span class="nx">seq</span><span class="p">,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="p">)</span>
+</code></pre></div>
+<p>失败/重试/取消/流错误路径:已到达的部分结算为 <code>assistant/attempt</code>——<strong>留痕但不进模型历史</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nx">live</span><span class="p">.</span><span class="nx">settle</span><span class="p">(</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="s1">'assistant/attempt'</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'assistant/attempt'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="p">,</span><span class="w"> </span><span class="nx">stream</span><span class="o">:</span><span class="w"> </span><span class="kt">live.stream</span><span class="w"> </span><span class="p">}).</span><span class="nx">seq</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">)</span>
+</code></pre></div>
+<p>这条不对称设计的动机:失败尝试的内容不可信、不完整,若进入派生历史会污染后续请求;但调试、遥测、UI 都需要看到"那次尝试到底收到了什么"。此外有一条特殊规则:<strong>取消但已交付前缀</strong>时,即使流被中断,只要已有可见内容,仍结算为 <code>assistant/message</code> 且带 <code>interrupted: true</code> 标记——"下一个请求包含用户已经看到的文本",用户看到的历史才算数。</p>
+<p>硬性边界:进程在结算前崩溃,活流就此丢失,不留持久痕迹("a hard process loss before settlement leaves no durable attempt stream")。<code>agent/assistant-stream</code> 的唯一远端消费者是 Web 的 Session-follow 适配器。</p>
+<h3 id="46-toolcall-toolresult">4.6 工具管线:从 tool/call 到 tool/result<a class="headerlink" href="#46-toolcall-toolresult" title="Permanent link">&para;</a></h3>
+<p>模型回复含工具调用时,<code>step()</code> 把<strong>完整原始批次</strong>交给 <code>ctx.tools.execute()</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">maxParallelToolCalls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">loopCtx</span><span class="p">.</span><span class="nx">agentLoop</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">maxParallelToolCalls</span><span class="p">.</span><span class="nx">get</span><span class="p">()</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">loopCtx</span><span class="p">.</span><span class="nx">tools</span><span class="p">.</span><span class="nx">execute</span><span class="p">({</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nx">calls</span><span class="o">:</span><span class="w"> </span><span class="kt">toolCalls</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="p">,</span><span class="w"> </span><span class="nx">agent</span><span class="o">:</span><span class="w"> </span><span class="kt">this</span><span class="p">,</span><span class="w"> </span><span class="nx">log</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span><span class="nx">maxParallelToolCalls</span><span class="p">,</span><span class="w"> </span><span class="nx">toolSet</span><span class="o">:</span><span class="w"> </span><span class="kt">decision.toolSet</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="p">})</span>
+</code></pre></div>
+<h4 id="barrier">批调度:barrier 与有界滚动池<a class="headerlink" href="#barrier" title="Permanent link">&para;</a></h4>
+<p>调度器在 <code>packages/core/tools/src/batch.ts</code>。策略:<strong>独占调用形成 barrier,parallel-safe 调用进有界滚动池,且每个调用开跑前重新分类</strong>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">fillPool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">aborted</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">nextToStart</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">group</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">inFlight</span><span class="p">.</span><span class="nx">size</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nx">maxParallelToolCalls</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="c1">// Re-read later modes after ordered commits so registry changes can create a barrier.</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">nextCall</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">group</span><span class="p">[</span><span class="nx">nextToStart</span><span class="p">]</span><span class="o">!</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">nextToStart</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">mode</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'parallel'</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">      </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">pipeline</span><span class="p">.</span><span class="nx">executionMode</span><span class="p">(</span><span class="nx">nextCall</span><span class="p">.</span><span class="nx">exec</span><span class="p">).</span><span class="nx">kind</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'parallel'</span><span class="p">)</span><span class="w"> </span><span class="k">break</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">startCall</span><span class="p">(</span><span class="nx">nextToStart</span><span class="p">)</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>maxParallelToolCalls</code> 是可变 Config 字段,默认 10,<code>1</code> 即串行;</li>
+<li>并发只发生在<strong>工具体派发</strong>上;<code>tools/pre-execute</code> 按模型顺序执行,结果也按模型顺序提交(<code>commitReady()</code> 只推进连续的已就绪槽位);</li>
+<li>重新分类意味着:池子跑到一半遇到独占调用,会等当前池排空,独占调用自己成为下一个 barrier。</li>
+</ul>
+<h4 id="toolcall">持久事件的时机:<code>tool/call</code> 先于执行<a class="headerlink" href="#toolcall" title="Permanent link">&para;</a></h4>
+<p><code>BatchSettlement.start()</code> 在派发<strong>前</strong>落 <code>tool/call</code> 并记住其 seq;<code>commit()</code> 落 <code>tool/result</code> 并用 <code>sourceEventSeqs: [callSeq]</code> 显式引用配对关系:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nx">start</span><span class="p">(</span><span class="nx">block</span><span class="o">:</span><span class="w"> </span><span class="kt">ToolCallBlock</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">SessionSeq</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">log</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">undefined</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="p">...</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">agent</span><span class="o">!</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'tool/call'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="p">,</span><span class="w"> </span><span class="nx">callId</span><span class="o">:</span><span class="w"> </span><span class="kt">block.id</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="kt">block.name</span><span class="p">,</span><span class="w"> </span><span class="nx">arguments</span><span class="o">:</span><span class="w"> </span><span class="kt">block.arguments</span><span class="p">,</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span><span class="p">}).</span><span class="nx">seq</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">}</span>
+</code></pre></div>
+<p>"先记录后执行"是刻意为之:执行可能崩溃、挂死,而"模型请求了什么"必须先于"我们做了什么"成为事实——这正是失败恢复(§6.1)能补记的前提。</p>
+<h4 id="_1">单个调用的四段瀑布<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p><code>packages/core/tools/src/pipeline.ts</code> 定义共享调用管线,一次调用依次经过:</p>
+<ol>
+<li><strong>prepare</strong>:<code>tools/pre-execute</code> 瀑布(hooks、权限、沙箱)→ <code>ask</code> 决定交给 <code>ctx.approval</code> 一次性审批(审批通道缺失/不可答 → 一律 deny,fail-closed)→ 单调守卫 <code>checkGuards()</code>;</li>
+<li><strong>dispatch</strong>:<code>tools/execute</code> 瀑布(around dispatch:超时、重试、指标包裹真正工具体);调用方与包裹层信号熔接(<code>fuseToolSignals</code>),取消不抛弃已启动的 body——已启动的 promise <strong>先排空</strong>,结果才标记为 <code>ABORTED</code>;</li>
+<li><strong>complete</strong>:<code>projectContent</code> 安装执行准备好的内容 → <code>tools/post-execute</code> 瀑布(<code>accept</code> 保留/替换 content 或 value;<code>block</code> 把结果改写为带纠正反馈的 <code>isError</code>;两者都可附带 <code>additionalContexts</code>)→ <code>finalizeContent</code>(定义自有的最后内容变换)→ <code>tools/result</code> 同步通知(结果已冻结、无损 JSON);</li>
+<li><strong>结算</strong>:<code>tool/result</code> 持久落盘。</li>
+</ol>
+<p>三段瀑布都可能改写调用;所有异常都被规范化为 <code>isError</code> 结果而不是外抛——工具失败是<strong>给模型看的数据</strong>,不是驱动器异常。</p>
+<p>执行完毕,<code>additionalContexts</code>(工具或后置策略注入的上下文)按 FIFO 进入 <code>next-step</code> 队列,等待下一个 step 声明:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">context</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">additionalContexts</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="s1">'next-step'</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">nextStep</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">context</span><span class="p">])</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="47-stepend-turn">4.7 step/end、"工具还欠一次请求"与 turn 收尾<a class="headerlink" href="#47-stepend-turn" title="Permanent link">&para;</a></h3>
+<p><code>step()</code> 的返回值只有两种:<code>StepEndReason</code>(<code>completed</code> / <code>max-tokens</code>)或 <code>null</code>。<code>null</code> 的含义是"<strong>工具还欠一次模型请求</strong>"——本 step 以工具调用收尾,结果已入日志,模型需要看到结果再继续:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">toolCalls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">block</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="kr">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'tool-call'</span><span class="p">)</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">toolCalls</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'completed'</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p">...</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="k">return</span><span class="w"> </span><span class="nx">result</span><span class="p">.</span><span class="nx">concluded</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">kind</span><span class="o">:</span><span class="w"> </span><span class="s1">'completed'</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kc">null</span>
+</code></pre></div>
+<p><code>concluded</code> 来自工具结果上的 <code>concludesTurn</code> 标记(工具体调用 <code>concludeTurn()</code>):数据决定 turn 是否在本 step 终止。<code>turn()</code> 收到 <code>null</code> 后回到循环顶部,<code>target = 'next-step'</code>,claim 下一批输入(通常是空的,直接用工具结果续请求),开启下一个 step。</p>
+<p><code>step/end</code> 在 <code>finally</code> 中落盘——无论 step 正常完成、失败还是被取消,边界事件必须成对:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nx">stopRecovery</span><span class="p">()</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'step/end'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="agentturn-stopping">agent/turn-stopping:关闭前的最后检查点<a class="headerlink" href="#agentturn-stopping" title="Permanent link">&para;</a></h4>
+<p>当 <code>turnEnds</code> 已定且 next-step 队列为空时,turn 才真正走到关闭检查点:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">turnEnds</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">nextStep</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span><span class="p">.</span><span class="nx">serial</span><span class="p">(</span><span class="s1">'agent/turn-stopping'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nx">signal</span><span class="p">.</span><span class="nx">throwIfAborted</span><span class="p">()</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="p">}</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">turnEnds</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">nextStep</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="mf">0</span><span class="p">)</span><span class="w"> </span><span class="k">break</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="nx">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'next-step'</span>
+</code></pre></div>
+<p><code>agent/turn-stopping</code> 是 <strong>serial</strong> 事件:逐个 await、没有 <code>next()</code>。它的契约是"turn 即将关闭,模型不欠响应"——监听器若想续命,<strong>通过数据说话</strong>:调 <code>agent.steer(...)</code> 放进一条 steering,循环重读收件箱,发现 next-step 有货就再跑一个 step;没有就关闭。监听器顺序不影响结果,决定权完全在数据。</p>
+<h4 id="turnend-reason">turn/end 与 reason<a class="headerlink" href="#turnend-reason" title="Permanent link">&para;</a></h4>
+<p><code>turn()</code> 的 <code>finally</code> 无条件落盘:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'turn/end'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">reason</span><span class="o">:</span><span class="w"> </span><span class="kt">turnEnds</span><span class="o">!</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<p><code>turnEnds</code> 的取值(<code>packages/core/session/src/types.ts</code> 的 <code>TurnEndReasonMap</code>):</p>
+<table>
+<thead>
+<tr>
+<th>reason</th>
+<th>触发</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>completed</code></td>
+<td>自然完成(含 0-step turn)</td>
+</tr>
+<tr>
+<td><code>max-tokens</code></td>
+<td>至少一个 step 撞到输出上限;<strong>粘性</strong>:后续正常完成的 step 不能降级这个结果</td>
+</tr>
+<tr>
+<td><code>aborted</code></td>
+<td>取消,附持久化 cause(<code>user</code>/<code>parent</code>/<code>hook</code>+reason/<code>disposed</code>)</td>
+</tr>
+<tr>
+<td><code>blocked</code></td>
+<td>首条声明被 <code>agent/pre-step</code> 拒绝</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>结构化失败(<code>LlmError</code> 事实原样保留,其他错误压平为 <code>{ message, code }</code>)</td>
+</tr>
+<tr>
+<td><code>interrupted</code> / <code>forked</code></td>
+<td>恢复专用标记:崩溃遗留 turn 的补记、fork 种子边界;活循环永不发出</td>
+</tr>
+</tbody>
+</table>
+<p>关闭后若 <code>inbox.hasPending</code> 还有货(比如排队中的下一条 followup),驱动器换上<strong>新的 AbortController</strong>、<code>step</code> 归零,<code>turn()</code> 返回 <code>true</code>,<code>kick()</code> 的 <code>while (await this.turn())</code> 继续开下一个 turn。旧 controller 上遗留的唤醒闩锁因此失效——活驱动器自己 claim 队列。</p>
+<hr />
+<h2 id="5_1">5. 关键不变量:模型可见 ⟺ 已记录<a class="headerlink" href="#5_1" title="Permanent link">&para;</a></h2>
+<p>architecture.md 的一句话:</p>
+<blockquote>
+<p><strong>Model-visible means logged.</strong> Every model request must be reconstructable from the log. New model-visible inputs require session events.</p>
+</blockquote>
+<h3 id="_2">为什么成立<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>这不是口号,而是 <code>buildRequest()</code> 的构造性结果:请求的每一个组成部分都来自日志——</p>
+<ul>
+<li><code>messages</code> = <code>session.deriveMessages()</code>,纯日志投影,没有旁路;</li>
+<li><code>tools</code> = 本 step 准入的工具 schema,且它们已经在 <code>request/header</code> 里落盘(信封也是日志事件);</li>
+<li>系统提示词不是请求的独立字段,而是 <code>system/message</code> 历史节点,同样落盘;</li>
+<li><code>toolHistory()</code> 也是日志派生。</li>
+</ul>
+<p>反过来,所有进入请求的内容都在请求<strong>之前</strong>以持久事件形式提交:<code>user/message</code>(声明准入)、<code>system/message</code>(提示词调和)、<code>tool/result</code>(上一 step 的工具结果)、<code>request/header</code> + <code>request/context</code>(信封)。所以任意时刻,拿着会话日志就能逐字节重建当时发给模型的完整请求。</p>
+<h3 id="_3">它约束了什么<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>新增模型可见输入 = 必须新增会话事件</strong>。想让模型看到任何东西(工具注入的上下文、插件补充的指令),没有捷径,只能走持久事件通道。这就是 <code>agent.inject()</code> 也要经 inbox splice 落盘的原因。</li>
+<li><strong>改写既有消息内容 = 必须注册 pure message projections</strong>——插件不能直接篡改历史节点,而是声明纯投影,读取方(包括离线读者)显式应用同一投影。</li>
+<li><strong><code>agent/request</code> 瀑布不能碰消息</strong>(JSDoc 原文:"Model-visible content must use logged channels; this waterfall cannot mutate messages")。它只能改 controls。</li>
+<li><strong><code>agent/assistant-stream</code> chunk 是瞬态的,不违反不变量</strong>——chunk 是输出方向的活增量,不是模型输入;真正持久的 <code>assistant/message</code> 内嵌完整流,回放读取持久结算。反例也成立:结算前崩溃,活流丢失、不留痕,因为它从未成为模型历史的一部分。</li>
+<li><strong>失败尝试的流不进历史</strong>(<code>assistant/attempt</code>),因为派生历史由持久 <code>assistant/message</code> 组成——不可信内容天然被挡在模型可见集合之外。</li>
+</ol>
+<p>这条不变量是 fork、resume、转录、遥测、持久化全部"从日志派生"的地基:任何这些功能都不需要额外的辅助状态。</p>
+<hr />
+<h2 id="6">6. 失败与恢复<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<h3 id="61-step">6.1 失败的 step:补记缺失的工具结果<a class="headerlink" href="#61-step" title="Permanent link">&para;</a></h3>
+<p>模型可能中途失败(网络断、适配器错),而它已经声明的工具调用可能有的执行了、有的没执行。<strong>带着未配对的 <code>tool/call</code> 关闭 step,会让后续请求的派生历史不合法</strong>(provider 要求 call/result 成对)。驱动器用 <code>ToolCallRecovery</code> 在 step 关闭前补齐:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">toolRecovery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">ToolCallRecovery</span><span class="p">()</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">stopRecovery</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">ctx</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'session/event'</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">session</span><span class="p">,</span><span class="w"> </span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">session</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">)</span><span class="w"> </span><span class="nx">toolRecovery</span><span class="p">.</span><span class="nx">observe</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="p">})</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">stepEnd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="nx">decision</span><span class="p">)</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="p">...</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">event</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">toolRecovery</span><span class="p">.</span><span class="nx">results</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'tool/result'</span><span class="p">,</span><span class="w"> </span><span class="nx">event</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">        </span><span class="nx">surfaceOp</span><span class="o">:</span><span class="w"> </span><span class="s1">'append'</span><span class="p">,</span>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="w">        </span><span class="p">...</span><span class="nx">event</span><span class="p">.</span><span class="nx">sourceEventSeqs</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">{}</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">sourceEventSeqs</span><span class="o">:</span><span class="w"> </span><span class="kt">event.sourceEventSeqs</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="w">      </span><span class="p">})</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">recoveryError</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">AggregateError</span><span class="p">([</span><span class="nx">error</span><span class="p">,</span><span class="w"> </span><span class="nx">recoveryError</span><span class="p">],</span><span class="w"> </span><span class="s1">'Step failed and its pending tool results could not be recorded'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">cause</span><span class="o">:</span><span class="w"> </span><span class="kt">error</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a><span class="w">  </span><span class="k">throw</span><span class="w"> </span><span class="nx">error</span>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="p">}</span><span class="w"> </span><span class="k">finally</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-21-21" name="__codelineno-21-21" href="#__codelineno-21-21"></a><span class="w">  </span><span class="nx">stopRecovery</span><span class="p">()</span>
+<a id="__codelineno-21-22" name="__codelineno-21-22" href="#__codelineno-21-22"></a><span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="nx">session</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'step/end'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">turn</span><span class="p">,</span><span class="w"> </span><span class="nx">step</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-21-23" name="__codelineno-21-23" href="#__codelineno-21-23"></a><span class="p">}</span>
+</code></pre></div>
+<p>补记规则(packages/core/agent-loop/README.md "Unanswered calls after step failure"):</p>
+<ul>
+<li><strong>已记录 <code>tool/call</code> 但没有结果</strong> → <code>TOOL_OUTCOME_UNKNOWN</code>:结果文本明说"Its outcome is unknown.",只允许对只读/幂等操作重试;可能有副作用的操作必须先检查外部状态或询问用户;</li>
+<li><strong>请求里有调用但连 <code>tool/call</code> 记录都没有</strong> → <code>TOOL_NOT_STARTED</code>:"The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed."</li>
+<li>已提交的结果原样保留;已启动的派发先排空再恢复;turn 的 <code>error</code> 结局保留<strong>原始失败</strong>,而不是被恢复过程掩盖。</li>
+<li>若连补记都失败(日志本身写不进),原始错误与恢复错误一起包成 <code>AggregateError</code> 抛出——绝不让日志处于静默不一致状态。</li>
+</ul>
+<h3 id="62">6.2 请求失败与重试:不重复组装<a class="headerlink" href="#62" title="Permanent link">&para;</a></h3>
+<p><code>agent/request-error</code> 瀑布(<code>packages/core/agent/src/runtime-types.ts</code>)是模型请求失败的处理点。终态适配器选择、派发、迭代失败以"终态 finish"进入这里;监听器返回 <code>{ kind: 'retry' }</code> 时<strong>不调用 <code>next()</code></strong>,表示"我接管了恢复";无人处理则原始失败终态化,抛出 <code>LlmError</code>。</p>
+<p>重试发生在<strong>同一个打开的 step 里</strong>,而且是刻意廉价的:<code>step()</code> 的 <code>while (true)</code> 循环里 <code>firstAttempt</code> 在第一轮后被置 <code>false</code>,因此:</p>
+<ul>
+<li><strong>不重复组装</strong>:提示词与工具集在 <code>preStep()</code> 只组装一次,<code>renderPrompt(assembly)</code> 在 step 开头渲染一次,重试直接复用;</li>
+<li><strong>不重复 <code>agent/pre-step</code></strong>:准入决定不重跑;</li>
+<li><strong>不重复用户准入</strong>:<code>decision.messages</code> 只在 <code>firstAttempt</code> 时提交为 <code>user/message</code>;</li>
+<li>每次尝试只重做:刷新注册的 runtime facts、调和系统提示词、按需补记 header/context、重新 <code>deriveMessages()</code> 冻结请求。</li>
+</ul>
+<p>每次尝试的失败流照常结算为 <code>assistant/attempt</code>,所以 N 次尝试在日志里留下 N 条尝试痕迹 + 最多一条成功消息。已弃用的 <code>agent/request</code> 瀑布<strong>不在重试中重跑</strong>——重试沿用同一信封。内置消费者示例:<code>dsh-compaction-basic</code> 在上下文溢出时在此触发压缩再重试,<code>llm-retry</code> 实现通用退避。</p>
+<h3 id="63">6.3 取消语义<a class="headerlink" href="#63" title="Permanent link">&para;</a></h3>
+<p>取消的入口是 <code>agent.cancel(cause, options)</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nx">cancel</span><span class="p">(</span><span class="nx">cause</span><span class="o">:</span><span class="w"> </span><span class="kt">AgentCancelCause</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="kt">CancelOptions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">options</span><span class="p">.</span><span class="nx">keepInbox</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">inbox</span><span class="p">.</span><span class="nx">clear</span><span class="p">()</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'idle'</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">wakeRequested</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">kind</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'idle'</span><span class="p">)</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">phase</span><span class="p">.</span><span class="nx">abort</span><span class="p">.</span><span class="nx">abort</span><span class="p">(</span><span class="nx">cause</span><span class="p">)</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li>默认<strong>清空收件箱</strong>(<code>next-step</code> 先于 <code>next-turn</code> 清);<code>keepInbox: true</code> 保留待处理输入;</li>
+<li>cause 取值:<code>user</code> / <code>parent</code> / <code>hook</code>(带 reason)/ <code>disposed</code>;</li>
+<li>取消是<strong>协作式</strong>的:信号逐层传播——流式循环每个 chunk 后 <code>throwIfAborted()</code>,工具管线在 prepare/dispatch/complete 多个关口检查,已启动的工具 body 排空到静默才结算。</li>
+</ul>
+<p>三个值得记住的精确行为:</p>
+<ol>
+<li><strong>已交付的文本不丢</strong>。取消的流若已有可见内容,结算为 <code>interrupted: true</code> 的 <code>assistant/message</code>,把用户看到的前缀固化进历史(§4.5);未派发的工具调用收到合成 <code>tool/call</code> + <code>ABORTED_BEFORE_DISPATCH</code> 结果对,保证历史可回放。</li>
+<li><strong>日志里的 cause 是拷贝</strong>。<code>abortedCancelCause()</code> 只复制 <code>turn/end</code> 需要的字段:<code>AbortSignal.reason</code> 是调用方的活对象,Node 的 fetch 会往上挂 <code>stack</code>——那不是可 JSON 化的数据,拷贝把它挡在日志之外,保证 <code>turn/end { kind: 'aborted', reason }</code> 永远可落盘。</li>
+<li><strong>取消关闭 turn,但不关闭驱动器</strong>。<code>turn()</code> 的 catch 把 cause 翻译成 <code>aborted</code> 结局后继续上抛,<code>kick()</code> 在驱动器边界收容(<code>Reported failures and cancellation are contained at the driver boundary</code>),<code>agent/error</code> 先行通知;<code>finally</code> 里 <code>turn/end</code> 照常落盘。已闩住的唤醒(<code>wakeRequested</code>)在下一次收敛时重放。</li>
+</ol>
+<hr />
+<h2 id="7">7. 流程步骤 → 源码 → 教程章节映射表<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>流程步骤</th>
+<th>源码(相对主仓库根)</th>
+<th>本教程章节</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>收件箱命令与声明</td>
+<td><code>packages/core/agent-loop/src/inbox.ts</code></td>
+<td>§1.2–1.4</td>
+</tr>
+<tr>
+<td>turn/step 状态机、取消、冻结请求</td>
+<td><code>packages/core/agent-loop/src/agent.ts</code></td>
+<td>§3、§4.1–4.7</td>
+</tr>
+<tr>
+<td>活流帧(start/chunk/end)结算</td>
+<td><code>packages/core/agent-loop/src/assistant-stream.ts</code>;帧类型 <code>packages/core/agent/src/runtime-types.ts</code></td>
+<td>§4.5</td>
+</tr>
+<tr>
+<td>runtime context 投影</td>
+<td><code>packages/core/agent-loop/src/runtime-context.ts</code></td>
+<td>§4.2</td>
+</tr>
+<tr>
+<td><code>agent/*</code> 事件契约</td>
+<td><code>packages/core/agent/src/runtime-types.ts</code></td>
+<td>§2.1、§4.2、§4.7、§6.2</td>
+</tr>
+<tr>
+<td>提示词组装与 system/message 调和</td>
+<td><code>packages/core/system-prompt/src/index.ts</code></td>
+<td>§4.3</td>
+</tr>
+<tr>
+<td>工具调用管线(四段瀑布)</td>
+<td><code>packages/core/tools/src/pipeline.ts</code></td>
+<td>§4.6</td>
+</tr>
+<tr>
+<td>工具批调度(barrier/滚动池)</td>
+<td><code>packages/core/tools/src/batch.ts</code></td>
+<td>§4.6</td>
+</tr>
+<tr>
+<td><code>SessionEventMap</code>、<code>TurnEndReason</code></td>
+<td><code>packages/core/session/src/types.ts</code></td>
+<td>§2.1、§4.7</td>
+</tr>
+<tr>
+<td><code>deriveMessages()</code> / <code>toolHistory()</code> 投影</td>
+<td><code>packages/core/session</code>(见该包 README)</td>
+<td>§4.4、§5</td>
+</tr>
+<tr>
+<td>Turn flow 权威伪代码与可视化</td>
+<td><code>docs/architecture.md</code>(Turn flow)、<code>docs/agent-lifecycle.md</code>、<code>docs/tool-execution-pipeline.md</code>、<code>docs/event-producer-consumer.md</code></td>
+<td>§2、§3、§4.6</td>
+</tr>
+</tbody>
+</table>
+<p>后续章节深入链接:核心引擎篇将逐包拆解 <code>agent</code>、<code>agent-loop</code>、<code>tools</code>、<code>session</code>、<code>llm</code>、<code>system-prompt</code>(见 <code>docs/02-core-engine/</code> 各目录)。</p>
+<hr />
+<h2 id="_4">小结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>把一次对话的生命周期压缩成三句话:</p>
+<ol>
+<li><strong>inbox 是唯一入口,claim 是唯一出口</strong>:输入持久排队,驱动器在 turn 边界原子取走一批,交由 <code>agent/pre-step</code> 瀑布裁决接受、改写或拒绝——拒绝或空声明意味着一个零 step 的 turn。</li>
+<li><strong>每个 step 是"从日志来、回日志去"的一个闭环</strong>:快照模型选择 → 组装 → <code>agent/request</code> + <code>prepareCall</code> → 提交 system/user → 冻结派生历史 → 流式 → 工具四段瀑布 → <code>step/end</code>;工具还欠一次请求,就再来一个 step。</li>
+<li><strong>模型可见 ⟺ 已记录</strong>是全流程的纲:请求的每个字节都能从会话日志重建,所以 fork、resume、转录、遥测一律派生自日志,不需要任何影子状态。</li>
+</ol>
+<p>下一章我们转向系统如何启动:profile、bundle 与 cordis.yml 的组合机制(《Boot 与 Profile》)。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.sections", "navigation.expand", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "content.code.copy", "toc.follow"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+        <script src="../../javascripts/pager.js?v=3"></script>
+      
+    
+  </body>
+</html>

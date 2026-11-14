@@ -1,0 +1,65 @@
+/* 全宽布局：左侧导航贴最左，右侧大纲贴最右，中间内容自适应撑满。
+   Material 默认用 .md-grid { max-width: 61rem } 把整个版面限制在 976px 居中；
+   内容区本身 flex-grow:1，解开网格限制后即自动扩展。 */
+
+.md-grid {
+  max-width: 100%;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+
+/* 侧栏与内容边缘留出呼吸空间，同时保持贴近视口两侧 */
+.md-sidebar--primary {
+  margin-right: 1rem;
+}
+.md-sidebar--secondary {
+  margin-left: 1rem;
+}
+
+/* 文末上一页 / 下一页按钮 */
+.dsh-pager {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+.dsh-pager__btn {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: border-color 0.25s, background-color 0.25s, transform 0.1s;
+}
+.dsh-pager__btn:hover {
+  border-color: var(--md-primary-fg-color);
+  background-color: var(--md-primary-fg-color--transparent, rgba(0, 0, 0, 0.04));
+}
+.dsh-pager__btn:active {
+  transform: translateY(1px);
+}
+.dsh-pager__btn--next {
+  text-align: right;
+  margin-left: auto;
+}
+.dsh-pager__dir {
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color--light);
+}
+.dsh-pager__title {
+  font-weight: 600;
+  color: var(--md-primary-fg-color);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.dsh-pager__btn--off {
+  opacity: 0.35;
+  pointer-events: none;
+}
