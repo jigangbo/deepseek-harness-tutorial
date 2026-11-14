@@ -153,4 +153,4 @@ scopeTarget(req.agent, req.agent), 'approval/request', req,
 
 ## 小结
 
-`dsh-scope` 用约 370 行代码给出三个正交原语：**不透明身份**（`ScopeKey`）、**拥有的注册上下文**（`createScope` 的 `Scope`，可见性与销毁所有权同源）、**路由载体**（`scopeTarget` + `Scoped<T>` 品牌与 `this` 类型约束）。一条父链关系支撑两个方向的语义：注册视图向下继承，事件准入向上延伸。它不引入沙箱或权限——它让"同一插件在不同 agent 手里有不同实例"成为注册表作者只要遵循 `scopeOf()` / `scopeTarget()` 两个约定就能免费获得的结构性质。
+`dsh-scope` 用一个 200 行出头的源文件（`src/index.ts`，另有 267 行的 `store.ts` 存储层）给出三个正交原语：**不透明身份**（`ScopeKey`）、**拥有的注册上下文**（`createScope` 的 `Scope`，可见性与销毁所有权同源）、**路由载体**（`scopeTarget` + `Scoped<T>` 品牌与 `this` 类型约束）。一条父链关系支撑两个方向的语义：注册视图向下继承，事件准入向上延伸。它不引入沙箱或权限——它让"同一插件在不同 agent 手里有不同实例"成为注册表作者只要遵循 `scopeOf()` / `scopeTarget()` 两个约定就能免费获得的结构性质。

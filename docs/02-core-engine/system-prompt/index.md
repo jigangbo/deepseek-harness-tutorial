@@ -43,12 +43,8 @@ system-prompt/assemble waterfall（scopeTarget(this, scope)：scope 内 listener
 agent loop 拿到 `PromptAssembly` 后分两路消费：
 
 ```text
-renderPrompt(assembly) ──────────────► system 消息文本
-renderContextSections + joinContextSections ─► runtime-context 快照文本
-        │
-        ▼  agent-loop step()（packages/core/agent-loop/src/agent.ts）
-session.append('system/message', ..., intent)   ← system 节点 0 / 原地替换 / in-history 追加
-session.append('user/message', 快照)            ← 上下文作为 user 角色快照进入历史
+renderPrompt(assembly) ──► system 消息文本（append/replace 为 system/message 表面节点）
+renderContextSections + joinContextSections ──► runtime-context 快照（append 为 user/message）
 ```
 
 ## ctx.systemPrompt 服务
@@ -88,38 +84,23 @@ if (config.includeHarnessIdentity ?? true) {
     text: 'You are an AI agent powered by DeepSeek Harness.',
   })
 }
-this.section({
-  name: PERSONA_PREFIX_SECTION,
-  order: this.getSectionOrder('DEPLOYMENT_PERSONA_PREFIX'),
-  // The fallback narrows the optional input type; the schema already defaults it.
-  text: config.personaPrefix ?? '',
-})
-this.section({
-  name: PERSONA_SUFFIX_SECTION,
-  order: this.getSectionOrder('DEPLOYMENT_PERSONA_SUFFIX'),
-  text: config.personaSuffix ?? '',
-})
+this.section({ name: PERSONA_PREFIX_SECTION, order: this.getSectionOrder('DEPLOYMENT_PERSONA_PREFIX'), text: config.personaPrefix ?? '' })
+this.section({ name: PERSONA_SUFFIX_SECTION, order: this.getSectionOrder('DEPLOYMENT_PERSONA_SUFFIX'), text: config.personaSuffix ?? '' })
 ```
 
 `PERSONA_PREFIX_SECTION`（`'deployment:persona-prefix'`）导出为常量的原因写在 JSDoc 里：agent preset 要用**同一个名字**注册 scoped 段来替换部署 persona——两边命名相同才能"替换"而不是"重复"。
 
 ## 段注册与排序：getSectionOrder
 
-段的完整输入契约是 `PromptSection`：
+段的完整输入契约是 `PromptSection`（JSDoc 摘要）：
 
 ```ts
-/** One contributed section of the system prompt (registry input). */
 export interface PromptSection {
-  /** Unique name — a duplicate registration throws. */
-  readonly name: string
-  /** Sections are concatenated in ascending order. Equal orders use code-unit name order. */
-  readonly order: number
-  /** Static text or a provider evaluated at each assembly with that assembly's AssembleContext. */
-  readonly text: string | ((context: AssembleContext) => string)
-  /** Whether to interpolate prompt variables. Defaults to true; false preserves literal text. */
-  readonly interpolate?: boolean
-  /** Treat this contribution as the complete system prompt. */
-  readonly complete?: boolean
+  readonly name: string        // Unique name — a duplicate registration throws.
+  readonly order: number       // Ascending; equal orders use code-unit name order.
+  readonly text: string | ((context: AssembleContext) => string)  // static or per-assembly provider
+  readonly interpolate?: boolean // defaults true; false preserves literal text
+  readonly complete?: boolean  // become the exact complete prompt after assembly
 }
 ```
 
@@ -149,26 +130,11 @@ const SECTION_ORDERS = {
 
 这张表就是整个 first-party 提示词的目录：身份（−1000）→ 部署 persona 前缀（0）→ 策略段（plan 500 / team 600 / PTC 800）→ 各工具的使用说明（1000–3000）→ 可复用指令（TOOLS_SDK 5000）→ 结构化输出（9900）→ 环境性后缀（本仓库来源 10000、Web 面 10100、persona 后缀 10200）。动态上下文有独立的一张 `CONTEXT_ORDERS`（工作目录 100、沙箱策略 110、审批策略 115、子代理委派 120…），两条位置轴互不干扰。
 
-外部贡献者可以用任意有限 order——`section()` 只拒绝非有限值：
-
-```ts
-section(section: PromptSection): () => void {
-  if (!Number.isFinite(section.order)) {
-    throw new TypeError(`prompt section "${section.name}" order must be a finite number`)
-  }
-  return this.layers.effect(
-    this.ctx,
-    layer => layer.sections.insert(section.name, section),
-    { label: 'systemPrompt.section()' },
-  )
-}
-```
-
-`this.layers` 是 `ScopedLayers<PromptLayer>`：注册走 `ctx.effect()`，**调用上下文的 scope 标签同时决定可见性与销毁所有权**——这正是 scope 模块的语义（见 [scope 章节](../scope/index.md)）。全局层重名与 scoped 层重名的报错文案不同，scoped 重名会提示"per-agent override 请走该 agent 的 `agent.ctx`"。
+外部贡献者可以用任意有限 order——`section()` 只拒绝非有限值，然后经 `this.layers.effect(this.ctx, ...)` 注册（`this.layers` 是 `ScopedLayers<PromptLayer>`）。**调用上下文的 scope 标签同时决定可见性与销毁所有权**——这正是 scope 模块的语义（见 [scope 章节](../scope/index.md)）；全局层与 scoped 层的重名报错文案不同，scoped 重名会提示"per-agent override 请走该 agent 的 `agent.ctx`"。
 
 ## 变量与严格插值
 
-变量由 `variable(name, provider)` 注册，在段或上下文文本里写成 `{{name}}`。agent loop 注册了两个：
+变量由 `variable(name, provider)` 注册，在段或上下文文本里写成 `{{name}}`。agent loop 注册了两个（`packages/core/agent-loop/src/index.ts`）：
 
 ```ts
 ctx.systemPrompt.variable('provider', context => context.modelSelection?.provider ?? context.agent?.options.provider)
@@ -177,18 +143,7 @@ ctx.systemPrompt.variable('model', context => context.modelSelection?.model ?? c
 
 所以部署可以在 `personaPrefix` 模板里写 `You are {{model}}, ...` 引入模型名简介。注意 loop **不注册 `{{cwd}}`**——工作目录由 working-directory 服务以字面上下文贡献，自定义 persona 模板里引用 `{{cwd}}` 会让组装在第一次模型请求前就失败。
 
-插值发生在渲染阶段（`renderPrompt`），不是组装阶段，且极其严格：
-
-```ts
-export function renderPrompt(assembly: PromptAssembly): string {
-  return assembly.sections
-    .map(section => section.interpolate === false ? section.text : interpolate(section, assembly.variables, 'section'))
-    .filter(text => text.length > 0)
-    .join('\n\n')
-}
-```
-
-`interpolate()` 的失败路径有四类，全部抛错：畸形引用（`{{` 后有 `}}` 但不构成完整 group）、名字不匹配正则、**未注册**的名字（用 `Object.hasOwn` 检查，避免原型链污染）、已注册但本次求值为 `undefined`。两个刻意的宽容点：孤立的 `{{` 后面再也没有 `}}` 时视为字面散文；替换后的值不会再被扫描。`interpolate: false` 让整段保持字面量——生成型工具文档或含 `{{…}}` 的目录名需要它。
+插值发生在渲染阶段（`renderPrompt`），不是组装阶段，且极其严格——`renderPrompt` 把每段按 `interpolate` 选项走 `interpolate()`，去空段后以空行拼接。`interpolate()` 的失败路径有四类，全部抛错：畸形引用（`{{` 后有 `}}` 但不构成完整 group）、名字不匹配正则、**未注册**的名字（用 `Object.hasOwn` 检查，避免原型链污染）、已注册但本次求值为 `undefined`。两个刻意的宽容点：孤立的 `{{` 后面再也没有 `}}` 时视为字面散文；替换后的值不会再被扫描。`interpolate: false` 让整段保持字面量——生成型工具文档或含 `{{…}}` 的目录名需要它。
 
 ## 工具 schema：step 准入（toolSet）与 provider 的交互
 
@@ -209,17 +164,10 @@ declare module '@deepseek-ai/dsh-system-prompt' {
 
 ```ts
 const toolSet = await this.loopCtx.tools.resolve({ agent: this, modelSelection: selection, signal })
-try {
-  const assembly = await this.loopCtx.systemPrompt.assemble({ ...assembleContextFor(this, signal), modelSelection: selection, toolSet })
+const assembly = await this.loopCtx.systemPrompt.assemble({ ...assembleContextFor(this, signal), modelSelection: selection, toolSet })
 ```
 
-`assembleContextFor`（`packages/core/agent/src/dispatch.ts`）把 agent 与 scope 一起填上，避免 agent 级贡献被静默漏掉：
-
-```ts
-export function assembleContextFor(agent: Agent, signal?: AbortSignal): AssembleContext {
-  return { agent, scope: agent, ...signal === undefined ? {} : { signal } }
-}
-```
+`assembleContextFor`（`packages/core/agent/src/dispatch.ts`）把 agent 与 scope 一起填上——`{ agent, scope: agent, ...signal === undefined ? {} : { signal } }`——避免 agent 级贡献被静默漏掉。
 
 3. **ToolRuntime 注册的 schema provider 在组装时被回调**（`packages/core/tools/src/index.ts` 构造函数）：
 
@@ -238,12 +186,10 @@ provider 返回的 `ToolProviderResult` 除 `schemas` 外还有一个可选 `kno
 ```ts
 function orderTools(tools: ToolSchema[], toolOrder: string[] | undefined, knownNames: ReadonlySet<string>): ToolSchema[] {
   const reserved = tools.find(tool => tool.name === TOOL_ORDER_REST)
-  if (reserved !== undefined) {
-    throw new Error(`tool provider returned reserved tool name "${TOOL_ORDER_REST}" ...`)
-  }
+  if (reserved !== undefined) throw new Error(`tool provider returned reserved tool name "${TOOL_ORDER_REST}" ...`)
   if (toolOrder === undefined) return tools.sort(compareToolNames)
   const unknown = toolOrder.filter(name => name !== TOOL_ORDER_REST && !knownNames.has(name))
-  if (unknown.length > 0) { throw new Error(...) }
+  if (unknown.length > 0) throw new Error(`toolOrder lists unregistered tool...`)
   const listed = new Set(toolOrder)
   const rest = tools.filter(tool => !listed.has(tool.name)).sort(compareToolNames)
   return toolOrder.flatMap(name =>
@@ -261,17 +207,12 @@ function orderTools(tools: ToolSchema[], toolOrder: string[] | undefined, knownN
 async assemble(context: AssembleContext = {}): Promise<PromptAssembly> {
   const scope = context.scope
   const scopeLayers = this.layers.chainLayers(scope)
-  const runtimeContextSuppressed = ...
-  // Scoped variables shadow globals.
+  // Scoped variables shadow globals; scope-chain providers run farthest first,
+  // so the nearest scope wins a name.
   const variables: Record<string, string | undefined> = {}
-  for (const [name, provider] of this.layers.global.variables.entries()) {
-    variables[name] = provider(context)
-  }
-  // Scope-chain variables, farthest first, so the nearest scope wins a name.
+  for (const [name, provider] of this.layers.global.variables.entries()) variables[name] = provider(context)
   for (const layer of scopeLayers) {
-    for (const [name, provider] of layer.variables.entries()) {
-      variables[name] = provider(context)
-    }
+    for (const [name, provider] of layer.variables.entries()) variables[name] = provider(context)
   }
   // Scoped sections shadow globals before the deterministic order sort.
   const sectionByName = this.layers.merge(scope, layer => layer.sections)
@@ -298,7 +239,6 @@ const transformed = await this.ctx.waterfall(
   () => Promise.resolve(assembly),
 )
 if (completeSection === undefined && !runtimeContextSuppressed) return { ...transformed, tools }
-...
 return {
   ...transformed,
   tools,
@@ -318,7 +258,6 @@ waterfall 的 `this` 是 `Scoped<SystemPrompt>` 载体（`scopeTarget(this, scop
 渲染出的提示词不作为请求字段传输，而是作为**派生历史里的 system 消息节点**。`packages/core/agent-loop/src/agent.ts` 的 `step()`：
 
 ```ts
-const { assembly } = decision
 const renderedPrompt = renderPrompt(assembly)
 ...
 const commits = this.systemPrompt.project(renderedPrompt, {
@@ -330,11 +269,7 @@ for (const { message, intent } of commits) {
 }
 ```
 
-`SystemPromptProjection`（`packages/core/agent-loop/src/runtime-context.ts`）负责把"本次渲染文本"对账到既有的 `system/message` 表面节点：
-
-- 没有 system 节点 → append 一个（第一个 step 的表面节点 0）；
-- 文本未变 → 零提交，前缀缓存不受影响；
-- 文本变了 → 默认原地替换（空文本时逐节点清空，保证历史里不留旧提示词）；声明 `systemPromptUpdate: 'in-history'` 的调用在延续请求系列里改为在缓存历史**之后追加**新提示词，保住既有前缀的复用。
+`SystemPromptProjection`（`packages/core/agent-loop/src/runtime-context.ts`）把"本次渲染文本"对账到既有的 `system/message` 表面节点：没有节点则 append（第一个 step 的表面节点 0）；文本未变则零提交，前缀缓存不受影响；文本变了默认原地替换（空文本时逐节点清空，历史里不留旧提示词），而声明 `systemPromptUpdate: 'in-history'` 的调用在延续请求系列里改为在缓存历史**之后追加**新提示词，保住既有前缀的复用。
 
 动态上下文是另一路：`renderContextSections` + `joinContextSections` 拼出的快照（带头部 `Current runtime context. This snapshot supersedes earlier runtime-context snapshots.`）作为 user 消息 append，只在内容变化或被压缩移除后重新落账。段是 system 消息、上下文是 user 快照——这就是 `PromptSection` 与 `PromptContext` 分成两个注册 API 的原因。
 
@@ -362,9 +297,9 @@ text: ({ scope, toolSet }) => {
 },
 ```
 
-**外部贡献者**：任意有限 order；文本可以是 `string`，也可以是接收 `AssembleContext` 的函数（可读 `context.toolSet` 检查与执行同一步的准入集合）。
+外部贡献者可用任意有限 order；文本可以是 `string`，也可以是接收 `AssembleContext` 的函数（可读 `context.toolSet` 检查与执行同一步的准入集合）。
 
-**动态事实放 context 而不是 section**：事实会变化的（工作目录、审批策略）注册成 `PromptContext`，由 working-directory 服务示范——`required: true` 保证被压制时仍然可见，`interpolate: false` 保证目录名里的 `{{…}}` 不会炸插值：
+**动态事实放 context 而不是 section**：事实会变化的（工作目录、审批策略）注册成 `PromptContext`，由 working-directory 服务示范——`required: true` 保证被压制时仍然可见，`interpolate: false` 保证目录名里的 `{{…}}` 不会炸插值（`packages/session/working-directory/src/index.ts`）：
 
 ```ts
 ctx.systemPrompt.context({

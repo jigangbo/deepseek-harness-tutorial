@@ -1,7 +1,7 @@
 # DeepSeek Harness 系统性教程 — 进度追踪
 
 > 目标：从入门到精通，系统深入理解 DeepSeek-Harness 项目架构
-> 创建：2026-11-12
+> 创建：2026-11-12　完成：2026-11-14
 > 源仓库：`G:\code\AISource\DeepSeek-Harness`（约 2,690 个 TS 源文件，56 个包组）
 
 ## 覆盖策略
@@ -17,12 +17,12 @@
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
 | 01 总览篇 | 3 | 3 | ✅ |
-| 02 核心引擎篇（逐文件） | 55 | 51 | ⏳ 仅剩 system-prompt/scope 进行中 |
+| 02 核心引擎篇（逐文件） | 55 | 55 | ✅ |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **80** | ⏳ |
+| **合计** | **90** | **90** | ✅ |
 
 ## 文档清单
 
@@ -45,8 +45,8 @@
 - [x] agent-loop/：`index.md` + `agent.md` `assistant-stream.md` `constants.md` `inbox.md` `runtime-context.md` 〔B2〕
 - [x] tools/：`index.md` + `batch.md` `contracts.md` `events.md` `executor.md` `json-schema.md` `pipeline.md` `presentation.md` `schema.md` 〔B3〕
 - [x] agent/：`index.md` + `types.md` `runtime-types.md` `dispatch.md` `consumed-work.md` `archive-admission.md` `model-selection.md` `projection.md` 〔B4〕
-- [ ] system-prompt/：`index.md` 〔B5〕
-- [ ] scope/：`index.md` + `store.md` 〔B5〕
+- [x] system-prompt/：`index.md` 〔B5 重建实例〕
+- [x] scope/：`index.md` + `store.md` 〔B5 重建实例〕
 - [x] executors/：`index.md` + `native.md` + `ptc.md`〔主协调者自写〕
 - [x] agent-default-model/：`index.md`〔主协调者自写〕
 - [x] agent-tool-presentation/：`index.md`〔主协调者自写〕
