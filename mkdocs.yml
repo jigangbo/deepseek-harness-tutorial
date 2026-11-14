@@ -1,5 +1,6 @@
 site_name: DeepSeek Harness 架构教程 — 从入门到精通
 site_description: 系统性深入学习 DeepSeek Harness (dsh) 的插件化 Agent 架构
+site_url: https://jigangbo.github.io/deepseek-harness-tutorial/
 docs_dir: docs
 site_dir: site
 theme:
