@@ -1,4 +1,4 @@
-# 6.4 扩展实战：添加一个 LLM 适配器
+# 第 42 章 扩展实战：添加 LLM 适配器
 
 
 > 目标：把一个新的模型 provider 接进 dsh。参考实现两看：`packages/llm/llm-deepseek`（直连 HTTP、SSE 用 `eventsource-parser` 分帧）与 `packages/llm/llm-pi-ai`（包装现成 LLM 库）。动笔前先读 `packages/llm/llm/src/types.ts` 里的 `StreamChunk` 文档——两个适配器都是对着它验证的。

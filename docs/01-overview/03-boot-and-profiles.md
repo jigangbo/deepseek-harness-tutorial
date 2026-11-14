@@ -1,4 +1,4 @@
-# 1.3 启动流程与 Profile/Bundle 组合
+# 第 6 章 启动流程与 Profile/Bundle 组合
 
 
 DeepSeek Harness 的所有受支持 Node 应用都由同一个启动器 `dsh` 拉起：`dsh web`（浏览器 GUI）、`dsh --profile headless "task"`（一次性任务）、`dsh --profile sdk`（JSON-RPC stdio）、`dsh --profile sdk-minimal`、`dsh --profile acp`。它们不是五个可执行文件，而是**同一个二进制按名字装配出的五份插件树**。装配的单位是 profile（目录）和 bundle（可安装的补丁层），装配的语言是 YAML patch。

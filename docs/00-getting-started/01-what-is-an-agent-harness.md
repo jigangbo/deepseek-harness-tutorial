@@ -1,4 +1,4 @@
-# 0.1 什么是 AI Agent 与 Harness
+# 第 1 章 什么是 AI Agent 与 Harness
 
 
 欢迎来到 DeepSeek Harness(以下简称 `dsh`)教程的第一章。本章不写一行需要你运行的代码,目标是帮你建立三个基本概念:

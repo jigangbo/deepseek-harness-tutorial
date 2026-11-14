@@ -1,4 +1,4 @@
-# 6.3 扩展实战：添加一个模型可见的工具
+# 第 41 章 扩展实战：添加一个工具
 
 
 > 目标：从零写一个 `read_file` 风格的工具插件，理解工具契约、策略挂点、PTC 免费接入、UI 卡片与验证要求。规范细节以主仓库 `docs/cookbook/adding-a-tool.md` 为准；生产级三包示例是 `packages/shell/tool-bash`。

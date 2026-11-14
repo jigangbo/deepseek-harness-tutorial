@@ -1,4 +1,4 @@
-# 3.1 能力缝设计思想
+# 第 17 章 能力缝设计思想
 
 > Service Definition / Provider / Consumer
 

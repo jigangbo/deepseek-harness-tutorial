@@ -1,4 +1,4 @@
-# 2.6 System Prompt — 提示词段与工具 schema 组装
+# 第 12 章 System Prompt：提示词组装
 
 `packages/core/system-prompt`（npm 包名 `@deepseek-ai/dsh-system-prompt`）是 harness 的"模型可见输入装配台"。每个模型 step 之前，agent loop 调用一次 `ctx.systemPrompt.assemble(...)`，把散落在各个插件里的提示词素材合并成一份有序输出：
 
