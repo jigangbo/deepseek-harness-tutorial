@@ -16,13 +16,13 @@
 |------|---------|------|------|
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
-| 01 总览篇 | 3 | 2 | ⏳ 启动与 Profile 进行中 |
+| 01 总览篇 | 3 | 3 | ✅ |
 | 02 核心引擎篇（逐文件） | 55 | 28 | ⏳ executors+小包完成，session/system-prompt/scope/llm 进行中 |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **56** | ⏳ |
+| **合计** | **91** | **57** | ⏳ |
 
 ## 文档清单
 
@@ -38,7 +38,7 @@
 ### 01 总览篇 (01-overview)
 - [x] `01-global-architecture.md` — 全局架构与包地图 〔A3〕
 - [x] `02-turn-lifecycle.md` — 一次对话的完整生命周期（turn/step 逐步走读）〔A4〕
-- [ ] `03-boot-and-profiles.md` — 启动流程与 Profile/Bundle 组合 〔A5〕
+- [x] `03-boot-and-profiles.md` — 启动流程与 Profile/Bundle 组合 〔A5 重建实例〕
 
 ### 02 核心引擎篇 (02-core-engine，逐文件)
 - [ ] session/：`index.md` + `types.md` `known-event-types.md` `preparation.md` `fork.md` `repair.md` `request-header.md` `seq-ranges.md` `surface.md` `tool-history.md` 〔B1〕
