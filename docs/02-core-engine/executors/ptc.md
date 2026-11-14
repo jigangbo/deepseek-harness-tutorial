@@ -1,4 +1,7 @@
-# `index.ts` — PTC 执行器：程序化工具调用
+# `index.ts`
+
+> PTC 执行器：程序化工具调用
+
 
 > 源文件：`packages/core/tool-executor-ptc/src/index.ts`（114 行）。PTC 模式下模型只看见一个 `run_code` 工具 + 一段生成的 SDK 文档；其余工具全部经程序内嵌套调用进入同一条守卫管线。
 

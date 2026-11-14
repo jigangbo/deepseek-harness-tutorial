@@ -1,4 +1,7 @@
-# 子代理与团队协作 — 一棵 agent 树的诞生
+# 08 · 子代理与团队协作
+
+> 一棵 agent 树的诞生
+
 
 > 一个 agent 干不完的活，分给子代理。`ctx.subagents` 是子代理的 provider 缝——从"同进程新 agent"到"委托给外部产品"六种后端共存于一个接口之后。团队模式再往上加共享任务板。核心源码：`packages/subagent/`、`packages/team/`。
 

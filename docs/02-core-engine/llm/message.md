@@ -1,4 +1,7 @@
-# `message.ts` — 不可变消息构造器与来源词汇
+# `message.ts`
+
+> 不可变消息构造器与来源词汇
+
 
 > 源码:`packages/llm/llm/src/message.ts`(约 300 行)。定义持久会话消息的类型、来源(`MessageSource`)词汇,以及一组"构造即冻结"的工厂函数。
 

@@ -1,4 +1,7 @@
-# `constants.ts` — 共享调度默认值
+# `constants.ts`
+
+> 共享调度默认值
+
 
 > 源码：`packages/core/agent-loop/src/constants.ts`（6 行）。导出 `DEFAULT_MAX_PARALLEL_TOOL_CALLS`。
 

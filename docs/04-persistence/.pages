@@ -1,4 +1,4 @@
-title: 持久化篇 — 数据平面
+title: 04 · 持久化篇
 nav:
   - 00-overview.md
   - 01-session-log-and-backends.md

@@ -1,12 +1,12 @@
-title: 能力缝篇 — 可替换的能力
+title: 03 · 能力缝篇
 nav:
   - 00-seam-design.md
   - 01-filesystem.md
   - 02-shell-subprocess-sandbox.md
   - 03-terminal-and-ptc.md
-  - 05-web.md
-  - 06-browser-computer-use.md
-  - 07-lsp-skills.md
-  - 08-subagent-team.md
-  - 09-jobs-workflow.md
-  - 10-mcp-extensions.md
+  - 04-web.md
+  - 05-browser-computer-use.md
+  - 06-lsp-skills.md
+  - 07-subagent-team.md
+  - 08-jobs-workflow.md
+  - 09-mcp-extensions.md

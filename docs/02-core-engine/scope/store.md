@@ -1,4 +1,7 @@
-# `store.ts` — 作用域存储实现
+# `store.ts`
+
+> 作用域存储实现
+
 
 `packages/core/scope/src/store.ts`（267 行）是 scope 感知注册表的存储层。它导出四个东西：`ScopeLayer` 接口（一层的空判约定）、`NamedEntries`（具名插入有序表）、`AnonymousEntries`（匿名插入有序表）、`ScopedLayers`（全局层 + 惰性 scoped 层的持有者）。`packages/core/scope/src/index.ts` 从这里重导出它们。注册型服务作者主要跟这三个类打交道——系统提示词的 `PromptLayer`、工具注册表的 `ToolLayer` 与 `GuardLayer` 都是照这个模板搭的。
 

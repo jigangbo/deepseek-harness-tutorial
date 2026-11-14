@@ -1,4 +1,7 @@
-# 命令执行与沙箱 — shell、subprocess、sandbox 三缝联动
+# 03 · 命令执行与沙箱
+
+> shell、subprocess、sandbox 三缝联动
+
 
 > 让模型安全地跑命令是 Agent Harness 最危险也最核心的能力。dsh 把它拆成三层缝：**执行器语义**（shell）、**进程原语**（subprocess）、**围栏**（sandbox）——层层叠加，各自可替换。
 

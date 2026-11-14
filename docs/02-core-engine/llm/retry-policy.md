@@ -1,4 +1,7 @@
-# `retry-policy.ts` — provider 拥有的重试策略解析
+# `retry-policy.ts`
+
+> provider 拥有的重试策略解析
+
 
 > 源码:`packages/llm/llm/src/retry-policy.ts`(约 195 行)。定义重试策略的配置 schema 与解析函数。**本包不执行重试**——`LlmRuntime` 在路由注册时把解析后的策略捕获进注册表,真正执行它的是可选的 `dsh-llm-retry` 插件(agent 失败步扩展点)。
 

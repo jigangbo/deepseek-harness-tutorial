@@ -1,4 +1,7 @@
-# `presentation.ts` — 工具卡片的渲染意图词汇
+# `presentation.ts`
+
+> 工具卡片的渲染意图词汇
+
 
 `packages/core/tools/src/presentation.ts` 是纯粹的类型文件：没有一行运行时逻辑，全部内容是工具"希望自己的调用在 UI 里长什么样"的**渲染意图**（render intent）词汇。工具通过 `presentCall`/`presentResult` 返回这些 `card` 标签的判别联合，UI 桥（Host presenter、Web client）switch 在 `card` 上渲染 —— **工具描述自己，但不依赖任何客户端协议**。它与执行完全解耦：两个回调都是纯函数，可能在实时流式期间被调，也可能在**会话日志重放**时被调（此时只有 args 和落账的 `content/isError/meta` 可用）。
 

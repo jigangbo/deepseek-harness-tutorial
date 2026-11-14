@@ -1,4 +1,7 @@
-# 能力缝设计思想 — Service Definition / Provider / Consumer
+# 01 · 能力缝设计思想
+
+> Service Definition / Provider / Consumer
+
 
 > 本章是能力缝篇的总纲。读懂它，你就理解了 dsh 为什么"换一个 provider，整个产品行为随之改变"。
 

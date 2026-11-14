@@ -1,4 +1,7 @@
-# `repair.ts` — 中断尾部修复：为悬空的工具调用补上诚实的错误结果
+# `repair.ts`
+
+> 中断尾部修复：为悬空的工具调用补上诚实的错误结果
+
 
 > 源码：`packages/core/session/src/repair.ts`（211 行，模块注释："Pending tool-result recovery shared by failed live steps, interrupted logs, and fork seeds."）
 

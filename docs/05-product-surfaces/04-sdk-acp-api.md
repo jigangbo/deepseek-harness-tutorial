@@ -1,4 +1,7 @@
-# SDK、ACP 与远程 API — 从外部进程驱动 Harness
+# 05 · SDK、ACP 与远程 API
+
+> 从外部进程驱动 Harness
+
 
 > dsh 支持三种"外部世界接入"形态：TypeScript/Python SDK（JSON-RPC over stdio）、ACP（自动化 Agent Client Protocol）、远程 BFF API（Typert RPC 网关）。三者共享同一个核心运行时，只在协议层分叉。
 

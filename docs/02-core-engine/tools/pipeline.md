@@ -1,4 +1,7 @@
-# `pipeline.ts` — 单次工具调用的共享执行管线
+# `pipeline.ts`
+
+> 单次工具调用的共享执行管线
+
 
 `packages/core/tools/src/pipeline.ts`（772 行，本模块最大的文件）实现单次工具调用的完整生命周期：参数快照与冻结 → pre-execute 策略 + 审批 + guard → around 包装 + 工具正文 → projectContent → post-execute → finalizeContent → 冻结并广播最终结果。`ToolExecutionPipeline` 类对外暴露**三个阶段方法**（`prepare` / `dispatch` / `complete`），让批次调度器（`batch.ts`）可以在"顺序的策略与落账"之间重叠"并发的正文执行"；`batch.ts` 底部还有一次性封装 `executeToolBatch`。内置 native 与 PTC 执行器都委托给它。
 

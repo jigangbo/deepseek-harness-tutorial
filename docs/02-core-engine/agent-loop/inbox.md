@@ -1,4 +1,7 @@
-# `inbox.ts` — 持久化的 agent inbox 投影与驱动命令面
+# `inbox.ts`
+
+> 持久化的 agent inbox 投影与驱动命令面
+
 
 > 源码：`packages/core/agent-loop/src/inbox.ts`（232 行）。导出 `inboxProjectionSchema`、`inboxProjectionDefinition`、`ReactLoopInbox`。
 

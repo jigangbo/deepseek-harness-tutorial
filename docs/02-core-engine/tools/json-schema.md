@@ -1,4 +1,7 @@
-# `json-schema.ts` — 受支持 JSON Schema 子集的断言与值校验
+# `json-schema.ts`
+
+> 受支持 JSON Schema 子集的断言与值校验
+
 
 `packages/core/tools/src/json-schema.ts` 是整个工具体系的校验底座：它定义**wire 级**的原始 JSON Schema 节点（`JsonSchemaNode`）—— 与子代理、工作流、MCP、PTC 共享的受约束子集 —— 并提供两个方向的能力：**schema 侧**（`assertSupportedJsonSchema` 拒绝子集之外的任何东西）和**值侧**（`validateJsonSchemaValue` 对任意候选值返回路径限定的 violations）。[schema.md](schema.md) 的作者 DSL 编译产物最终都落到这里校验。
 

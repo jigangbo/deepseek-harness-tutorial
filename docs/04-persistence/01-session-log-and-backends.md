@@ -1,4 +1,7 @@
-# 会话日志与存储后端 — SessionHandle 与 JSONL
+# 02 · 会话日志与存储后端
+
+> SessionHandle 与 JSONL
+
 
 > 内存会话（`docs/subsystems/session.md` 描述的 append-only 日志）如何变得**持久**。核心源码：`packages/session/session-persistence/src/index.ts`（缝定义）与 `packages/session/session-persistence-jsonl/`（交付后端）。
 

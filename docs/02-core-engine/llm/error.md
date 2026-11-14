@@ -1,4 +1,7 @@
-# `error.ts` — 错误基类、规范错误码与 provider 文本分类器
+# `error.ts`
+
+> 错误基类、规范错误码与 provider 文本分类器
+
 
 > 源码:`packages/llm/llm/src/error.ts`(约 175 行)。三样东西:`HarnessError` 基类(stable code + cause 链)、一组 provider 中立的规范错误码常量、以及把 provider 错误文本分类成规范码的正则分类器与诊断渲染器。
 

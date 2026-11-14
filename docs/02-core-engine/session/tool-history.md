@@ -1,4 +1,7 @@
-# `tool-history.ts` — 历史工具声明的有状态重建（动态工具更新的 fold）
+# `tool-history.ts`
+
+> 历史工具声明的有状态重建（动态工具更新的 fold）
+
 
 > 源码：`packages/core/session/src/tool-history.ts`（75 行，模块注释："Stateful reconstruction of historical tool definitions for request projection."）
 

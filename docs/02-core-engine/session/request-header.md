@@ -1,4 +1,7 @@
-# `request-header.ts` — 请求信封快照的规范化、判等与折叠重建
+# `request-header.ts`
+
+> 请求信封快照的规范化、判等与折叠重建
+
 
 > 源码：`packages/core/session/src/request-header.ts`（69 行，模块注释："Request-header reconstruction utilities over full `request/header` session events."）
 

@@ -1,4 +1,7 @@
-# `brand.ts` — 本包拥有的 branded id
+# `brand.ts`
+
+> 本包拥有的 branded id
+
 
 > 源码:`packages/llm/llm/src/brand.ts`(约 77 行)。五个跨边界 id 的名义类型(brand)与无状态构造器。`Branded<B>` 原语本身住在 `@deepseek-ai/dsh-brand`,每个 id 的**拥有者**各自在自己的模块里声明 brand——dsh-llm 不向外出租它的 brand。
 

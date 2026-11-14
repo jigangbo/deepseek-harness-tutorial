@@ -1,4 +1,7 @@
-# `surface.ts` — 有序表面投影：日志如何变成模型可见的有序消息
+# `surface.ts`
+
+> 有序表面投影：日志如何变成模型可见的有序消息
+
 
 > 源码：`packages/core/session/src/surface.ts`（712 行）。模块注释开宗明义："Surface layer on top of the session event log: an ordered view of events that produce LLM messages. The append-only log remains the source of truth." 另一个硬约束：**browser-safe**——Web 客户端直接消费这个子路径导出，禁止任何 `node:` 导入。
 

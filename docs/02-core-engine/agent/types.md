@@ -1,4 +1,7 @@
-# `types.ts` — 类型-only 面：Agent 身份、durable 事件词汇与投影类型
+# `types.ts`
+
+> 类型-only 面：Agent 身份、durable 事件词汇与投影类型
+
 
 ## 文件概览
 

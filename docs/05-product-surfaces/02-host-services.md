@@ -1,4 +1,7 @@
-# Host 服务层 — Web 服务器与宿主能力
+# 03 · Host 服务层
+
+> Web 服务器与宿主能力
+
 
 > Host 是 Web GUI 的进程内宿主：一个 `node:http` 服务器（`packages/host/webserver`）加上目录选择、静态前端、插件清单、遥测等宿主能力。Host 不是 agent 循环的一部分，也不是能力缝——它只认识一个 harness 概念：index 渲染所代表的 Peer。
 

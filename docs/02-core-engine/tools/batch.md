@@ -1,4 +1,7 @@
-# `batch.ts` — 批次调度：屏障、滚动池与有序落账
+# `batch.ts`
+
+> 批次调度：屏障、滚动池与有序落账
+
 
 `packages/core/tools/src/batch.ts` 解决"一个模型 step 发出 N 个工具调用怎么跑"的问题。它把 [pipeline.md](pipeline.md) 的三阶段 API（`prepare`/`dispatch`/`complete`）编排成一条调度规则：**`exclusive` 调用独占成屏障；`parallel` 调用进有界滚动池**；策略、结果与结果上下文始终按模型顺序落定；abort 或调度器内部失败都停止补充新调用并**排空**已启动的调用。文件顶部的模块 JSDoc 就是它的完整契约说明。
 

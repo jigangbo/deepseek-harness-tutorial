@@ -1,4 +1,7 @@
-# `assistant-stream.ts` — 紧凑流记录:无损压缩、严格校验、免展开读取
+# `assistant-stream.ts`
+
+> 紧凑流记录:无损压缩、严格校验、免展开读取
+
 
 > 源码:`packages/llm/llm/src/assistant-stream.ts`(约 530 行)。一个模型流尝试的**无损紧凑表示**(`AssistantStreamRecord[]`),加上一组直接在记录上作答的读取器——telemetry、token 计量、Host 折叠都不必把流展开成逐成员 chunk。
 

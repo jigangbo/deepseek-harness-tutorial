@@ -1,4 +1,7 @@
-# `preparation.ts` — 未发布会话的所有权封装（Disposable 生命周期件）
+# `preparation.ts`
+
+> 未发布会话的所有权封装（Disposable 生命周期件）
+
 
 > 源码：`packages/core/session/src/preparation.ts`（49 行，模块注释："Ownership of one unpublished Session before registry publication."）
 

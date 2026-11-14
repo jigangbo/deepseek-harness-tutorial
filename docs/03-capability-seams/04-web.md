@@ -1,4 +1,7 @@
-# 网络访问 — web 缝与搜索/抓取 provider
+# 05 · 网络访问
+
+> web 缝与搜索/抓取 provider
+
 
 > 模型上网的两件事：搜索（找 URL）与抓取（读内容）。dsh 用一个 `ctx.web` 缝承载两者，工具名稳定、provider 可替换。核心源码：`packages/web/` 组。
 

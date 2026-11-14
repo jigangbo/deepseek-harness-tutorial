@@ -1,4 +1,4 @@
-# LLM 模块 — 消息/流词汇表与适配器接缝
+# LLM — 消息/流词汇表与适配器接缝
 
 > `packages/llm/llm`(`@deepseek-ai/dsh-llm`)是整个 harness 调模型的**唯一入口**。它定义了一套 provider 中立的消息/内容块/流式词汇表,并提供 `ctx.llm` 服务:适配器注册表 + 可被 waterfall 拦截的流式调用 API。本模块自己**没有任何 provider wire 代码**——所有 HTTP/SSE 细节都在适配器包里。
 

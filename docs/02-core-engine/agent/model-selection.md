@@ -1,4 +1,7 @@
-# `model-selection.ts` — AgentModel、durable 模型选择投影与切换通知
+# `model-selection.ts`
+
+> AgentModel、durable 模型选择投影与切换通知
+
 
 ## 文件概览
 

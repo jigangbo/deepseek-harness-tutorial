@@ -1,4 +1,7 @@
-# 人机交互、审批与提问 — 模型何时要问人
+# 01 · 人机交互、审批与提问
+
+> 模型何时要问人
+
 
 > Agent 自主性与安全的平衡点：哪些动作必须问人、怎么问、答案如何审计。本章覆盖 interaction 组的四个部件：审批（user-approval）、提问（user-questions）、权限预设（permission-presets）、人类命令（commands）。
 

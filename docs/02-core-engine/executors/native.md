@@ -1,4 +1,7 @@
-# `index.ts` — native 执行器：直接工具执行
+# `index.ts`
+
+> native 执行器：直接工具执行
+
 
 > 源文件：`packages/core/tool-executor-native/src/index.ts`（36 行）。整个 native 执行器小到一屏读完——这正是"机制层薄、策略层厚"设计的体现。
 

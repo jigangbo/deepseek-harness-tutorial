@@ -1,4 +1,7 @@
-# `adapter-failure.ts` — 适配器抛出值的失败归一化
+# `adapter-failure.ts`
+
+> 适配器抛出值的失败归一化
+
 
 > 源码:`packages/llm/llm/src/adapter-failure.ts`(约 110 行)。`LlmRuntime.adapterStream` 捕获的任何抛出值(`unknown`)都要先经过 `normalizeLlmFailure`,变成可放进终态 finish chunk 的 `LlmFailure`。适配器边界之外的世界不可信——SDK 错误、跨包副本、甚至敌意 getter——归一化要全部防住。
 

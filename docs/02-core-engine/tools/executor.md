@@ -1,4 +1,7 @@
-# `executor.ts` — 执行器契约与原始批次输入/输出
+# `executor.ts`
+
+> 执行器契约与原始批次输入/输出
+
 
 `packages/core/tools/src/executor.ts` 定义"谁来执行工具"的契约。`ToolsService`（注册表）只回答"有哪些工具、谁有资格调用"；真正把一批模型 tool-call 变成一批结果的是 `ToolExecutor` —— 一个由独立插件实现的接口，内置实现是 `dsh-tool-executor-native`（原生 function-calling）和 `dsh-tool-executor-ptc`（`run_code` 程序模式），两者都把单次调用委托回本模块下层的共享管线。本文件还定义批次级数据结构（`ToolBatchInput`/`ToolBatchResult`）和两个批次级错误。
 

@@ -1,4 +1,7 @@
-# `contracts.ts` — 工具体系的全部核心类型契约
+# `contracts.ts`
+
+> 工具体系的全部核心类型契约
+
 
 `packages/core/tools/src/contracts.ts` 是整个工具体系的"类型词典"：注册表（`index.ts`）、执行管线（`pipeline.ts`）、批次调度（`batch.ts`）、执行器（`executor.ts`）之间交换的每一个值都在这里定义。文件本身几乎没有运行时逻辑 —— 只有四个错误类、两个取消码常量和保留名 `run_code` —— 其余全部是 interface / type。读懂这个文件，后面每个文件的代码都是这些类型的运转。
 

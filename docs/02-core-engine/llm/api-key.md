@@ -1,4 +1,7 @@
-# `api-key.ts` — 所有适配器共享的 API key 格式判定
+# `api-key.ts`
+
+> 所有适配器共享的 API key 格式判定
+
 
 > 源码:`packages/llm/llm/src/api-key.ts`(42 行)。判断一个**已提供**的 provider API key 能否放进 HTTP 头——这个判定全库只有这一份,每个要把 key 放进请求头的适配器都复用它。
 

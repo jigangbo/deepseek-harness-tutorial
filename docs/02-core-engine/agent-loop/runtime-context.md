@@ -1,4 +1,7 @@
-# `runtime-context.ts` — system prompt 与运行时上下文两个 surface 投影
+# `runtime-context.ts`
+
+> system prompt 与运行时上下文两个 surface 投影
+
 
 > 源码：`packages/core/agent-loop/src/runtime-context.ts`（169 行）。导出 `SystemPromptCommit`、`SystemPromptDecisionInput`、`SystemPromptProjection`、`RuntimeContextProjection`；并通过声明合并向 `@deepseek-ai/dsh-llm` 的 `MessageSourceMap` 注册 `'runtime-context'` 来源。
 

@@ -1,4 +1,7 @@
-# `seq-ranges.ts` — `sourceEventSeqs` 的无损范围编码（JSONL 存储格式）
+# `seq-ranges.ts`
+
+> `sourceEventSeqs` 的无损范围编码（JSONL 存储格式）
+
 
 > 源码：`packages/core/session/src/seq-ranges.ts`（73 行，模块注释："Lossless range encoding for JSONL `sourceEventSeqs` arrays."）
 

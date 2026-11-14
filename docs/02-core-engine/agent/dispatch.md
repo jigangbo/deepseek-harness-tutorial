@@ -1,4 +1,7 @@
-# `dispatch.ts` — 融合派发器：agent subject 与 scope carrier 合一
+# `dispatch.ts`
+
+> 融合派发器：agent subject 与 scope carrier 合一
+
 
 ## 文件概览
 

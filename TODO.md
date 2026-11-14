@@ -59,12 +59,12 @@
 - [x] `01-filesystem.md` — 文件系统 + 交付物 + 工作区 〔主协调者自写〕
 - [x] `02-shell-subprocess-sandbox.md` — 命令执行、子进程与沙箱 〔主协调者自写〕
 - [x] `03-terminal-and-ptc.md` — 终端 + PTC 运行时（合并为一篇）〔主协调者自写〕
-- [x] `05-web.md` — 网络搜索与抓取 〔主协调者自写〕
-- [x] `06-browser-computer-use.md` — 浏览器与计算机操作 〔主协调者自写〕
-- [x] `07-lsp-skills.md` — LSP 与技能系统 〔主协调者自写〕
-- [x] `08-subagent-team.md` — 子代理与团队协作 〔主协调者自写〕
-- [x] `09-jobs-workflow.md` — 后台任务与工作流 〔主协调者自写〕
-- [x] `10-mcp-extensions.md` — MCP 外部工具与运行时自扩展 〔主协调者自写〕
+- [x] `04-web.md` — 网络搜索与抓取 〔主协调者自写〕
+- [x] `05-browser-computer-use.md` — 浏览器与计算机操作 〔主协调者自写〕
+- [x] `06-lsp-skills.md` — LSP 与技能系统 〔主协调者自写〕
+- [x] `07-subagent-team.md` — 子代理与团队协作 〔主协调者自写〕
+- [x] `08-jobs-workflow.md` — 后台任务与工作流 〔主协调者自写〕
+- [x] `09-mcp-extensions.md` — MCP 外部工具与运行时自扩展 〔主协调者自写〕
 
 ### 04 持久化篇 (04-persistence)
 - [x] `00-overview.md` — 持久化总览 〔主协调者自写〕

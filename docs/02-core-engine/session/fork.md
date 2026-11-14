@@ -1,4 +1,7 @@
-# `fork.ts` — fork seed 构造：复制前缀、标记继承切点、闭合开口尾部
+# `fork.ts`
+
+> fork seed 构造：复制前缀、标记继承切点、闭合开口尾部
+
 
 > 源码：`packages/core/session/src/fork.ts`（30 行，模块注释："Fork seed construction over an exact source-event prefix."）整个文件只有一个函数 `buildForkSeed`——但它是 fork/seed 语义的核心。
 

@@ -1,4 +1,7 @@
-# 会话检索 — 精确读、过滤、追踪与全文搜索
+# 06 · 会话检索
+
+> 精确读、过滤、追踪与全文搜索
+
 
 > 「应用代码需要程序化地访问呈现给模型的那份历史」——这就是 `ctx.sessionQuery` 的存在理由。核心源码：`packages/session-query/session-query`（接口 + 逻辑语料）与 `packages/session-query/session-query-sqlite`（交付后端）。
 

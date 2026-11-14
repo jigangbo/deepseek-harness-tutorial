@@ -1,4 +1,7 @@
-# 桌面应用架构 — Electron 壳与共享 Web 应用
+# 04 · 桌面应用架构
+
+> Electron 壳与共享 Web 应用
+
 
 > Desktop 不是"又一个产品"——它是**同一套 dsh Web 应用的原生外壳**。理解这一点，就理解了它所有的技术决策。核心文档：`apps/desktop/README.md`。
 

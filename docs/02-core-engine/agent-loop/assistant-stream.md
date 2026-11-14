@@ -1,4 +1,7 @@
-# `assistant-stream.ts` — 单次模型尝试的帧发布与持久流累积
+# `assistant-stream.ts`
+
+> 单次模型尝试的帧发布与持久流累积
+
 
 > 源码：`packages/core/agent-loop/src/assistant-stream.ts`（140 行）。导出 `AssistantStreamAttempt`。
 

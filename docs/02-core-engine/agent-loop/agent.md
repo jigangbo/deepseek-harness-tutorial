@@ -1,4 +1,7 @@
-# `agent.ts` — 具体 Agent 驱动：turn/step 状态机与请求构建
+# `agent.ts`
+
+> 具体 Agent 驱动：turn/step 状态机与请求构建
+
 
 > 源码：`packages/core/agent-loop/src/agent.ts`（745 行）。类 `ReactLoopAgent` 是公开 `Agent` 契约的唯一具体实现，包外不可见。
 

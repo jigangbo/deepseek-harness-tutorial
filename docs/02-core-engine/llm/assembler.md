@@ -1,4 +1,7 @@
-# `assembler.ts` — BlockAssembler:增量把流折回消息
+# `assembler.ts`
+
+> BlockAssembler:增量把流折回消息
+
 
 > 源码:`packages/llm/llm/src/assembler.ts`(约 210 行,但语义密度极高)。`BlockAssembler` 是**唯一的规范装配算法**:agent loop 一边把原始 chunk 记进日志(回放保真),一边喂给同一个 assembler,流结束后读出内容块、usage、finish 与回放元数据,组装成持久 assistant 消息。
 

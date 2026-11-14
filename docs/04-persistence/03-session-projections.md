@@ -1,4 +1,7 @@
-# 会话投影 — 从日志折叠领域状态
+# 04 · 会话投影
+
+> 从日志折叠领域状态
+
 
 > 会话日志是事实，但 UI 和领域服务不该各自翻日志。**会话投影**把"从日志折叠状态"标准化：框架驱动折叠，领域只负责计算。核心源码：`packages/session/session-projection/src/index.ts`、`packages/session/session-projection-cache/`。
 

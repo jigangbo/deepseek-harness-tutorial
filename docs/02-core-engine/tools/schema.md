@@ -1,4 +1,7 @@
-# `schema.ts` — 统一 schema DSL、类型推导与 `defineTool`
+# `schema.ts`
+
+> 统一 schema DSL、类型推导与 `defineTool`
+
 
 `packages/core/tools/src/schema.ts` 是工具作者的日常入口：一套覆盖全部无损 JSON 值的**作者级 schema DSL**（`ValueSchemaSpec`），把它编译成受约束的原始 JSON Schema（`json-schema.ts`），一套**编译期类型推导**（`InferValue`/`InferArgs`），以及把三者粘起来的 `defineTool()` —— 参数校验、args 类型推导、body 返回类型由 output schema 决定，全部自动完成。它还提供 `projectToolSchema()`，即注册表把定义投影成模型可见 `ToolSchema` 的白名单函数。
 

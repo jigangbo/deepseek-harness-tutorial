@@ -1,4 +1,7 @@
-# `events.ts` — 工具执行策略的五个共享事件
+# `events.ts`
+
+> 工具执行策略的五个共享事件
+
 
 `packages/core/tools/src/events.ts` 只有 58 行，却是整个工具管线的"插头面板"：它通过 Cordis 的声明合并把 5 个事件挂进全局 `Events` 接口 —— 三段 waterfall（`tools/pre-execute`、`tools/execute`、`tools/post-execute`）和两个 emit（`tools/result`、`tools/change`）。文件里没有任何实现：管线（`pipeline.ts`）负责触发，插件负责监听。类型上的一个贯穿设计是 `this: Scoped<ToolsService>` —— 监听器通过 `dsh-scope` 的作用域过滤分发，agent-scoped 的 listener 只收到那个 agent 的调用。
 

@@ -1,4 +1,7 @@
-# `types.ts` — provider 中立的消息/流/请求词汇表
+# `types.ts`
+
+> provider 中立的消息/流/请求词汇表
+
 
 > 源码:`packages/llm/llm/src/types.ts`(约 600 行,纯类型 + 两个事件声明,无运行时代码)。这是整个包的"宪法":loop、session log、每个适配器、UI、compaction 共用的全部词汇都在这里定义一次。
 

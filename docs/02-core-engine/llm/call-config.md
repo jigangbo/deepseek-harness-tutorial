@@ -1,4 +1,7 @@
-# `call-config.ts` — 会话级调用配置与 loop 请求标记
+# `call-config.ts`
+
+> 会话级调用配置与 loop 请求标记
+
 
 > 源码:`packages/llm/llm/src/call-config.ts`(约 100 行)。两件事:provider/model/effort/采样这组"请求头状态"的类型与相等比较;loop 构造请求的进程内身份标记(WeakSet)。
 

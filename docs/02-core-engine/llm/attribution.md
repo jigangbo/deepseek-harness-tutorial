@@ -1,4 +1,7 @@
-# `attribution.ts` — 每个 provider 请求都带的静态应用归属
+# `attribution.ts`
+
+> 每个 provider 请求都带的静态应用归属
+
 
 > 源码:`packages/llm/llm/src/attribution.ts`(约 70 行)。定义发给 provider 的静态公开应用身份(`AppIdentity`)并渲染成 `User-Agent` 头。适配器契约要求:每个 provider HTTP 请求都必须带 `attributionHeaders()`,并用 wire 级测试证明。
 
