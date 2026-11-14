@@ -17,12 +17,12 @@
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
 | 01 总览篇 | 3 | 3 | ✅ |
-| 02 核心引擎篇（逐文件） | 55 | 38 | ⏳ session 完成，system-prompt/scope/llm 进行中 |
+| 02 核心引擎篇（逐文件） | 55 | 51 | ⏳ 仅剩 system-prompt/scope 进行中 |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **67** | ⏳ |
+| **合计** | **91** | **80** | ⏳ |
 
 ## 文档清单
 
@@ -50,7 +50,7 @@
 - [x] executors/：`index.md` + `native.md` + `ptc.md`〔主协调者自写〕
 - [x] agent-default-model/：`index.md`〔主协调者自写〕
 - [x] agent-tool-presentation/：`index.md`〔主协调者自写〕
-- [ ] llm/：`index.md` + `types.md` `message.md` `content.md` `assembler.md` `assistant-stream.md` `call-config.md` `api-key.md` `adapter-failure.md` `error.md` `retry-policy.md` `attribution.md` `brand.md` 〔B7〕
+- [x] llm/：`index.md` + `types.md` `message.md` `content.md` `assembler.md` `assistant-stream.md` `call-config.md` `api-key.md` `adapter-failure.md` `error.md` `retry-policy.md` `attribution.md` `brand.md` 〔B7 重建实例〕
 - [x] llm/providers.md — DeepSeek 适配器族 / pi-ai / llm-retry / token-meter〔主协调者自写〕
 
 ### 03 能力缝篇 (03-capability-seams)
