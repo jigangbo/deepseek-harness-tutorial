@@ -17,12 +17,12 @@
 | 首页 index.md | 1 | 1 | ✅ |
 | 00 入门篇 | 3 | 3 | ✅ |
 | 01 总览篇 | 3 | 3 | ✅ |
-| 02 核心引擎篇（逐文件） | 55 | 28 | ⏳ executors+小包完成，session/system-prompt/scope/llm 进行中 |
+| 02 核心引擎篇（逐文件） | 55 | 38 | ⏳ session 完成，system-prompt/scope/llm 进行中 |
 | 03 能力缝篇 | 10 | 10 | ✅ |
 | 04 持久化篇 | 7 | 7 | ✅ |
 | 05 交互与产品形态篇 | 5 | 5 | ✅ |
 | 06 精通篇 | 6 | 6 | ✅ |
-| **合计** | **91** | **57** | ⏳ |
+| **合计** | **91** | **67** | ⏳ |
 
 ## 文档清单
 
@@ -41,7 +41,7 @@
 - [x] `03-boot-and-profiles.md` — 启动流程与 Profile/Bundle 组合 〔A5 重建实例〕
 
 ### 02 核心引擎篇 (02-core-engine，逐文件)
-- [ ] session/：`index.md` + `types.md` `known-event-types.md` `preparation.md` `fork.md` `repair.md` `request-header.md` `seq-ranges.md` `surface.md` `tool-history.md` 〔B1〕
+- [x] session/：`index.md` + `types.md` `known-event-types.md` `preparation.md` `fork.md` `repair.md` `request-header.md` `seq-ranges.md` `surface.md` `tool-history.md` 〔B1 重建实例〕
 - [x] agent-loop/：`index.md` + `agent.md` `assistant-stream.md` `constants.md` `inbox.md` `runtime-context.md` 〔B2〕
 - [x] tools/：`index.md` + `batch.md` `contracts.md` `events.md` `executor.md` `json-schema.md` `pipeline.md` `presentation.md` `schema.md` 〔B3〕
 - [x] agent/：`index.md` + `types.md` `runtime-types.md` `dispatch.md` `consumed-work.md` `archive-admission.md` `model-selection.md` `projection.md` 〔B4〕

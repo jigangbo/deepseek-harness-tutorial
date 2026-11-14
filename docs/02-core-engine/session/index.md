@@ -100,11 +100,20 @@ append<T extends SessionEventType>(
 ): SessionEvent<T> {
   this.publicationEntry()
   const surfaceOpts: SurfaceIntent | undefined = opts[0]
-  const surfaceMetadata = { /* sourceEventSeqs / surfaceOp 拆包 */ }
+  const surfaceMetadata = {
+    ...surfaceOpts?.sourceEventSeqs === undefined ? {} : { sourceEventSeqs: surfaceOpts.sourceEventSeqs },
+    ...surfaceOpts?.surfaceOp === undefined ? {} : { surfaceOp: surfaceOpts.surfaceOp },
+  }
   const dataSnapshot = snapshotJsonValue(data)
   if (dataSnapshot === undefined) {
     throw new Error(`session event "${type}" carries non-JSON-serializable data`)
   }
+  const surfaceMetadataSnapshot = snapshotJsonValue(surfaceMetadata)
+  if (surfaceMetadataSnapshot === undefined) {
+    throw new Error(`session event "${type}" carries non-JSON-serializable surface metadata`)
+  }
+  // Payload getters can detach the Session while the snapshots are read.
+  const entry = this.publicationEntry()
   const event = deepFreeze({
     type,
     seq: SessionSeq(this.log.length),
@@ -166,7 +175,13 @@ deriveMessages(): Message[] {
     this.derivedGeneration = generation
   }
   for (const seq of nodes.slice(this.derivedNodes)) {
+    // Surface sequences are built from this.log — seq is always a valid
+    // index by construction. The non-null assertion expresses that invariant.
+    // oxlint-disable-next-line typescript/no-non-null-assertion
     const msg = this.deriveEventMessage(this.log[seq]!)
+    // A surface node is one of the five message-producing types, but an
+    // empty-content assistant/message (a max-tokens step that hosts only
+    // usage) derives to null and must not enter the transcript.
     if (msg) this.derived.push(msg)
   }
   this.derivedNodes = nodes.length
