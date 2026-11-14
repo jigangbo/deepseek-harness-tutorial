@@ -36,6 +36,8 @@ plugins:
   - awesome-pages
 extra_css:
   - stylesheets/extra.css
+extra_javascript:
+  - javascripts/pager.js?v=3
 markdown_extensions:
   - tables
   - admonition
